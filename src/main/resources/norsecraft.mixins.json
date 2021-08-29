@@ -1,0 +1,17 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.norsecraft.mixin",
+  "compatibilityLevel": "JAVA_16",
+  "mixins": [
+    "ThirstSystemMixin",
+    "PlayerEntityMixin"
+  ],
+  "client": [
+    "MinecraftClientInputMixin",
+    "RenderOverlayMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

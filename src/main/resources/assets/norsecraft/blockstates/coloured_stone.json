@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "block_variants=1": {
+      "model": "norsecraft:block/coloured_stone/coloured_stone_0"
+    },
+    "block_variants=2": {
+      "model": "norsecraft:block/coloured_stone/coloured_stone_1"
+    },
+    "block_variants=3": {
+      "model": "norsecraft:block/coloured_stone/coloured_stone_2"
+    },
+    "block_variants=4": {
+      "model": "norsecraft:block/coloured_stone/coloured_stone_3"
+    }
+  }
+}

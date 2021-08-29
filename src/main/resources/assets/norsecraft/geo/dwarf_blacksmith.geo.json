@@ -1,0 +1,117 @@
+{
+	"format_version": "1.12.0",
+	"minecraft:geometry": [
+		{
+			"description": {
+				"identifier": "geometry.steve",
+				"texture_width": 64,
+				"texture_height": 64,
+				"visible_bounds_width": 3,
+				"visible_bounds_height": 2.5,
+				"visible_bounds_offset": [0, 0.75, 0]
+			},
+			"bones": [
+				{
+					"name": "Head",
+					"pivot": [0, 17, 0.5],
+					"cubes": [
+						{"origin": [-3.5, 17, -3.25], "size": [7, 7, 7], "uv": [0, 15]}
+					]
+				},
+				{
+					"name": "beard_r7",
+					"parent": "Head",
+					"pivot": [-1.5, 19.8662, -2.2928],
+					"rotation": [-5.00192, 0, 0],
+					"cubes": [
+						{"origin": [-1, 11.0738, -3.5184], "size": [2, 2, 1], "uv": [0, 18]}
+					]
+				},
+				{
+					"name": "beard_r9",
+					"parent": "Head",
+					"pivot": [0, 20, -3.25],
+					"rotation": [-9.00117, 0, 0],
+					"cubes": [
+						{"origin": [-2, 15.75, -3.75], "size": [4, 3, 2], "uv": [14, 38]}
+					]
+				},
+				{
+					"name": "beard_r10_r1",
+					"parent": "beard_r9",
+					"pivot": [0.5, 14.3221, -3.0709],
+					"rotation": [7.00154, 0, 0],
+					"cubes": [
+						{"origin": [-1.5, 12.8221, -3.5709], "size": [3, 3, 2], "uv": [38, 37]}
+					]
+				},
+				{
+					"name": "beard_r10",
+					"parent": "Head",
+					"pivot": [0, 20, -3.25],
+					"rotation": [-16.50118, 0, 0],
+					"cubes": [
+						{"origin": [3, 20.5, -0.5], "size": [1, 2, 1], "uv": [21, 15]}
+					]
+				},
+				{
+					"name": "beard_r11",
+					"parent": "Head",
+					"pivot": [0, 20, -3.25],
+					"rotation": [-16.50118, 0, 0],
+					"cubes": [
+						{"origin": [-4, 20.5, -0.5], "size": [1, 2, 1], "uv": [0, 0]},
+						{"origin": [-3, 18.25, -3.75], "size": [6, 2, 1], "uv": [36, 25]},
+						{"origin": [-3, 18.25, -3.75], "size": [6, 2, 1], "uv": [36, 25]}
+					]
+				},
+				{
+					"name": "nose_r1",
+					"parent": "Head",
+					"pivot": [0, 20, -3.25],
+					"rotation": [-8.18757, 8.10162, 44.42142],
+					"cubes": [
+						{"origin": [-1.25, 19.25, -4.1], "size": [2, 2, 1], "uv": [0, 15]}
+					]
+				},
+				{
+					"name": "Body",
+					"pivot": [0, 24, 0],
+					"cubes": [
+						{"origin": [-4.5, 7, -2], "size": [9, 10, 5], "uv": [0, 0]}
+					]
+				},
+				{
+					"name": "RightArm",
+					"pivot": [-4.5, 15.25, 0.5],
+					"cubes": [
+						{"origin": [-8.5, 6.75, -1.5], "size": [4, 10, 4], "uv": [28, 0]},
+						{"origin": [-8.75, 6.5, -2], "size": [4, 6, 5], "uv": [44, 0], "mirror": true}
+					]
+				},
+				{
+					"name": "LeftArm",
+					"pivot": [4.5, 15.25, 0.5],
+					"cubes": [
+						{"origin": [4.5, 6.75, -1.5], "size": [4, 10, 4], "uv": [24, 25]},
+						{"origin": [4.75, 6.5, -2], "size": [4, 6, 5], "uv": [44, 0]}
+					]
+				},
+				{
+					"name": "RightLeg",
+					"pivot": [-2.1, 7, 0.5],
+					"cubes": [
+						{"origin": [-4.15, 0, -1.5], "size": [4, 7, 4], "uv": [28, 14]}
+					]
+				},
+				{
+					"name": "LeftLeg",
+					"pivot": [2.05, 7, 0.5],
+					"cubes": [
+						{"origin": [0.15, 0, -1.5], "size": [4, 7, 4], "uv": [0, 29]}
+					]
+				}
+			]
+		}
+	]
+}

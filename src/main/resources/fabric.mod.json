@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "norsecraft",
+  "version": "${version}",
+
+  "name": "NorseCraft",
+  "description": "Later :-)",
+  "authors": [
+    "OdinAllfather",
+    "Mattii"
+  ],
+  "contact": {
+    "homepage": "norse-craft.com",
+    "sources": ""
+  },
+
+  "license": "CC0-1.0",
+  "icon": "assets/icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+       "com.norsecraft.NorseCraftMod"
+    ],
+    "client": [
+      "com.norsecraft.NorseCraftModClient"
+    ]
+  },
+  "mixins": [
+    "norsecraft.mixins.json"
+  ],
+
+  "depends": {
+    "fabricloader": ">=0.11.3",
+    "fabric": "*",
+    "minecraft": "1.17.x",
+    "java": ">=16"
+  },
+  "suggests": {
+    "another-mod": "*"
+  }
+}

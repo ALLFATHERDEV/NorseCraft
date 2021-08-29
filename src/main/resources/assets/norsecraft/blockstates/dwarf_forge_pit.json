@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "norsecraft:block/dwarf_forge/forge_pit"
+    }
+  }
+}

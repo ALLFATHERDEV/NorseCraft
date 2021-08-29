@@ -1,0 +1,17 @@
+{
+  "itemGroup.norsecraftGroup": "Norse Craft",
+  "block.norsecraft.copper_ore": "Kupfer Erz",
+  "block.norsecraft.bronze_ore": "Bronze Erz",
+  "block.norsecraft.log_chair": "Eichenholz Stuhl",
+  "block.norsecraft.old_campfire": "Altes Lagerfeuer",
+  "block.norsecraft.wooden_table": "Holz Tisch",
+  "block.norsecraft.irithium_ore": "Irithium Erz",
+  "block.norsecraft.dark_stone": "Dunkler Stein",
+  "block.norsecraft.dark_cobblestone": "Dunkler Bruchstein",
+  "block.norsecraft.dark_cobblestone_mossy": "Dunkler Bemooster Bruchstein",
+
+  "item.norsecraft.copper_ingot": "Kupferbarren",
+  "item.norsecraft.bronze_ingot": "Eisenbarren",
+  "item.norsecraft.steel_ingot": "Stahlbarren",
+  "item.norsecraft.nails": "Nägel"
+}

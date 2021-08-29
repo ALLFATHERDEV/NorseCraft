@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "pillar_height=bottom": {
+      "model": "norsecraft:block/stone_pillar_bottom"
+    },
+    "pillar_height=middle": {
+      "model": "norsecraft:block/stone_pillar_mid"
+    },
+    "pillar_height=top": {
+      "model": "norsecraft:block/stone_pillar_top"
+    }
+  }
+}
