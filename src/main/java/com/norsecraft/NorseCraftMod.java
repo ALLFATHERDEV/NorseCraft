@@ -30,6 +30,7 @@ public class NorseCraftMod implements ModInitializer {
         multiblockManager = new MultiblockManager();
         GeckoLib.initialize();
 
+        
         NCBlocks.register();
         NCItems.register();
         NCEntities.register();
