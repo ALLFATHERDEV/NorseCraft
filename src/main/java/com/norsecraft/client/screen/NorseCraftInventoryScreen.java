@@ -2,6 +2,8 @@ package com.norsecraft.client.screen;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.norsecraft.NorseCraftMod;
+import com.norsecraft.client.render.TextureSprite;
+import com.norsecraft.client.screen.widget.ImageButton;
 import com.norsecraft.common.screenhandler.NorseCraftInventoryScreenHandler;
 import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
@@ -9,11 +11,13 @@ import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookProvider;
 import net.minecraft.client.gui.screen.recipebook.RecipeBookWidget;
+import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
+import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -24,6 +28,16 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
     private float mouseY;
     private final RecipeBookWidget recipeBook = new RecipeBookWidget();
     private boolean narrow;
+    private static final TextureSprite[] BUTTON_SPRITES = new TextureSprite[]{
+            new TextureSprite(177, 0, 17, 16),
+            new TextureSprite(194, 0, 17, 17),
+            new TextureSprite(212, 0, 17, 17)
+    };
+    private static final TextureSprite[] BRIGHTER_BUTTON_SPRITES =  new TextureSprite[]{
+            new TextureSprite(177, 18, 17, 17),
+            new TextureSprite(195, 18, 17, 17),
+            new TextureSprite(213, 18, 17, 17)
+    };
 
     public NorseCraftInventoryScreen(NorseCraftInventoryScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
         super(screenHandler, playerInventory, text);
@@ -49,6 +63,13 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
 
             this.addSelectableChild(this.recipeBook);
             this.setInitialFocus(this.recipeBook);
+
+            int i = (this.width - this.backgroundWidth) / 2;
+            int j = (this.height - this.backgroundHeight) / 2;
+
+            for(int l = 0; l < 3; l++) {
+                this.addDrawableChild(new ImageButton(i + 116 + l * 18, j + 50, 17, 17, LiteralText.EMPTY, TEXTURE, BUTTON_SPRITES[l], ACTIONS[l]));
+            }
         }
     }
 
@@ -116,5 +137,17 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
     public RecipeBookWidget getRecipeBookWidget() {
         return this.recipeBook;
     }
+
+    private static final ButtonWidget.PressAction[] ACTIONS = new ButtonWidget.PressAction[] {
+            (button) -> {
+                NorseCraftMod.LOGGER.info("Factions");
+            },
+            (button) -> {
+                NorseCraftMod.LOGGER.info("Reputation");
+            },
+            (button) -> {
+                NorseCraftMod.LOGGER.info("Quests");
+            }
+    };
 
 }
