@@ -2,6 +2,7 @@ package com.norsecraft;
 
 import com.norsecraft.common.block.dwarfforge.DwarfForgeMultiblock;
 import com.norsecraft.common.block.multiblock.MultiblockManager;
+import com.norsecraft.common.entity.BrownBearEntity;
 import com.norsecraft.common.entity.WildBoarEntity;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
@@ -49,6 +50,7 @@ public class NorseCraftMod implements ModInitializer {
         FabricDefaultAttributeRegistry.register(NCEntities.dwarfBlacksmith, DwarfBlacksmithEntity.createDwarfBlacksmithAttributes());
         FabricDefaultAttributeRegistry.register(NCEntities.dwarfWarrior, AbstractDwarfEntity.createDwarfAttributes());
         FabricDefaultAttributeRegistry.register(NCEntities.dwarfWise, AbstractDwarfEntity.createDwarfAttributes());
+        FabricDefaultAttributeRegistry.register(NCEntities.brownBear, BrownBearEntity.createBrownBearAttributes());
     }
 
     public static MultiblockManager getMultiblockManager() {

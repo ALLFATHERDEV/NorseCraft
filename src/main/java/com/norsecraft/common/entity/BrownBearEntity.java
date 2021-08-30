@@ -18,37 +18,35 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class WildBoarEntity extends HostileEntity implements IAnimatable {
+public class BrownBearEntity extends HostileEntity implements IAnimatable {
 
+    public static final String ANIMATION_WALK = "animation.brown_bear.walk";
+    public static final String ANIMATION_IDLE = "animation.brown_bear.idle";
 
-    private static final String ANIMATION_IDLE = "animation.boar.idle";
-    private static final String ANIMATION_WALK = "animation.boar.walk";
-    private static final double SPEED = 0.4;
+    private final AnimationFactory factory = new AnimationFactory(this);
 
-    private AnimationFactory factory = new AnimationFactory(this);
-
-    public WildBoarEntity(EntityType<? extends HostileEntity> type, World worldIn) {
-        super(type, worldIn);
+    public BrownBearEntity(EntityType<? extends HostileEntity> entityType, World world) {
+        super(entityType, world);
     }
 
-    public static DefaultAttributeContainer.Builder createWildBoarAttributes() {
-        return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 60.0).add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.2f)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 10.0);
+    public static DefaultAttributeContainer.Builder createBrownBearAttributes() {
+        return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 40)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 25)
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.7F)
+                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.9);
     }
 
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new MeleeAttackGoal(this, SPEED, false));
-        this.goalSelector.add(1, new WanderAroundFarGoal(this, SPEED));
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 0.7, false));
+        this.goalSelector.add(1, new WanderAroundFarGoal(this, 0.7));
         this.goalSelector.add(2, new LookAroundGoal(this));
 
         this.targetSelector.add(0, new FollowTargetGoal<>(this, PlayerEntity.class, false));
         this.targetSelector.add(3, new FollowTargetGoal<>(this, VillagerEntity.class, false));
         this.targetSelector.add(3, new FollowTargetGoal<>(this, AnimalEntity.class, false));
-
     }
-
 
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
         if (event.isMoving()) {
@@ -60,12 +58,12 @@ public class WildBoarEntity extends HostileEntity implements IAnimatable {
     }
 
     @Override
-    public void registerControllers(AnimationData data) {
-        data.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
+    public void registerControllers(AnimationData animationData) {
+        animationData.addAnimationController(new AnimationController<>(this, "controller", 0, this::predicate));
     }
 
     @Override
     public AnimationFactory getFactory() {
-        return factory;
+        return this.factory;
     }
 }

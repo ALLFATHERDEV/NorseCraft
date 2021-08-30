@@ -23,9 +23,7 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
     private float mouseX;
     private float mouseY;
     private final RecipeBookWidget recipeBook = new RecipeBookWidget();
-    private boolean open;
     private boolean narrow;
-    private boolean mouseDown;
 
     public NorseCraftInventoryScreen(NorseCraftInventoryScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
         super(screenHandler, playerInventory, text);
@@ -48,7 +46,6 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             super.init();
             this.narrow = this.width < 379;
             this.recipeBook.initialize(this.width, this.height, this.client, this.narrow, this.handler);
-            this.open = true;
 
             this.addSelectableChild(this.recipeBook);
             this.setInitialFocus(this.recipeBook);

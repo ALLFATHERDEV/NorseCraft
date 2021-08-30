@@ -1,6 +1,7 @@
 package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
+import com.norsecraft.common.entity.BrownBearEntity;
 import com.norsecraft.common.entity.WildBoarEntity;
 import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
 import com.norsecraft.common.entity.dwarf.DwarfEntity;
@@ -21,9 +22,11 @@ public class NCEntities {
     public static EntityType<DwarfBlacksmithEntity> dwarfBlacksmith;
     public static EntityType<DwarfWiseEntity> dwarfWise;
     public static EntityType<DwarfWarriorEntity> dwarfWarrior;
+    public static EntityType<BrownBearEntity> brownBear;
 
     public static void register() {
         wildBoar        = registerEntity("wild_boar", WildBoarEntity::new, SpawnGroup.CREATURE, 1.3f, 1f);
+        brownBear       = registerEntity("brown_bear", BrownBearEntity::new, SpawnGroup.CREATURE, 1.5F, 1.5F);
 
         //Dwarfs
         dwarf           = registerDwarf("dwarf", DwarfEntity::new);

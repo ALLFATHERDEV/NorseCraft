@@ -1,13 +1,10 @@
 package com.norsecraft;
 
 import com.norsecraft.client.render.CustomBlockEntityModelRenderer;
+import com.norsecraft.client.render.entity.BaseEntityRenderer;
 import com.norsecraft.client.render.entity.DwarfEntityRenderer;
-import com.norsecraft.client.render.entity.WildBoarEntityRenderer;
 import com.norsecraft.client.render.model.block.CrateBlockModel;
-import com.norsecraft.client.render.model.entity.DwarfBlacksmithEntityModel;
-import com.norsecraft.client.render.model.entity.DwarfEntityModel;
-import com.norsecraft.client.render.model.entity.DwarfWarriorEntityModel;
-import com.norsecraft.client.render.model.entity.DwarfWiseEntityModel;
+import com.norsecraft.client.render.model.entity.*;
 import com.norsecraft.client.screen.CrateBlockScreen;
 import com.norsecraft.client.screen.DwarfTradeScreen;
 import com.norsecraft.client.screen.NorseCraftInventoryScreen;
@@ -19,7 +16,11 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.minecraft.client.render.entity.EntityRenderer;
+import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.entity.EntityType;
+import net.minecraft.entity.LivingEntity;
+import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class NorseCraftModClient implements ClientModInitializer {
@@ -29,7 +30,9 @@ public class NorseCraftModClient implements ClientModInitializer {
         //========================================================================
         //=============================ENTITY RENDERER============================
         //========================================================================
-        EntityRendererRegistry.register(NCEntities.wildBoar, WildBoarEntityRenderer::new);
+        //ntityRendererRegistry.register(NCEntities.wildBoar, WildBoarEntityRenderer::new);
+        registerBaseEntity(NCEntities.brownBear, new BrownBearEntityModel(), BaseEntityRenderer::new);
+        registerBaseEntity(NCEntities.wildBoar, new WildBoarEntityModel(), BaseEntityRenderer::new);
 
         //Dwarfs
         registerDwarf(NCEntities.dwarf, null, new DwarfEntityModel());
@@ -52,6 +55,16 @@ public class NorseCraftModClient implements ClientModInitializer {
 
     private <T extends AbstractDwarfEntity> void registerDwarf(EntityType<T> entity, String texturePath, AnimatedGeoModel<T> model) {
         EntityRendererRegistry.register(entity, (ctx) -> new DwarfEntityRenderer<>(ctx, model, NorseCraftMod.ncTex(texturePath)));
+    }
+
+    private <T extends LivingEntity & IAnimatable> void registerBaseEntity(EntityType<T> entityType, AnimatedGeoModel<T> model, BaseFactory factory) {
+        EntityRendererRegistry.register(entityType, (ctx) -> factory.build(ctx, model));
+    }
+
+    private interface BaseFactory {
+
+        <T extends LivingEntity & IAnimatable> EntityRenderer<T> build(EntityRendererFactory.Context ctx, AnimatedGeoModel<T> model);
+
     }
 
 }
