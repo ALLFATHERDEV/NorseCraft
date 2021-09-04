@@ -1,4 +1,4 @@
-package com.norsecraft.mixin;
+package com.norsecraft.mixin.injection.client;
 
 import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.screen.NorseCraftInventoryScreen;

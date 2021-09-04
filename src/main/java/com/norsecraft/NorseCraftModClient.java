@@ -6,7 +6,7 @@ import com.norsecraft.client.render.entity.DwarfEntityRenderer;
 import com.norsecraft.client.render.model.block.CrateBlockModel;
 import com.norsecraft.client.render.model.entity.*;
 import com.norsecraft.client.screen.CrateBlockScreen;
-import com.norsecraft.client.screen.DwarfTradeScreen;
+import com.norsecraft.client.screen.dwarf.DwarfTradeScreen;
 import com.norsecraft.client.screen.NorseCraftInventoryScreen;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.registry.NCBlockEntities;

@@ -1,4 +1,4 @@
-package com.norsecraft.mixin;
+package com.norsecraft.mixin.injection.common;
 
 import com.norsecraft.common.thirst.ThirstManager;
 import net.minecraft.client.MinecraftClient;

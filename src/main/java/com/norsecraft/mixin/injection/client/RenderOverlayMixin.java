@@ -1,4 +1,4 @@
-package com.norsecraft.mixin;
+package com.norsecraft.mixin.injection.client;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.norsecraft.NorseCraftMod;

@@ -77,4 +77,5 @@ public class NorseCraftMod implements ModInitializer {
             .create(nc("nc_main"))
             .icon(() -> new ItemStack(Items.IRON_AXE)).build();
 
+
 }
