@@ -4,12 +4,13 @@
   "package": "com.norsecraft.mixin",
   "compatibilityLevel": "JAVA_16",
   "mixins": [
-    "ThirstSystemMixin",
-    "PlayerEntityMixin"
+    "injection.common.ThirstSystemMixin",
+    "injection.common.PlayerEntityMixin"
   ],
   "client": [
-    "MinecraftClientInputMixin",
-    "RenderOverlayMixin"
+    "injection.client.MinecraftClientInputMixin",
+    "injection.client.RenderOverlayMixin",
+    "invoker.ScreenInvokerMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -1,12 +1,16 @@
-package com.norsecraft.client.screen;
+package com.norsecraft.client.screen.dwarf;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.norsecraft.NorseCraftMod;
+import com.norsecraft.client.render.TextureSprite;
+import com.norsecraft.client.screen.FenrirDrawHelper;
+import com.norsecraft.client.screen.widget.ImageButton;
+import com.norsecraft.client.screen.widget.Label;
 import com.norsecraft.common.network.c2s.SelectMerchantRecipeIndexPacketC2S;
 import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
-import net.fabricmc.api.EnvType;
-import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -20,14 +24,16 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 
+import java.awt.*;
 import java.util.Iterator;
 
 public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
-    private static final Identifier MERCHANT_GUI_TEXTURE = NorseCraftMod.ncTex("gui/trader_gui_trade.png");
+    private static final Identifier MERCHANT_GUI_TEXTURE = NorseCraftMod.ncTex("gui/npc_gui_trade.png");
 
     private int selectedMerchantRecipe;
-    private final WidgetButtonPage[] offersButton = new WidgetButtonPage[7];
+    private final TradeButton[] offersButton = new TradeButton[5];
+    private final TextureSprite backgroundSprite = new TextureSprite(143, 0, 332, 577);
     int indexStartOffset;
     private boolean scrolling;
 
@@ -43,24 +49,74 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
         ClientPlayNetworking.send(SelectMerchantRecipeIndexPacketC2S.SELECT_MERCHANT_RECIPE_INDEX, new SelectMerchantRecipeIndexPacketC2S(this.selectedMerchantRecipe).write());
     }
 
+    private final TextureSprite[] buttons = new TextureSprite[]{
+            new TextureSprite(756, 0, 34, 34),
+            new TextureSprite(721, 36, 34, 34),
+            new TextureSprite(756, 72, 34, 34)
+    };
+
+    private final TextureSprite[] hoverButtons = new TextureSprite[]{
+            new TextureSprite(721, 0, 34, 34),
+            new TextureSprite(791, 36, 34, 34),
+            new TextureSprite(721, 72, 34, 34)
+    };
+
+    private final ButtonWidget.PressAction[] actions = new ButtonWidget.PressAction[]{
+            (button) -> {
+                NorseCraftMod.LOGGER.info("DEBUG_1");
+            },
+            (button) -> {
+
+            },
+            (button) -> {
+                NorseCraftMod.LOGGER.info("DEBUG_3");
+            }
+    };
+
     @Override
     protected void init() {
         super.init();
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        int k = j + 24;
+        int k = j + 7;
 
-        for (int l = 0; l < 7; ++l) {
-            this.offersButton[l] = this.addDrawableChild(new WidgetButtonPage(i + 5, k, l, (button) -> {
-                if (button instanceof WidgetButtonPage) {
-                    this.selectedMerchantRecipe = ((WidgetButtonPage) button).getIndex() + this.indexStartOffset;
+        for (int l = 0; l < 5; ++l) {
+            this.offersButton[l] = this.addDrawableChild(new TradeButton(i + 185, k, l, (button) -> {
+                if (button instanceof TradeButton) {
+                    this.selectedMerchantRecipe = ((TradeButton) button).getIndex() + this.indexStartOffset;
+                    NorseCraftMod.LOGGER.info("Selected recipe index: {}", this.selectedMerchantRecipe);
                     this.syncRecipeIndex();
                 }
             }));
-            k += 20;
+            k += 28;
         }
 
+
+        int q = 28;
+        for (int l = 0; l < 3; l++) {
+            this.addDrawableChild(new ImageButton(i - 21, j + q, 17, 17, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, buttons[l], hoverButtons[l], actions[l]) {
+
+                @Override
+                public boolean shouldCustomRender() {
+                    return true;
+                }
+
+                @Override
+                public void renderCustom(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
+                    if (this.isHovered()) {
+                        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, this.x, this.y, this.hoverSprite);
+                    } else {
+                        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, this.x, this.y, this.sprite);
+                    }
+                }
+            });
+            q += 20;
+        }
+
+
+        this.addDrawable(new Label(i - 62, j + 11, this.handler.getMerchant().getDisplayName().asString()));
     }
+
 
     @Override
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
@@ -75,18 +131,17 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
         if (!offers.isEmpty()) {
             int i = (this.width - this.backgroundWidth) / 2;
             int j = (this.height - this.backgroundHeight) / 2;
-            int k = j + 16 + 1;
-            int l = i + 5 + 5;
+            int k = j + 7;
+            int l = i + 5 + 5 + 180;
             RenderSystem.setShader(GameRenderer::getPositionTexShader);
             RenderSystem.setShaderTexture(0, MERCHANT_GUI_TEXTURE);
-            this.renderScrollbar(matrices, i, j, offers);
             int m = 0;
             Iterator<TradeOffer> iterator = offers.iterator();
             while (true) {
                 TradeOffer offer;
                 while (iterator.hasNext()) {
                     offer = iterator.next();
-                    if (this.canScroll(offers.size()) && (m < this.indexStartOffset || m >= 7 + this.indexStartOffset))
+                    if (this.canScroll(offers.size()) && (m < this.indexStartOffset || m >= 5 + this.indexStartOffset))
                         ++m;
                     else {
                         ItemStack itemstack = offer.getOriginalFirstBuyItem();
@@ -94,18 +149,20 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
                         ItemStack itemstack3 = offer.getSecondBuyItem();
                         ItemStack itemstack4 = offer.getSellItem();
                         this.itemRenderer.zOffset = 100.0F;
-                        int n = k + 7;
+                        int n = k + 6;
                         this.renderFirstBuyItem(matrices, itemstack2, itemstack, l, n);
                         if (!itemstack3.isEmpty()) {
-                            this.itemRenderer.renderInGui(itemstack3, i + 5 + 35, n);
-                            this.itemRenderer.renderGuiItemOverlay(this.textRenderer, itemstack3, i + 5 + 35, n);
+                            int o = 215;
+                            this.itemRenderer.renderInGui(itemstack3, i + o, n);
+                            this.itemRenderer.renderGuiItemOverlay(this.textRenderer, itemstack3, i + o, n);
                         }
 
+                        int p = 250;
                         this.renderArrow(matrices, offer, i, n);
-                        this.itemRenderer.renderInGui(itemstack4, i + 5 + 68, n);
-                        this.itemRenderer.renderGuiItemOverlay(this.textRenderer, itemstack4, i + 5 + 68, n);
+                        this.itemRenderer.renderInGui(itemstack4, i + p, n);
+                        this.itemRenderer.renderGuiItemOverlay(this.textRenderer, itemstack4, i + p, n);
                         this.itemRenderer.zOffset = 0.0F;
-                        k += 20;
+                        k += 28;
                         ++m;
                     }
                 }
@@ -113,11 +170,11 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
                 int o = this.selectedMerchantRecipe;
                 offer = offers.get(o);
 
-                WidgetButtonPage[] buttons = this.offersButton;
+                TradeButton[] buttons = this.offersButton;
                 int p = buttons.length;
 
                 for (int q = 0; q < p; ++q) {
-                    WidgetButtonPage button = buttons[q];
+                    TradeButton button = buttons[q];
                     if (button.isHovered())
                         button.renderTooltip(matrices, mouseX, mouseY);
 
@@ -138,23 +195,56 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
         RenderSystem.setShaderTexture(0, MERCHANT_GUI_TEXTURE);
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        drawTexture(matrices, i, j, this.getZOffset(), 0.0F, 0.0F, this.backgroundWidth, this.backgroundHeight, 256, 512);
+        FenrirDrawHelper.drawSprite(matrices, MERCHANT_GUI_TEXTURE, i, j, backgroundSprite, this.getZOffset());
+        this.renderLeftInfo(matrices);
+        this.renderReputationSymbols(matrices);
+        this.renderScrollbar(matrices, i, j, this.handler.getOffers());
     }
 
+    private final TextureSprite scrollBarNormal = new TextureSprite(722, 109, 58, 7);
+    private final TextureSprite scrollBarHover = new TextureSprite(733, 109, 58, 7);
+
     private void renderScrollbar(MatrixStack matix, int x, int y, TradeOfferList offers) {
-        int i = offers.size() + 1 - 7;
+        int i = offers.size() + 1 - 5;
         if (i > 1) {
             int j = 139 - (27 + (i - 1) * 139 / i);
             int k = 1 + j / i + 139 / i;
             int m = Math.min(113, this.indexStartOffset * k);
             if (this.indexStartOffset == i - 1) {
-                m = 113;
+                m = 106;
             }
-
-            drawTexture(matix, x + 94, y + 18 + m, this.getZOffset(), 0.0F, 199.0F, 6, 27, 256, 512);
+            FenrirDrawHelper.drawSprite(matix, MERCHANT_GUI_TEXTURE, x + 277, y + 8 + m, scrollBarNormal, this.getZOffset(), 512, 256);
         } else {
-            drawTexture(matix, x + 94, y + 18, this.getZOffset(), 6.0F, 199.0F, 6, 27, 256, 512);
+            FenrirDrawHelper.drawSprite(matix, MERCHANT_GUI_TEXTURE, x + 277, y + 8, scrollBarHover, this.getZOffset(), 512, 256);
         }
+    }
+
+    private final TextureSprite leftInfo = new TextureSprite(0, 0, 178, 142);
+
+    private void renderLeftInfo(MatrixStack matrixStack) {
+        int i = (this.width - this.backgroundWidth) / 2 - 70;
+        int j = (this.height - this.backgroundHeight) / 2;
+        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, i, j, leftInfo, 512, 256);
+    }
+
+    private final TextureSprite[] reputationSymbols = new TextureSprite[]{
+            new TextureSprite(826, 0, 24, 24), //Good
+            new TextureSprite(826, 25, 24, 24),//Neutral
+            new TextureSprite(826, 50, 24, 24) //Bad
+    };
+
+    private void renderReputationSymbols(MatrixStack matrixStack) {
+        int i = (this.width - this.backgroundWidth) / 2 - 17;
+        int j = (this.height - this.backgroundHeight) / 2 + 7;
+        int reputation = this.handler.getMerchant().getPlayerReputation(this.client.player);
+        TextureSprite sprite;
+        if (reputation >= 50)
+            sprite = reputationSymbols[0];
+        else if (reputation >= -50)
+            sprite = reputationSymbols[1];
+        else
+            sprite = reputationSymbols[2];
+        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, i, j, sprite, 512, 256);
     }
 
     private void renderArrow(MatrixStack matrix, TradeOffer offer, int x, int y) {
@@ -191,7 +281,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
     public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
         int i = this.handler.getOffers().size();
         if (this.canScroll(i)) {
-            int j = i - 7;
+            int j = i - 5;
             this.indexStartOffset = (int) ((double) this.indexStartOffset - amount);
             this.indexStartOffset = MathHelper.clamp(this.indexStartOffset, 0, j);
         }
@@ -204,7 +294,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
         if (this.scrolling) {
             int j = this.y + 18;
             int k = j + 139;
-            int l = i - 7;
+            int l = i - 5;
             float f = ((float) mouseY - (float) j - 13.5F) / ((float) (k - j) - 27.0F);
             f = f * (float) l + 0.5F;
             this.indexStartOffset = MathHelper.clamp((int) f, 0, l);
@@ -225,16 +315,25 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-    @Environment(EnvType.CLIENT)
-    class WidgetButtonPage extends ButtonWidget {
+    class TradeButton extends ImageButton {
 
         final int index;
 
-        public WidgetButtonPage(int x, int y, int index, PressAction onPress) {
-            super(x, y, 89, 20, LiteralText.EMPTY, onPress);
+        public TradeButton(int x, int y, int index, PressAction onPress) {
+            super(x, y, 89, 27, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, new TextureSprite(721, 167, 56, 173),
+                    new TextureSprite(721, 224, 56, 173), onPress);
             this.index = index;
         }
 
+        @Override
+        public boolean shouldCustomRender() {
+            return true;
+        }
+
+        @Override
+        public void renderCustom(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
+            FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, this.x, this.y, this.sprite);
+        }
 
         public int getIndex() {
             return index;
@@ -242,23 +341,21 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
         @Override
         public void renderTooltip(MatrixStack matrices, int mouseX, int mouseY) {
-            if (this.hovered && ((DwarfTradeScreenHandler) DwarfTradeScreen.this.handler).getOffers().size() > this.index + DwarfTradeScreen.this.indexStartOffset) {
+            if (this.hovered && DwarfTradeScreen.this.handler.getOffers().size() > this.index + DwarfTradeScreen.this.indexStartOffset) {
                 ItemStack itemStack3;
                 if (mouseX < this.x + 20) {
-                    itemStack3 = ((TradeOffer) ((DwarfTradeScreenHandler) DwarfTradeScreen.this.handler).getOffers().get(this.index + DwarfTradeScreen.this.indexStartOffset)).getAdjustedFirstBuyItem();
+                    itemStack3 = DwarfTradeScreen.this.handler.getOffers().get(this.index + DwarfTradeScreen.this.indexStartOffset).getAdjustedFirstBuyItem();
                     DwarfTradeScreen.this.renderTooltip(matrices, itemStack3, mouseX, mouseY);
                 } else if (mouseX < this.x + 50 && mouseX > this.x + 30) {
-                    itemStack3 = ((TradeOffer) ((DwarfTradeScreenHandler) DwarfTradeScreen.this.handler).getOffers().get(this.index + DwarfTradeScreen.this.indexStartOffset)).getSecondBuyItem();
+                    itemStack3 = DwarfTradeScreen.this.handler.getOffers().get(this.index + DwarfTradeScreen.this.indexStartOffset).getSecondBuyItem();
                     if (!itemStack3.isEmpty()) {
                         DwarfTradeScreen.this.renderTooltip(matrices, itemStack3, mouseX, mouseY);
                     }
                 } else if (mouseX > this.x + 65) {
-
-                    itemStack3 = ((TradeOffer) ((DwarfTradeScreenHandler) DwarfTradeScreen.this.handler).getOffers().get(this.index + DwarfTradeScreen.this.indexStartOffset)).getSellItem();
+                    itemStack3 = DwarfTradeScreen.this.handler.getOffers().get(this.index + DwarfTradeScreen.this.indexStartOffset).getSellItem();
                     DwarfTradeScreen.this.renderTooltip(matrices, itemStack3, mouseX, mouseY);
                 }
             }
         }
     }
-
 }

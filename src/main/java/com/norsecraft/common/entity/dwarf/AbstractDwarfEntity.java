@@ -23,6 +23,7 @@ import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.nbt.NbtOps;
 import net.minecraft.predicate.entity.EntityPredicate;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -40,8 +41,6 @@ import java.util.List;
 import java.util.Random;
 
 public abstract class AbstractDwarfEntity extends PathAwareEntity implements IAnimatable, IReputation {
-
-    //TODO: Adding blacksmith
 
     private static final String WALK_ANIMATION_STR = "animation.norsecraft.dwarf.walk";
     private static final String IDLE_ANIMATION_STR = "animation.norsecraft.dwarf.idle";
@@ -100,7 +99,7 @@ public abstract class AbstractDwarfEntity extends PathAwareEntity implements IAn
         if (source.getAttacker() instanceof PlayerEntity) {
             Box axisalignedbb = this.getBoundingBox().expand(10.0D, 8.0D, 10.0D);
 
-            List<AbstractDwarfEntity> nearbyDwarfs = this.world.getEntitiesByClass(AbstractDwarfEntity.class, axisalignedbb, null);
+            List<AbstractDwarfEntity> nearbyDwarfs = this.world.getEntitiesByClass(AbstractDwarfEntity.class, axisalignedbb, EntityPredicates.maxDistance(96, 96, 96, 96));
             for (AbstractDwarfEntity le : nearbyDwarfs) {
                 AbstractDwarfEntity dw = le;
                 dw.updateReputation(ReputationType.DEAD, 25, (PlayerEntity) source.getAttacker());
@@ -113,7 +112,7 @@ public abstract class AbstractDwarfEntity extends PathAwareEntity implements IAn
     public boolean damage(DamageSource source, float amount) {
         if (source.getAttacker() instanceof PlayerEntity) {
             Box axisalignedbb = this.getBoundingBox().expand(10.0D, 8.0D, 10.0D);
-            List<AbstractDwarfEntity> nearbyDwarfs = this.world.getEntitiesByClass(AbstractDwarfEntity.class, axisalignedbb, null);
+            List<AbstractDwarfEntity> nearbyDwarfs = this.world.getEntitiesByClass(AbstractDwarfEntity.class, axisalignedbb, EntityPredicates.maxDistance(96, 96, 96, 96));
             for (AbstractDwarfEntity le : nearbyDwarfs) {
                 AbstractDwarfEntity dw = le;
                 dw.updateReputation(ReputationType.DEAD, 25, (PlayerEntity) source.getAttacker());

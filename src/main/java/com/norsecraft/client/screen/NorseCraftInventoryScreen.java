@@ -34,9 +34,9 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             new TextureSprite(212, 0, 17, 17)
     };
     private static final TextureSprite[] BRIGHTER_BUTTON_SPRITES =  new TextureSprite[]{
-            new TextureSprite(177, 18, 17, 17),
-            new TextureSprite(195, 18, 17, 17),
-            new TextureSprite(213, 18, 17, 17)
+            new TextureSprite(177, 18, 17, 16),
+            new TextureSprite(194, 18, 17, 17),
+            new TextureSprite(212, 18, 17, 17)
     };
 
     public NorseCraftInventoryScreen(NorseCraftInventoryScreenHandler screenHandler, PlayerInventory playerInventory, Text text) {
@@ -68,7 +68,7 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             int j = (this.height - this.backgroundHeight) / 2;
 
             for(int l = 0; l < 3; l++) {
-                this.addDrawableChild(new ImageButton(i + 116 + l * 18, j + 50, 17, 17, LiteralText.EMPTY, TEXTURE, BUTTON_SPRITES[l], ACTIONS[l]));
+                this.addDrawableChild(new ImageButton(i + 116 + l * 18, j + 62, 17, 17, LiteralText.EMPTY, TEXTURE, BRIGHTER_BUTTON_SPRITES[l], BUTTON_SPRITES[l],  ACTIONS[l]));
             }
         }
     }

@@ -137,6 +137,12 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
         OFFERS.add(new TradeOffer(Items.NAME_TAG.getDefaultStack(), Items.DIAMOND.getDefaultStack(), 9999, 0, 0));
         OFFERS.add(new TradeOffer(Items.DIRT.getDefaultStack(), Items.EMERALD.getDefaultStack(), 9999, 0, 0));
         OFFERS.add(new TradeOffer(Items.IRON_INGOT.getDefaultStack(), Items.PUMPKIN.getDefaultStack(), Items.DIAMOND.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.IRON_INGOT.getDefaultStack(), Items.IRON_SWORD.getDefaultStack(), Items.EMERALD_BLOCK.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.IRON_INGOT.getDefaultStack(), Items.REDSTONE.getDefaultStack(), Items.LAPIS_BLOCK.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.STICK.getDefaultStack(), Items.DIAMOND.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.IRON_INGOT.getDefaultStack(), Items.ACACIA_BOAT.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.PAPER.getDefaultStack(), Items.ACACIA_LOG.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.IRON_INGOT.getDefaultStack(), Items.OAK_FENCE.getDefaultStack(), 9999, 0, 0));
     }
 
     @Nullable
