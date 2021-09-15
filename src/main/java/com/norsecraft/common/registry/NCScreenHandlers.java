@@ -15,9 +15,10 @@ public class NCScreenHandlers {
     public static ScreenHandlerType<CrateBlockScreenHandler> crate;
 
     public static void register() {
-        dwarfTrade = registerExtended("dwarf_trade", DwarfTradeScreenHandler::new);
+        NorseCraftMod.LOGGER.info("Register screen handlers");
+        dwarfTrade          = registerExtended("dwarf_trade", DwarfTradeScreenHandler::new);
         norseCraftInventory = registerSimple("norsecraft_inv", NorseCraftInventoryScreenHandler::new);
-        crate = registerExtended("crate", CrateBlockScreenHandler::new);
+        crate               = registerExtended("crate", CrateBlockScreenHandler::new);
     }
 
     public static <R extends ScreenHandler> ScreenHandlerType<R> registerExtended(String name, ScreenHandlerRegistry.ExtendedClientHandlerFactory<R> factory) {

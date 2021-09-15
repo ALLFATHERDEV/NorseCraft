@@ -115,7 +115,7 @@ public class DwarfTradeScreenHandler extends ScreenHandler {
 
     @Override
     public boolean canUse(PlayerEntity playerIn) {
-        return this.merchant.getCurrentCustomer() != null && this.merchant.getCurrentCustomer().getUuid().equals(playerIn.getUuid());
+        return true;
     }
 
 

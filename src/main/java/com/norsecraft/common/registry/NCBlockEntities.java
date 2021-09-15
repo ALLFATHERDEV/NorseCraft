@@ -1,5 +1,6 @@
 package com.norsecraft.common.registry;
 
+import com.norsecraft.NorseCraftMod;
 import com.norsecraft.common.block.entity.CrateBlockEntity;
 import com.norsecraft.common.block.entity.DwarfForgeBlockEntity;
 import net.fabricmc.fabric.api.object.builder.v1.block.entity.FabricBlockEntityTypeBuilder;
@@ -14,6 +15,7 @@ public class NCBlockEntities {
     public static BlockEntityType<DwarfForgeBlockEntity> dwarfForgeEntity;
 
     public static void register() {
+        NorseCraftMod.LOGGER.info("Register block entities");
         crateBlockEntity = register("crate_be", CrateBlockEntity::new, NCBlocks.CRATE);
         dwarfForgeEntity = register("dwarf_forge", DwarfForgeBlockEntity::new, NCBlocks.DWARF_FORGE_PIT, NCBlocks.DWARF_FORGE_PILLAR, NCBlocks.DWARF_FORGE_CHIMNEY_WALL, NCBlocks.DWARF_FORGE_WALL);
     }

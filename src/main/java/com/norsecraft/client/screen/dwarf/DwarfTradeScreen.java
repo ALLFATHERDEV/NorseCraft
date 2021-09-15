@@ -10,7 +10,7 @@ import com.norsecraft.common.network.c2s.SelectMerchantRecipeIndexPacketC2S;
 import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.font.TextRenderer;
+import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -24,7 +24,6 @@ import net.minecraft.util.math.MathHelper;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 
-import java.awt.*;
 import java.util.Iterator;
 
 public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
@@ -63,7 +62,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
     private final ButtonWidget.PressAction[] actions = new ButtonWidget.PressAction[]{
             (button) -> {
-                NorseCraftMod.LOGGER.info("DEBUG_1");
+                MinecraftClient.getInstance().setScreen(new DwarfDialogScreen(handler.getMerchant()));
             },
             (button) -> {
 
@@ -91,27 +90,16 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
             k += 28;
         }
 
-
-        int q = 28;
-        for (int l = 0; l < 3; l++) {
-            this.addDrawableChild(new ImageButton(i - 21, j + q, 17, 17, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, buttons[l], hoverButtons[l], actions[l]) {
-
-                @Override
-                public boolean shouldCustomRender() {
-                    return true;
-                }
-
-                @Override
-                public void renderCustom(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
-                    if (this.isHovered()) {
-                        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, this.x, this.y, this.hoverSprite);
-                    } else {
-                        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, this.x, this.y, this.sprite);
-                    }
-                }
-            });
-            q += 20;
-        }
+        this.addDrawableChild(new ImageButton(i - 21, j + 29, 17, 17, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, buttons[0], hoverButtons[0], true,
+                (button) -> {
+                    MinecraftClient.getInstance().setScreen(new DwarfDialogScreen(this.handler.getMerchant()));
+                }));
+        this.addDrawableChild(new ImageButton(i - 21, j + 49, 17, 17, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, buttons[1], hoverButtons[1], true,
+                (button) -> {
+                }));
+        this.addDrawableChild(new ImageButton(i - 21, j + 69, 17, 17, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, buttons[2], hoverButtons[2], true,
+                (button) -> {
+                }));
 
 
         this.addDrawable(new Label(i - 62, j + 11, this.handler.getMerchant().getDisplayName().asString()));
@@ -321,7 +309,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
         public TradeButton(int x, int y, int index, PressAction onPress) {
             super(x, y, 89, 27, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, new TextureSprite(721, 167, 56, 173),
-                    new TextureSprite(721, 224, 56, 173), onPress);
+                    new TextureSprite(721, 224, 56, 173), false, onPress);
             this.index = index;
         }
 

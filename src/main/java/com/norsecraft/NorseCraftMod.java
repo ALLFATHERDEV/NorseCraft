@@ -2,6 +2,7 @@ package com.norsecraft;
 
 import com.norsecraft.common.block.dwarfforge.DwarfForgeMultiblock;
 import com.norsecraft.common.block.multiblock.MultiblockManager;
+import com.norsecraft.common.dialog.DialogManager;
 import com.norsecraft.common.entity.BrownBearEntity;
 import com.norsecraft.common.entity.WildBoarEntity;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
@@ -25,21 +26,28 @@ public class NorseCraftMod implements ModInitializer {
     public static final String MOD_ID = "norsecraft";
 
     private static MultiblockManager multiblockManager;
+    private static final DialogManager dialogManager = new DialogManager();
 
     @Override
     public void onInitialize() {
+        LOGGER.info("Starting mod");
         multiblockManager = new MultiblockManager();
+        LOGGER.info("Initializing geckolib");
         GeckoLib.initialize();
 
-        
         NCBlocks.register();
         NCItems.register();
         NCEntities.register();
         NCScreenHandlers.register();
         NCBlockEntities.register();
 
+        LOGGER.info("Loading multiblocks");
         multiblockManager.addMultiblock(new DwarfForgeMultiblock());
+
+        LOGGER.info("Register entity attributes");
         this.registerEntityAttributes();
+
+        LOGGER.info("Create packethandler");
         PacketHandler.handleClientToServerPackets();
 
     }
@@ -77,5 +85,7 @@ public class NorseCraftMod implements ModInitializer {
             .create(nc("nc_main"))
             .icon(() -> new ItemStack(Items.IRON_AXE)).build();
 
-
+    public static DialogManager getDialogManager() {
+        return dialogManager;
+    }
 }

@@ -1,50 +1,57 @@
 {
-  "dialog": {
-    "initial_message": {
-      "msg": "A new face... name's {NAME}. I am the blacksmith around here, I take care of providing weapons and armour to our people. If you are in need of someone money let me know, since I can't exactly just abandon my work.",
-      "answers": {
-        "What can you tell me about yourself?": {
-          "ref_id": "ref_id_0"
-        },
-        "Is there any work you want done?": {
-          "ref_id": "ref_id_1"
-        },
-        "What can you tell me about business around here?": {
-          "ref_id": "ref_id_2"
-        }
+  "initialMessage": {
+    "message": "A message",
+    "dialogId": "initial_message",
+    "dialogAnswers": [
+      {
+        "name": "im_a1",
+        "message": "This is the test answer #1 yeah, nice a test",
+        "nextDialog": "dialog_1"
+      },
+      {
+        "name": "im_a2",
+        "message": "This the test answer #2. Yes, another test answer",
+        "nextDialog": "dialog_2"
       }
+    ]
+  },
+  "nextDialogs": [
+    {
+      "message": "message for dialog 1",
+      "dialogId": "dialog_1",
+      "dialogAnswers": [
+        {
+          "name": "d1_a1",
+          "message": "Answer #111111",
+          "nextDialog": "dialog_2"
+        },
+        {
+          "name": "d1_a2",
+          "message": "Anser #2222222",
+          "nextDialog": "dialog_2"
+        },
+        {
+          "name": "d1_a3",
+          "message": "Anser #3333333",
+          "nextDialog": "initial_message"
+        }
+      ]
     },
-    "refs": {
-      "ref_id_0": {
-        "msg": "Nothing interesting, I was born in this area, my father was a blacksmith and introduced me to the work I do today. What's it to you anyway?",
-        "answers": {
-          "Oh nothing, just wanted to get to know each other.": {
-            "ref_id": ""
-          },
-          "Nevermind.": {
-            "ref_id": ""
-          }
+    {
+      "message": "Dialog mesasge #2",
+      "dialogId": "dialog_2",
+      "dialogAnswers": [
+        {
+          "name": "d2_a1",
+          "message": "Some answer lol",
+          "nextDialog": "dialog_1"
+        },
+        {
+          "name": "d2_a2",
+          "message": "adsadasdasdasdasdadsdasd",
+          "nextDialog": "initial_message"
         }
-      },
-      "ref_id_1": {
-        "msg": "A person by the name of <name> was meant to bring me my payment for the repairs I did to his dagger and he hasn't shown up since. Find him for me and get my payment of '17 silver coins' by any means necessary. Try not to toughen him up too much.",
-        "answers": {
-          "I'll do it.": {
-            "ref_id": "ref_id_6"
-          },
-          "Forget it.": {
-            "ref_id": ""
-          }
-        }
-      },
-      "ref_id_2": {
-        "msg": "Business is business, not much competition since I am the only blacksmith in the village, ha ha. So, if you've got the coin, you get yourself a price.",
-        "answers": {
-          "Got it. Thanks.": {
-            "ref_id": ""
-          }
-        }
-      }
+      ]
     }
-  }
+  ]
 }

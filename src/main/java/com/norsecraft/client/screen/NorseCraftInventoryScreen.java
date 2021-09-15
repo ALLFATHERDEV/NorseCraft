@@ -68,7 +68,7 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             int j = (this.height - this.backgroundHeight) / 2;
 
             for(int l = 0; l < 3; l++) {
-                this.addDrawableChild(new ImageButton(i + 116 + l * 18, j + 62, 17, 17, LiteralText.EMPTY, TEXTURE, BRIGHTER_BUTTON_SPRITES[l], BUTTON_SPRITES[l],  ACTIONS[l]));
+                this.addDrawableChild(new ImageButton(i + 116 + l * 18, j + 62, 17, 17, LiteralText.EMPTY, TEXTURE, BRIGHTER_BUTTON_SPRITES[l], BUTTON_SPRITES[l],  false, ACTIONS[l]));
             }
         }
     }

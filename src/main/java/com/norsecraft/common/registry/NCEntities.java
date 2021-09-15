@@ -25,6 +25,7 @@ public class NCEntities {
     public static EntityType<BrownBearEntity> brownBear;
 
     public static void register() {
+        NorseCraftMod.LOGGER.info("Register entities");
         wildBoar        = registerEntity("wild_boar", WildBoarEntity::new, SpawnGroup.CREATURE, 1.3f, 1f);
         brownBear       = registerEntity("brown_bear", BrownBearEntity::new, SpawnGroup.CREATURE, 1.5F, 1.5F);
 

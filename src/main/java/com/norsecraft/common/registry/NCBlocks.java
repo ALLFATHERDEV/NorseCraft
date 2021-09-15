@@ -50,6 +50,7 @@ public class NCBlocks {
     public static final Block DWARF_FORGE_PILLAR = new DwarfForgePillarBlock();
 
     public static void register() {
+        NorseCraftMod.LOGGER.info("Register blocks");
         registerBlock("copper_ore", COPPER_ORE);
         registerBlock("bronze_ore", BRONZE_ORE);
         registerBlock("irithium_ore", IRITHIUM_ORE);

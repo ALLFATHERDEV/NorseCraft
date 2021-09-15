@@ -6,8 +6,8 @@ import com.norsecraft.client.render.entity.DwarfEntityRenderer;
 import com.norsecraft.client.render.model.block.CrateBlockModel;
 import com.norsecraft.client.render.model.entity.*;
 import com.norsecraft.client.screen.CrateBlockScreen;
-import com.norsecraft.client.screen.dwarf.DwarfTradeScreen;
 import com.norsecraft.client.screen.NorseCraftInventoryScreen;
+import com.norsecraft.client.screen.dwarf.DwarfTradeScreen;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.registry.NCBlockEntities;
 import com.norsecraft.common.registry.NCEntities;
@@ -27,10 +27,10 @@ public class NorseCraftModClient implements ClientModInitializer {
 
     @Override
     public void onInitializeClient() {
+        NorseCraftMod.LOGGER.info("Register entity renderer");
         //========================================================================
         //=============================ENTITY RENDERER============================
         //========================================================================
-        //ntityRendererRegistry.register(NCEntities.wildBoar, WildBoarEntityRenderer::new);
         registerBaseEntity(NCEntities.brownBear, new BrownBearEntityModel(), BaseEntityRenderer::new);
         registerBaseEntity(NCEntities.wildBoar, new WildBoarEntityModel(), BaseEntityRenderer::new);
 
@@ -40,11 +40,13 @@ public class NorseCraftModClient implements ClientModInitializer {
         registerDwarf(NCEntities.dwarfWise, "entity/dwarf_wise.png", new DwarfWiseEntityModel());
         registerDwarf(NCEntities.dwarfWarrior, "entity/dwarf_warrior1_var2.png", new DwarfWarriorEntityModel());
 
+        NorseCraftMod.LOGGER.info("Register block renderer");
         //========================================================================
         //==============================BLOCK RENDERER============================
         //========================================================================
         BlockEntityRendererRegistry.register(NCBlockEntities.crateBlockEntity, ctx -> new CustomBlockEntityModelRenderer<>(new CrateBlockModel()));
 
+        NorseCraftMod.LOGGER.info("Register screens");
         //========================================================================
         //================================SCREENS=================================
         //========================================================================

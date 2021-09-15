@@ -8,9 +8,8 @@
     "injection.common.PlayerEntityMixin"
   ],
   "client": [
-    "injection.client.MinecraftClientInputMixin",
-    "injection.client.RenderOverlayMixin",
-    "invoker.ScreenInvokerMixin"
+    "injection.client.MinecraftClientMixin",
+    "injection.client.RenderOverlayMixin"
   ],
   "injectors": {
     "defaultRequire": 1

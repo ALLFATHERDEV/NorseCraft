@@ -8,7 +8,7 @@ import net.minecraft.util.registry.Registry;
 public class NCItems {
 
     public static void register() {
-
+        NorseCraftMod.LOGGER.info("Register items");
     }
 
     public static <T extends Item> void registerItem(String name, T item) {

@@ -1,5 +1,8 @@
 package com.norsecraft.common.entity.dwarf;
 
+import com.norsecraft.NorseCraftMod;
+import com.norsecraft.common.dialog.DialogGroup;
+import com.norsecraft.common.entity.IDialogEntity;
 import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.EntityType;
@@ -8,7 +11,6 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.mob.PathAwareEntity;
-import net.minecraft.entity.passive.VillagerEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
@@ -23,14 +25,13 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.village.Merchant;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, NamedScreenHandlerFactory {
+public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, NamedScreenHandlerFactory, IDialogEntity<DwarfBlacksmithEntity> {
 
     private static final TradeOfferList OFFERS = new TradeOfferList();
     private PlayerEntity customer;
@@ -57,7 +58,7 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
 
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-        if(!this.world.isClient && !OFFERS.isEmpty()) {
+        if (!this.world.isClient && !OFFERS.isEmpty()) {
             ExtendedScreenHandlerFactory factory = new ExtendedScreenHandlerFactory() {
                 @Override
                 public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
@@ -79,6 +80,16 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
             player.openHandledScreen(factory);
         }
         return super.interactMob(player, hand);
+    }
+
+    @Override
+    public DialogGroup getDialogGroup() {
+        return NorseCraftMod.getDialogManager().getDialogGroupByName("dialog_0").orElseThrow();
+    }
+
+    @Override
+    public DwarfBlacksmithEntity getDialogEntity() {
+        return this;
     }
 
     @Nullable
