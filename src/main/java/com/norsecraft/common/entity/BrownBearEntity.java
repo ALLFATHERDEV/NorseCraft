@@ -32,15 +32,15 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable {
     public static DefaultAttributeContainer.Builder createBrownBearAttributes() {
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 40)
                 .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 25)
-                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.7F)
-                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.9);
+                .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.55F)
+                .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.7);
     }
 
     @Override
     protected void initGoals() {
         this.goalSelector.add(0, new SwimGoal(this));
-        this.goalSelector.add(1, new MeleeAttackGoal(this, 0.7, false));
-        this.goalSelector.add(1, new WanderAroundFarGoal(this, 0.7));
+        this.goalSelector.add(1, new MeleeAttackGoal(this, 0.55, false));
+        this.goalSelector.add(1, new WanderAroundFarGoal(this, 0.55));
         this.goalSelector.add(2, new LookAroundGoal(this));
 
         this.targetSelector.add(0, new FollowTargetGoal<>(this, PlayerEntity.class, false));

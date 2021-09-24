@@ -8,7 +8,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
 public class DwarfWarriorEntityModel extends AnimatedGeoModel<DwarfWarriorEntity> {
     @Override
     public Identifier getModelLocation(DwarfWarriorEntity object) {
-        return NorseCraftMod.geoModel("dwarf_warrior_var2.json");
+        return NorseCraftMod.geoModel("dwarf_warrior_var2.geo.json");
     }
 
     @Override

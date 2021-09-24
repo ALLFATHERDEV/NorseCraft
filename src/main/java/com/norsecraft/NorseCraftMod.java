@@ -7,6 +7,7 @@ import com.norsecraft.common.entity.BrownBearEntity;
 import com.norsecraft.common.entity.WildBoarEntity;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
+import com.norsecraft.common.entity.dwarf.DwarfWarriorEntity;
 import com.norsecraft.common.network.PacketHandler;
 import com.norsecraft.common.registry.*;
 import net.fabricmc.api.ModInitializer;
@@ -49,14 +50,13 @@ public class NorseCraftMod implements ModInitializer {
 
         LOGGER.info("Create packethandler");
         PacketHandler.handleClientToServerPackets();
-
     }
 
     private void registerEntityAttributes() {
         FabricDefaultAttributeRegistry.register(NCEntities.wildBoar, WildBoarEntity.createWildBoarAttributes());
         FabricDefaultAttributeRegistry.register(NCEntities.dwarf, AbstractDwarfEntity.createDwarfAttributes());
         FabricDefaultAttributeRegistry.register(NCEntities.dwarfBlacksmith, DwarfBlacksmithEntity.createDwarfBlacksmithAttributes());
-        FabricDefaultAttributeRegistry.register(NCEntities.dwarfWarrior, AbstractDwarfEntity.createDwarfAttributes());
+        FabricDefaultAttributeRegistry.register(NCEntities.dwarfWarrior, DwarfWarriorEntity.createDwarfWarriorAttributes());
         FabricDefaultAttributeRegistry.register(NCEntities.dwarfWise, AbstractDwarfEntity.createDwarfAttributes());
         FabricDefaultAttributeRegistry.register(NCEntities.brownBear, BrownBearEntity.createBrownBearAttributes());
     }

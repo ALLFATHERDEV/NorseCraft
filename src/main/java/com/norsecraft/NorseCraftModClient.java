@@ -8,6 +8,8 @@ import com.norsecraft.client.render.model.entity.*;
 import com.norsecraft.client.screen.CrateBlockScreen;
 import com.norsecraft.client.screen.NorseCraftInventoryScreen;
 import com.norsecraft.client.screen.dwarf.DwarfTradeScreen;
+import com.norsecraft.client.ymir.screen.YmirInventoryScreen;
+import com.norsecraft.client.ymir.test.CrateDescription;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.registry.NCBlockEntities;
 import com.norsecraft.common.registry.NCEntities;
@@ -52,7 +54,8 @@ public class NorseCraftModClient implements ClientModInitializer {
         //========================================================================
         ScreenRegistry.register(NCScreenHandlers.dwarfTrade, DwarfTradeScreen::new);
         ScreenRegistry.register(NCScreenHandlers.norseCraftInventory, NorseCraftInventoryScreen::new);
-        ScreenRegistry.register(NCScreenHandlers.crate, CrateBlockScreen::new);
+        ScreenRegistry.<CrateDescription, YmirInventoryScreen<CrateDescription>>register(NCScreenHandlers.crate,
+                (desc, inventory, title) -> new YmirInventoryScreen<>(desc, inventory.player, title));
     }
 
     private <T extends AbstractDwarfEntity> void registerDwarf(EntityType<T> entity, String texturePath, AnimatedGeoModel<T> model) {

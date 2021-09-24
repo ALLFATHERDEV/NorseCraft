@@ -1,9 +1,9 @@
 package com.norsecraft.common.block.entity;
 
+import com.norsecraft.client.ymir.test.CrateDescription;
+import com.norsecraft.client.ymir.test.ImplementedInventory;
 import com.norsecraft.common.registry.NCBlockEntities;
-import com.norsecraft.common.screenhandler.CrateBlockScreenHandler;
 import com.norsecraft.common.util.NCInventory;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -11,10 +11,9 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
@@ -28,7 +27,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class CrateBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, NCInventory, IAnimatable {
+public class CrateBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory, IAnimatable {
 
     private static final String OPENING_ANIMATION = "animation.crate_open";
     private static final String CLOSING_ANIMATION = "animation.crate_close";
@@ -53,7 +52,8 @@ public class CrateBlockEntity extends BlockEntity implements ExtendedScreenHandl
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new CrateBlockScreenHandler(syncId, inv, this, this);
+        //return new CrateBlockScreenHandler(syncId, inv, this, this);
+        return new CrateDescription(syncId, inv, ScreenHandlerContext.create(this.world, this.pos));
     }
 
     @Override
@@ -74,14 +74,14 @@ public class CrateBlockEntity extends BlockEntity implements ExtendedScreenHandl
         Inventories.readNbt(nbt, this.inventory);
     }
 
-    private <E extends BlockEntity & IAnimatable>PlayState predicate(AnimationEvent<E> event) {
-        if(playOpenAnimation) {
+    private <E extends BlockEntity & IAnimatable> PlayState predicate(AnimationEvent<E> event) {
+        if (playOpenAnimation) {
             playOpenAnimation = false;
             event.getController().setAnimation(new AnimationBuilder().addAnimation(OPENING_ANIMATION));
-        } else if(playCloseAnimation) {
+        } else if (playCloseAnimation) {
             playCloseAnimation = false;
             event.getController().setAnimation(new AnimationBuilder().addAnimation(CLOSING_ANIMATION));
-        } else if(open) {
+        } else if (open) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(IDLE_ANIMATION, false));
         }
         return PlayState.CONTINUE;
@@ -89,7 +89,7 @@ public class CrateBlockEntity extends BlockEntity implements ExtendedScreenHandl
 
     public void setOpen(boolean open) {
         this.open = open;
-        if(this.open) {
+        if (this.open) {
             this.playOpenAnimation = true;
         } else {
             this.playCloseAnimation = true;
@@ -106,8 +106,4 @@ public class CrateBlockEntity extends BlockEntity implements ExtendedScreenHandl
         return factory;
     }
 
-    @Override
-    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
-        buf.writeBlockPos(this.pos);
-    }
 }

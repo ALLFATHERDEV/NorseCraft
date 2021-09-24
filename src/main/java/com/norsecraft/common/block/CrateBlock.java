@@ -4,7 +4,6 @@ import com.norsecraft.common.block.entity.CrateBlockEntity;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -45,15 +44,12 @@ public class CrateBlock extends BlockWithEntity {
     @Override
     public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
         BlockEntity be = world.getBlockEntity(pos);
-        if(be instanceof CrateBlockEntity) {
+        if (be instanceof CrateBlockEntity) {
             CrateBlockEntity cbe = (CrateBlockEntity) be;
-            if(world.isClient)
+            if (world.isClient)
                 cbe.setOpen(true);
-            if(!world.isClient) {
-                NamedScreenHandlerFactory screenHandlerFactory = state.createScreenHandlerFactory(world, pos);
-                if(screenHandlerFactory != null) {
-                    player.openHandledScreen(screenHandlerFactory);
-                }
+            if (!world.isClient) {
+                player.openHandledScreen(state.createScreenHandlerFactory(world, pos));
             }
         }
         return ActionResult.SUCCESS;
@@ -63,7 +59,7 @@ public class CrateBlock extends BlockWithEntity {
     public void onStateReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean moved) {
         if (state.getBlock() != newState.getBlock()) {
             BlockEntity blockEntity = world.getBlockEntity(pos);
-            if(blockEntity instanceof CrateBlockEntity) {
+            if (blockEntity instanceof CrateBlockEntity) {
                 ItemScatterer.spawn(world, pos, (CrateBlockEntity) blockEntity);
                 world.updateComparators(pos, this);
             }

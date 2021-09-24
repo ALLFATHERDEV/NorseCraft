@@ -10,7 +10,6 @@ import com.norsecraft.common.network.c2s.SelectMerchantRecipeIndexPacketC2S;
 import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ChatScreen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
@@ -56,7 +55,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
     private final TextureSprite[] hoverButtons = new TextureSprite[]{
             new TextureSprite(721, 0, 34, 34),
-            new TextureSprite(791, 36, 34, 34),
+            null,
             new TextureSprite(721, 72, 34, 34)
     };
 
@@ -92,7 +91,8 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
         this.addDrawableChild(new ImageButton(i - 21, j + 29, 17, 17, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, buttons[0], hoverButtons[0], true,
                 (button) -> {
-                    MinecraftClient.getInstance().setScreen(new DwarfDialogScreen(this.handler.getMerchant()));
+                    //MinecraftClient.getInstance().setScreen(new DwarfDialogScreenNEW());
+                    //MinecraftClient.getInstance().setScreen(new DwarfDialogScreen(this.handler.getMerchant()));
                 }));
         this.addDrawableChild(new ImageButton(i - 21, j + 49, 17, 17, LiteralText.EMPTY, MERCHANT_GUI_TEXTURE, buttons[1], hoverButtons[1], true,
                 (button) -> {

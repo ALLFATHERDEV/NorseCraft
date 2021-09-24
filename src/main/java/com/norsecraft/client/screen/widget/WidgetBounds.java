@@ -2,6 +2,8 @@ package com.norsecraft.client.screen.widget;
 
 public class WidgetBounds {
 
+    public static final WidgetBounds NULL = new WidgetBounds(0, 0, 0, 0);
+
     public int x;
     public int y;
     public int width;

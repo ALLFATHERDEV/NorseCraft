@@ -3,12 +3,13 @@ package com.norsecraft.client.screen.widget.dialog;
 import com.norsecraft.client.screen.FenrirDrawHelper;
 import com.norsecraft.client.screen.widget.WidgetBounds;
 import com.norsecraft.common.util.CheckUtil;
+import com.norsecraft.common.util.shifter.IShiftable;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.util.math.MatrixStack;
 
 import java.awt.*;
 
-public class DialogLineHolder {
+public class DialogLineHolder implements IShiftable<DialogLineHolder> {
 
     private final WidgetBounds bounds;
     private String text;
@@ -48,6 +49,18 @@ public class DialogLineHolder {
 
     public void setColor(Color color) {
         this.color = color;
+    }
+
+    @Override
+    public DialogLineHolder get() {
+        return this;
+    }
+
+    @Override
+    public void set(DialogLineHolder other) {
+        this.text = other.text;
+        this.color = other.color;
+        this.visible = other.visible;
     }
 
     public void render(MatrixStack matrices) {

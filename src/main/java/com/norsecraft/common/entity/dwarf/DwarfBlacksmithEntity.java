@@ -1,10 +1,12 @@
 package com.norsecraft.common.entity.dwarf;
 
 import com.norsecraft.NorseCraftMod;
+import com.norsecraft.client.ymir.screen.YmirClientScreen;
+import com.norsecraft.client.ymir.test.YmirTestScreenInterpretation;
 import com.norsecraft.common.dialog.DialogGroup;
 import com.norsecraft.common.entity.IDialogEntity;
 import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
-import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -15,14 +17,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.village.Merchant;
@@ -58,7 +56,7 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
 
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-        if (!this.world.isClient && !OFFERS.isEmpty()) {
+        /*if (!this.world.isClient && !OFFERS.isEmpty()) {
             ExtendedScreenHandlerFactory factory = new ExtendedScreenHandlerFactory() {
                 @Override
                 public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
@@ -78,6 +76,9 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
             };
             this.setCurrentCustomer(player);
             player.openHandledScreen(factory);
+        }*/
+        if(this.world.isClient) {
+            MinecraftClient.getInstance().setScreen(new YmirClientScreen(new YmirTestScreenInterpretation()));
         }
         return super.interactMob(player, hand);
     }

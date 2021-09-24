@@ -6,6 +6,7 @@ import com.norsecraft.client.render.TextureSprite;
 import com.norsecraft.client.screen.FenrirDrawHelper;
 import com.norsecraft.client.screen.widget.WidgetBounds;
 import com.norsecraft.common.util.CheckUtil;
+import com.norsecraft.common.util.shifter.Shifter;
 import net.minecraft.client.gui.Drawable;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
@@ -21,9 +22,10 @@ public class DialogField implements Drawable {
     private final WidgetBounds bounds;
     private DialogLineHolder[] dialogLineHolders;
     private int y = 10;
-    private final List<DialogLineHolder> queue = Lists.newArrayList();
+    private final List<DialogLineHolder> topQueue = Lists.newArrayList();
     private final List<DialogLineHolder> addedLines = Lists.newArrayList();
     private int currentScrollIndex = 0;
+    private Shifter<DialogLineHolder> shifter;
 
     public DialogField(WidgetBounds bounds, int lineAmount) {
         CheckUtil.notNull(bounds, "Could not create a dialog field, bounds are null");
@@ -36,6 +38,7 @@ public class DialogField implements Drawable {
             WidgetBounds holderBounds = new WidgetBounds(this.bounds);
             this.dialogLineHolders[i] = new DialogLineHolder(holderBounds);
         }
+        this.shifter = new Shifter<>(this.dialogLineHolders);
     }
 
     public void setScrollbar(TextureSprite scrollbarTexture, Identifier texture, WidgetBounds scrollbarBounds) {
@@ -56,12 +59,13 @@ public class DialogField implements Drawable {
 
     public void setDialogLine(int holderIndex, String text, Color color) {
         if (holderIndex == -1) {
-            DialogLineHolder last = this.dialogLineHolders[this.dialogLineHolders.length - 1];
-            DialogLineHolder newLine = new DialogLineHolder(last.getBounds());
+            DialogLineHolder newLine = this.dialogLineHolders[this.dialogLineHolders.length - 1];
             newLine.setText(text);
             newLine.setColor(color);
-            this.shiftDown(newLine);
-            this.addedLines.add(newLine);
+            this.shifter.addItemToRight(newLine);
+            /*this.addedLines.add(newLine);
+            this.scrollDown(newLine);
+            */
             return;
         }
         DialogLineHolder holder = this.dialogLineHolders[holderIndex];
@@ -70,47 +74,57 @@ public class DialogField implements Drawable {
         if (holderIndex > 0) {
             DialogLineHolder prev = this.dialogLineHolders[holderIndex - 1];
             int lineAmount = prev.getLineCount();
-            holder.setY(this.bounds.y + y + (lineAmount * 9));
-            y += 16;
+            holder.setY(bounds.y + y + (lineAmount * 9));
         } else {
-            holder.setY(this.bounds.y + 10);
+            holder.setY(this.bounds.y + y);
         }
+        y += 16;
+        this.shifter.update(holderIndex, holder);
     }
 
-    public void shiftUp() {
-        if(queue.isEmpty())
+    public void scrollUp() {
+        this.shifter.goLeft();
+        /*if (topQueue.isEmpty())
             return;
-        DialogLineHolder first = queue.remove(queue.size() - 1);
-        DialogLineHolder[] newArray = new DialogLineHolder[this.dialogLineHolders.length];
-        newArray[0] = first;
-        System.arraycopy(this.dialogLineHolders, 0, newArray, 1, newArray.length - 1);
-        this.dialogLineHolders = newArray;
+        DialogLineHolder current = topQueue.remove(topQueue.size() - 1);
+        DialogLineHolder[] copy = this.dialogLineHolders;
+        for (int i = 1; i < dialogLineHolders.length; i++) {
+            this.dialogLineHolders[i].set(copy[i - 1]);
+        }
+        this.dialogLineHolders[0].set(current);
+        */
+        NorseCraftMod.LOGGER.info("Scrolled up");
     }
 
-    public void shiftDown(DialogLineHolder newLine) {
-        DialogLineHolder first = this.dialogLineHolders[0];
-        this.queue.add(first);
-        DialogLineHolder[] newArray = new DialogLineHolder[this.dialogLineHolders.length];
-        for (int i = 0; i < newArray.length; i++) {
-            newArray[i] = i + 1 >= newArray.length ? null : this.dialogLineHolders[i + 1];
+
+    public void scrollDown(DialogLineHolder newLine) {
+        /*DialogLineHolder first = this.dialogLineHolders[0];
+        this.topQueue.add(first);
+        DialogLineHolder[] copy = this.dialogLineHolders;
+        for (int i = 0; i < this.dialogLineHolders.length - 1; i++) {
+            this.dialogLineHolders[i].set(copy[i + 1]);
         }
-        newArray[newArray.length - 1] = newLine;
-        this.dialogLineHolders = newArray;
-        NorseCraftMod.LOGGER.info("Shifted down...");
+        this.dialogLineHolders[this.dialogLineHolders.length - 1].set(newLine);
+        NorseCraftMod.LOGGER.info("Scrolled down");
+    */
     }
 
 
     public void handleScrollbar(double amount) {
-        if(amount == -1.0) {
+        if (amount == -1.0) {
+            this.shifter.goRight();
             //Scrolling down
-            if(this.addedLines.isEmpty())
+            /*if (this.addedLines.isEmpty())
                 return;
-            this.shiftDown(this.addedLines.get(currentScrollIndex));
+            this.scrollDown(this.addedLines.remove(currentScrollIndex));
             currentScrollIndex += Math.abs(amount);
-        } else {
+        */} else {
             //Scrolling up
-            this.shiftUp();
+            /*this.scrollUp();
+            currentScrollIndex -= Math.abs(amount);*/
+            this.shifter.goLeft();
         }
+        //currentScrollIndex = MathHelper.clamp(currentScrollIndex, 0, this.addedLines.size() - 1);
     }
 
     public int getWidth() {
@@ -119,12 +133,18 @@ public class DialogField implements Drawable {
 
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
-        //Rendering dialog lines
-        for (DialogLineHolder holder : this.dialogLineHolders) {
+        //Rendering dialog lines#
+
+        this.shifter.forEach(holder -> {
+            if(!holder.isEmpty())
+                holder.render(matrices);
+        });
+
+        /*for (DialogLineHolder holder : this.shifter.getBaseArray()) {
             if (!holder.isEmpty()) {
                 holder.render(matrices);
             }
-        }
+        }*/
         //Rendering scrollbar
         if (this.scrollbarTexture != null)
             FenrirDrawHelper.drawSprite(matrices, texture, scrollbarBounds.x, scrollbarBounds.y, scrollbarTexture);
