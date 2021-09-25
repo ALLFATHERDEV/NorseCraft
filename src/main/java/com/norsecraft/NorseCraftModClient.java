@@ -1,16 +1,15 @@
 package com.norsecraft;
 
+import com.norsecraft.client.gui.DwarfTradeGuiInterpretation;
+import com.norsecraft.client.gui.NorseCraftInventoryScreen;
 import com.norsecraft.client.render.CustomBlockEntityModelRenderer;
 import com.norsecraft.client.render.entity.BaseEntityRenderer;
 import com.norsecraft.client.render.entity.DwarfEntityRenderer;
 import com.norsecraft.client.render.model.block.CrateBlockModel;
 import com.norsecraft.client.render.model.entity.*;
-import com.norsecraft.client.screen.CrateBlockScreen;
-import com.norsecraft.client.screen.NorseCraftInventoryScreen;
-import com.norsecraft.client.screen.dwarf.DwarfTradeScreen;
 import com.norsecraft.client.ymir.screen.YmirInventoryScreen;
-import com.norsecraft.client.ymir.test.CrateDescription;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
+import com.norsecraft.common.gui.CrateGuiInterpretation;
 import com.norsecraft.common.registry.NCBlockEntities;
 import com.norsecraft.common.registry.NCEntities;
 import com.norsecraft.common.registry.NCScreenHandlers;
@@ -52,9 +51,11 @@ public class NorseCraftModClient implements ClientModInitializer {
         //========================================================================
         //================================SCREENS=================================
         //========================================================================
-        ScreenRegistry.register(NCScreenHandlers.dwarfTrade, DwarfTradeScreen::new);
         ScreenRegistry.register(NCScreenHandlers.norseCraftInventory, NorseCraftInventoryScreen::new);
-        ScreenRegistry.<CrateDescription, YmirInventoryScreen<CrateDescription>>register(NCScreenHandlers.crate,
+
+        ScreenRegistry.<DwarfTradeGuiInterpretation, YmirInventoryScreen<DwarfTradeGuiInterpretation>>register(NCScreenHandlers.dwarfTrade,
+                (desc, inventory, title) -> new YmirInventoryScreen<>(desc, inventory.player, title));
+        ScreenRegistry.<CrateGuiInterpretation, YmirInventoryScreen<CrateGuiInterpretation>>register(NCScreenHandlers.crate,
                 (desc, inventory, title) -> new YmirInventoryScreen<>(desc, inventory.player, title));
     }
 

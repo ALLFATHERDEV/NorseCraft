@@ -3,7 +3,6 @@ package com.norsecraft.common.network;
 import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
 import com.norsecraft.common.network.c2s.OpenScreenPacketC2S;
 import com.norsecraft.common.network.c2s.SelectMerchantRecipeIndexPacketC2S;
-import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.Entity;
@@ -22,11 +21,11 @@ public class PacketHandler {
         ServerPlayNetworking.registerGlobalReceiver(SelectMerchantRecipeIndexPacketC2S.SELECT_MERCHANT_RECIPE_INDEX, (server, player, handler, buf, responseSender) -> {
             int i = buf.readInt();
             ScreenHandler screenHandler = player.currentScreenHandler;
-            if (screenHandler instanceof DwarfTradeScreenHandler) {
+            /*if (screenHandler instanceof DwarfTradeScreenHandler) {
                 DwarfTradeScreenHandler sh = (DwarfTradeScreenHandler) screenHandler;
                 sh.setCurrentRecipeIndex(i);
                 sh.switchTo(i);
-            }
+            }*/
         });
 
         ServerPlayNetworking.registerGlobalReceiver(OpenScreenPacketC2S.OPEN_SCREEN_PACKET_ID, ((server, player, handler, buf, responseSender) -> {

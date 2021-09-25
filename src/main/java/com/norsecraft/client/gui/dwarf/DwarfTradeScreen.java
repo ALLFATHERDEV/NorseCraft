@@ -1,32 +1,17 @@
-package com.norsecraft.client.screen.dwarf;
+package com.norsecraft.client.gui.dwarf;
 
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.render.TextureSprite;
-import com.norsecraft.client.screen.FenrirDrawHelper;
-import com.norsecraft.client.screen.widget.ImageButton;
-import com.norsecraft.client.screen.widget.Label;
-import com.norsecraft.common.network.c2s.SelectMerchantRecipeIndexPacketC2S;
-import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
-import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.screen.ingame.HandledScreen;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.village.TradeOffer;
-import net.minecraft.village.TradeOfferList;
 
-import java.util.Iterator;
-
-public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
-
+public class DwarfTradeScreen {
+/*
     private static final Identifier MERCHANT_GUI_TEXTURE = NorseCraftMod.ncTex("gui/npc_gui_trade.png");
 
     private int selectedMerchantRecipe;
@@ -61,7 +46,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
     private final ButtonWidget.PressAction[] actions = new ButtonWidget.PressAction[]{
             (button) -> {
-                MinecraftClient.getInstance().setScreen(new DwarfDialogScreen(handler.getMerchant()));
+                MinecraftClient.getInstance().setScreen(new YmirClientScreen(new DwarfDialogGuiInterpretation()));
             },
             (button) -> {
 
@@ -183,7 +168,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
         RenderSystem.setShaderTexture(0, MERCHANT_GUI_TEXTURE);
         int i = (this.width - this.backgroundWidth) / 2;
         int j = (this.height - this.backgroundHeight) / 2;
-        FenrirDrawHelper.drawSprite(matrices, MERCHANT_GUI_TEXTURE, i, j, backgroundSprite, this.getZOffset());
+        _drawSprite(matrices, MERCHANT_GUI_TEXTURE, i, j, backgroundSprite, this.getZOffset());
         this.renderLeftInfo(matrices);
         this.renderReputationSymbols(matrices);
         this.renderScrollbar(matrices, i, j, this.handler.getOffers());
@@ -201,9 +186,9 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
             if (this.indexStartOffset == i - 1) {
                 m = 106;
             }
-            FenrirDrawHelper.drawSprite(matix, MERCHANT_GUI_TEXTURE, x + 277, y + 8 + m, scrollBarNormal, this.getZOffset(), 512, 256);
+            _drawSprite(matix, MERCHANT_GUI_TEXTURE, x + 277, y + 8 + m, scrollBarNormal, this.getZOffset(), 512, 256);
         } else {
-            FenrirDrawHelper.drawSprite(matix, MERCHANT_GUI_TEXTURE, x + 277, y + 8, scrollBarHover, this.getZOffset(), 512, 256);
+            _drawSprite(matix, MERCHANT_GUI_TEXTURE, x + 277, y + 8, scrollBarHover, this.getZOffset(), 512, 256);
         }
     }
 
@@ -212,7 +197,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
     private void renderLeftInfo(MatrixStack matrixStack) {
         int i = (this.width - this.backgroundWidth) / 2 - 70;
         int j = (this.height - this.backgroundHeight) / 2;
-        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, i, j, leftInfo, 512, 256);
+        _drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, i, j, leftInfo, 512, 256);
     }
 
     private final TextureSprite[] reputationSymbols = new TextureSprite[]{
@@ -232,7 +217,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
             sprite = reputationSymbols[1];
         else
             sprite = reputationSymbols[2];
-        FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, i, j, sprite, 512, 256);
+        _drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, i, j, sprite, 512, 256);
     }
 
     private void renderArrow(MatrixStack matrix, TradeOffer offer, int x, int y) {
@@ -320,7 +305,7 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
 
         @Override
         public void renderCustom(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
-            FenrirDrawHelper.drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, this.x, this.y, this.sprite);
+            _drawSprite(matrixStack, MERCHANT_GUI_TEXTURE, this.x, this.y, this.sprite);
         }
 
         public int getIndex() {
@@ -346,4 +331,129 @@ public class DwarfTradeScreen extends HandledScreen<DwarfTradeScreenHandler> {
             }
         }
     }
+*/
+    public static class ImageButton extends ButtonWidget {
+
+        protected final Identifier texture;
+        protected final TextureSprite sprite;
+        protected final TextureSprite hoverSprite;
+        protected final boolean fenrirRender;
+
+        public ImageButton(int x, int y, int width, int height, Text message, Identifier texture, TextureSprite sprite, TextureSprite hoverSprite, boolean fenrirRender, PressAction onPress) {
+            super(x, y, width, height, message, onPress);
+            this.texture = texture;
+            this.sprite = sprite;
+            this.hoverSprite = hoverSprite;
+            this.fenrirRender = fenrirRender;
+        }
+
+        public boolean shouldCustomRender() {
+            return false;
+        }
+
+        public void renderCustom(MatrixStack matrixStack, int mouseX, int mouseY, float delta) {
+
+        }
+
+        @Override
+        public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+            MinecraftClient client = MinecraftClient.getInstance();
+            RenderSystem.setShader(GameRenderer::getPositionTexShader);
+            RenderSystem.setShaderTexture(0, texture);
+            RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, this.alpha);
+            int i = this.getYImage(this.isHovered());
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            RenderSystem.enableDepthTest();
+            if (this.shouldCustomRender()) {
+                this.renderCustom(matrices, mouseX, mouseY, delta);
+            } else {
+                if (isHovered() && this.hoverSprite != null) {
+                    if (this.fenrirRender)
+                        _drawSprite(matrices, texture, this.x, this.y, hoverSprite);
+                    else
+                        this.drawTexture(matrices, this.x, this.y, hoverSprite.x, hoverSprite.y, hoverSprite.width, hoverSprite.height);
+                } else {
+                    if (this.fenrirRender)
+                        _drawSprite(matrices, texture, this.x, this.y, sprite);
+                    else
+                        this.drawTexture(matrices, this.x, this.y, sprite.x, sprite.y, sprite.width, sprite.height);
+                }
+                if (!fenrirRender)
+                    this.drawTexture(matrices, this.x + width / 2, this.y, 200 - this.width / 2, 46 + i * 20, this.width / 2, this.height);
+            }
+            this.renderBackground(matrices, client, mouseX, mouseY);
+        }
+
+    }
+
+    public static void setTexture(Identifier texture) {
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
+        RenderSystem.setShaderTexture(0, texture);
+    }
+
+    public static void _drawSprite(MatrixStack matrixStack, Identifier texture, int x, int y, TextureSprite sprite, int textureWidth, int textureHeight) {
+        setTexture(texture);
+        Screen.drawTexture(matrixStack, x, y, (float) sprite.x / 2, (float) sprite.y / 2, sprite.width / 2, sprite.height / 2, textureWidth, textureHeight);
+    }
+
+    public static void _drawSprite(MatrixStack matrixStack, Identifier texture, int x, int y, TextureSprite sprite) {
+        _drawSprite(matrixStack, texture, x, y, sprite, 512, 256);
+    }
+
+    public static void _drawSprite(MatrixStack matrixStack, Identifier texture, int x, int y, TextureSprite sprite, int zOffset, int textureWidth, int textureHeight) {
+        setTexture(texture);
+        Screen.drawTexture(matrixStack, x, y, zOffset, (float) sprite.x / 2, (float) sprite.y / 2, sprite.width / 2, sprite.height / 2, textureHeight, textureWidth);
+    }
+
+    public static void _drawSprite(MatrixStack matrixStack, Identifier texture, int x, int y, TextureSprite sprite, int zOffset) {
+        _drawSprite(matrixStack, texture, x, y, sprite, zOffset, 512, 256);
+    }
+/*
+    public static class Label implements Drawable {
+
+        private final int x;
+        private final int y;
+        private String text;
+        private Color color;
+        private int maxWidth;
+        private boolean visible;
+
+        public Label(int x, int y, int maxWidth, String text, Color color) {
+            this.x = x;
+            this.y = y;
+            this.text = text;
+            this.color = color;
+            this.maxWidth = maxWidth;
+            this.visible = true;
+        }
+
+        public Label(int x, int y, String text) {
+            this(x, y, 512, text, Color.WHITE);
+        }
+
+        public void setVisible(boolean visible) {
+            this.visible = visible;
+        }
+
+        public void setMaxWidth(int maxWidth) {
+            this.maxWidth = maxWidth;
+        }
+
+        public void setColor(Color color) {
+            this.color = color;
+        }
+
+        public void setText(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+            MinecraftClient.getInstance().textRenderer.draw(matrices, new LiteralText(text), x, y, color.getRGB());
+        }
+
+    }
+*/
 }

@@ -83,8 +83,8 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
                 titleY = interpretation.getTitlePos().y();
 
                 if (!interpretation.isFullscreen()) {
-                    this.left = ((screenWidth - root.getWidth()) / 2) - (root.getWidth() * 2);
-                    this.top = ((screenHeight - root.getHeight()) / 2) - (root.getHeight() * 2);
+                    this.left = ((screenWidth - root.getWidth()) / 2)/* - (root.getWidth() / 2)*/;
+                    this.top = ((screenHeight - root.getHeight()) / 2)/* - (root.getHeight() / 2)*/;
                 } else {
                     this.left = 0;
                     this.top = 0;

@@ -45,8 +45,10 @@ public class YmirLabel extends YmirWidget {
         this(text, DEFAULT_TEXT_COLOR);
     }
 
+
     @Override
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
+
         MinecraftClient mc = MinecraftClient.getInstance();
         TextRenderer renderer = mc.textRenderer;
         int yOffset = switch (verticalAlignment) {
@@ -55,19 +57,19 @@ public class YmirLabel extends YmirWidget {
             case TOP -> 0;
         };
 
-        YmirScreenDrawing.drawString(matrices, text.asOrderedText(), horizontalAlignment, x, y + yOffset, this.getWidth(), color);
+        YmirScreenDrawing.drawString(matrices, text.asOrderedText(), horizontalAlignment, x, y + yOffset, width, color);
 
         Style hoveredTextStyle = getTextStyleAt(mouseX, mouseY);
-        YmirScreenDrawing.drawTextHover(matrices, hoveredTextStyle, x + mouseX , y + mouseY);
+        YmirScreenDrawing.drawTextHover(matrices, hoveredTextStyle, x + mouseX, y + mouseY);
     }
 
     @Environment(EnvType.CLIENT)
     @Override
     public InputResult onClick(int x, int y, int button) {
         Style hoveredStyle = getTextStyleAt(x, y);
-        if(hoveredStyle != null) {
+        if (hoveredStyle != null) {
             Screen screen = MinecraftClient.getInstance().currentScreen;
-            if(screen != null) {
+            if (screen != null) {
                 return InputResult.of(screen.handleTextClick(hoveredStyle));
             }
         }
@@ -77,19 +79,19 @@ public class YmirLabel extends YmirWidget {
     @Environment(EnvType.CLIENT)
     @Nullable
     public Style getTextStyleAt(int x, int y) {
-        if(isWithinBounds(x, y))
+        if (isWithinBounds(x, y))
             return MinecraftClient.getInstance().textRenderer.getTextHandler().getStyleAt(text, x);
         return null;
     }
 
     @Override
-    public boolean canResize() {
-        return true;
+    public void setSize(int x, int y) {
+        super.setSize(x, Math.max(y, 8));
     }
 
     @Override
-    public void setSize(int x, int y) {
-        super.setSize(x, Math.max(8, y));
+    public boolean canResize() {
+        return true;
     }
 
     public int getColor() {

@@ -14,7 +14,15 @@ public class YmirPlayerInvPanel extends YmirPlainPanel {
     private final YmirItemSlot inv;
     private final YmirItemSlot hotbar;
 
-    public YmirPlayerInvPanel(Inventory playerInventory) {
+    public YmirPlayerInvPanel(PlayerInventory playerInventory) {
+        this(playerInventory, 0);
+    }
+
+    public YmirPlayerInvPanel(PlayerInventory inventory, int yOffset) {
+        this(inventory, 0, yOffset);
+    }
+
+    public YmirPlayerInvPanel(Inventory playerInventory, int xOffset, int yOffset) {
         inv = YmirItemSlot.ofPlayerStorage(playerInventory);
         hotbar = new YmirItemSlot(playerInventory, 0, 9, 1, false) {
 
@@ -24,20 +32,14 @@ public class YmirPlayerInvPanel extends YmirPlainPanel {
             }
         };
 
-        this.add(inv, 0, 0);
-        this.add(hotbar, 0, 58);
-
+        this.add(inv, xOffset, yOffset + 10);
+        this.add(hotbar, xOffset, yOffset + 68);
     }
+
 
     @Override
     public boolean canResize() {
         return false;
-    }
-
-    public static YmirLabel createInventoryLabel(Inventory playerInventory) {
-        YmirLabel label = new YmirLabel(playerInventory instanceof PlayerInventory inventory ? inventory.getDisplayName() : new LiteralText(""));
-        label.setSize(9 * 18, 11);
-        return label;
     }
 
     @Override

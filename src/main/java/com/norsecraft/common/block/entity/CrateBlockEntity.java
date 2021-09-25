@@ -1,9 +1,8 @@
 package com.norsecraft.common.block.entity;
 
-import com.norsecraft.client.ymir.test.CrateDescription;
 import com.norsecraft.client.ymir.test.ImplementedInventory;
+import com.norsecraft.common.gui.CrateGuiInterpretation;
 import com.norsecraft.common.registry.NCBlockEntities;
-import com.norsecraft.common.util.NCInventory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -52,8 +51,7 @@ public class CrateBlockEntity extends BlockEntity implements NamedScreenHandlerF
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        //return new CrateBlockScreenHandler(syncId, inv, this, this);
-        return new CrateDescription(syncId, inv, ScreenHandlerContext.create(this.world, this.pos));
+        return new CrateGuiInterpretation(syncId, inv, ScreenHandlerContext.create(this.world, this.pos));
     }
 
     @Override

@@ -1,12 +1,11 @@
 package com.norsecraft.common.entity.dwarf;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.client.ymir.screen.YmirClientScreen;
-import com.norsecraft.client.ymir.test.YmirTestScreenInterpretation;
+import com.norsecraft.client.gui.DwarfTradeGuiInterpretation;
+import com.norsecraft.client.ymir.test.ImplementedInventory;
 import com.norsecraft.common.dialog.DialogGroup;
 import com.norsecraft.common.entity.IDialogEntity;
-import com.norsecraft.common.screenhandler.DwarfTradeScreenHandler;
-import net.minecraft.client.MinecraftClient;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
 import net.minecraft.entity.attribute.EntityAttributes;
@@ -17,19 +16,25 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
+import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.LiteralText;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.village.Merchant;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, NamedScreenHandlerFactory, IDialogEntity<DwarfBlacksmithEntity> {
+public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, NamedScreenHandlerFactory, ImplementedInventory, IDialogEntity<DwarfBlacksmithEntity> {
 
     private static final TradeOfferList OFFERS = new TradeOfferList();
     private PlayerEntity customer;
@@ -56,7 +61,7 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
 
     @Override
     protected ActionResult interactMob(PlayerEntity player, Hand hand) {
-        /*if (!this.world.isClient && !OFFERS.isEmpty()) {
+        if (!this.world.isClient && !OFFERS.isEmpty()) {
             ExtendedScreenHandlerFactory factory = new ExtendedScreenHandlerFactory() {
                 @Override
                 public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
@@ -76,9 +81,6 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
             };
             this.setCurrentCustomer(player);
             player.openHandledScreen(factory);
-        }*/
-        if(this.world.isClient) {
-            MinecraftClient.getInstance().setScreen(new YmirClientScreen(new YmirTestScreenInterpretation()));
         }
         return super.interactMob(player, hand);
     }
@@ -160,6 +162,13 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new DwarfTradeScreenHandler(syncId, inv, this);
+        return new DwarfTradeGuiInterpretation(syncId, inv, ScreenHandlerContext.create(this.world, this.getBlockPos()), this);
+    }
+
+    private DefaultedList<ItemStack> items = DefaultedList.ofSize(3, ItemStack.EMPTY);
+
+    @Override
+    public DefaultedList<ItemStack> getItems() {
+        return items;
     }
 }

@@ -1,11 +1,11 @@
-package com.norsecraft.client.screen;
+package com.norsecraft.client.gui;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.render.TextureSprite;
-import com.norsecraft.client.screen.widget.ImageButton;
+import com.norsecraft.client.ymir.YmirScreenDrawing;
+import com.norsecraft.client.ymir.widget.data.Texture;
 import com.norsecraft.common.screenhandler.NorseCraftInventoryScreenHandler;
-import net.minecraft.client.gui.Element;
 import net.minecraft.client.gui.screen.ingame.AbstractInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
@@ -21,6 +21,8 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
+import javax.swing.plaf.TextUI;
+
 public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraftInventoryScreenHandler> implements RecipeBookProvider {
 
     private static final Identifier TEXTURE = NorseCraftMod.ncTex("gui/inventory.png");
@@ -33,7 +35,7 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             new TextureSprite(194, 0, 17, 17),
             new TextureSprite(212, 0, 17, 17)
     };
-    private static final TextureSprite[] BRIGHTER_BUTTON_SPRITES =  new TextureSprite[]{
+    private static final TextureSprite[] BRIGHTER_BUTTON_SPRITES = new TextureSprite[]{
             new TextureSprite(177, 18, 17, 16),
             new TextureSprite(194, 18, 17, 17),
             new TextureSprite(212, 18, 17, 17)
@@ -67,9 +69,30 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             int i = (this.width - this.backgroundWidth) / 2;
             int j = (this.height - this.backgroundHeight) / 2;
 
-            for(int l = 0; l < 3; l++) {
-                this.addDrawableChild(new ImageButton(i + 116 + l * 18, j + 62, 17, 17, LiteralText.EMPTY, TEXTURE, BRIGHTER_BUTTON_SPRITES[l], BUTTON_SPRITES[l],  false, ACTIONS[l]));
-            }
+            Texture texture1 = Texture.component(34 ,180, 35, 34);
+            Texture texture1Hovered = Texture.component(0, 180, 35, 34);
+            this.addDrawableChild(new Button(i + 97, j + 61, 17, 17, texture1, texture1Hovered, (button) -> {
+                NorseCraftMod.LOGGER.info("Level up");
+            }));
+
+            Texture texture2 = Texture.component(34, 144, 35, 34);
+            Texture texture2Hovered = Texture.component(0, 144, 35, 34);
+            this.addDrawableChild(new Button(i + 115, j + 61, 17, 17, texture2, texture2Hovered, (button) -> {
+                NorseCraftMod.LOGGER.info("Reputation");
+            }));
+
+            Texture texture3 = Texture.component(34, 108, 35, 34);
+            Texture texture3Hovered = Texture.component(0, 108, 35, 34);
+            this.addDrawableChild(new Button(i + 133, j + 61, 17, 17, texture3, texture3Hovered, (button) -> {
+                NorseCraftMod.LOGGER.info("Factions");
+            }));
+
+
+            Texture texture4 = Texture.component(34, 72, 34, 34);
+            Texture texture4Hovered = Texture.component(0, 72, 34, 34);
+            this.addDrawableChild(new Button(i + 151, j + 61, 17, 17, texture4, texture4Hovered, (button) -> {
+                NorseCraftMod.LOGGER.info("Quests");
+            }));
         }
     }
 
@@ -108,7 +131,7 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if(this.recipeBook.mouseClicked(mouseX, mouseY, button)) {
+        if (this.recipeBook.mouseClicked(mouseX, mouseY, button)) {
             this.setFocused(this.recipeBook);
             return true;
         } else {
@@ -118,7 +141,7 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
 
     @Override
     protected boolean isClickOutsideBounds(double mouseX, double mouseY, int left, int top, int button) {
-        boolean bl = mouseX < (double)left || mouseY < (double)top || mouseX >= (double)(left + this.backgroundWidth) || mouseY >= (double)(top + this.backgroundHeight);
+        boolean bl = mouseX < (double) left || mouseY < (double) top || mouseX >= (double) (left + this.backgroundWidth) || mouseY >= (double) (top + this.backgroundHeight);
         return this.recipeBook.isClickOutsideBounds(mouseX, mouseY, this.x, this.y, this.backgroundWidth, this.backgroundHeight, button) && bl;
     }
 
@@ -138,16 +161,26 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
         return this.recipeBook;
     }
 
-    private static final ButtonWidget.PressAction[] ACTIONS = new ButtonWidget.PressAction[] {
-            (button) -> {
-                NorseCraftMod.LOGGER.info("Factions");
-            },
-            (button) -> {
-                NorseCraftMod.LOGGER.info("Reputation");
-            },
-            (button) -> {
-                NorseCraftMod.LOGGER.info("Quests");
+    public static class Button extends ButtonWidget {
+
+        private final Texture texture;
+        private final Texture hovered;
+
+        public Button(int x, int y, int width, int height, Texture texture, Texture hovered, PressAction onPress) {
+            super(x, y, width, height, LiteralText.EMPTY, onPress);
+            this.texture = texture;
+            this.hovered = hovered;
+        }
+
+
+        @Override
+        public void renderButton(MatrixStack matrices, int mouseX, int mouseY, float delta) {
+            if (isHovered() && hovered != null) {
+                YmirScreenDrawing.texturedGuiRect(matrices, x, y, hovered);
+            } else {
+                YmirScreenDrawing.texturedGuiRect(matrices, x, y, texture);
             }
-    };
+        }
+    }
 
 }

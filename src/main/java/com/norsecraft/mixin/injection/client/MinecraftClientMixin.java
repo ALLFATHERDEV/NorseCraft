@@ -1,7 +1,7 @@
 package com.norsecraft.mixin.injection.client;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.client.screen.NorseCraftInventoryScreen;
+import com.norsecraft.client.gui.NorseCraftInventoryScreen;
 import com.norsecraft.common.screenhandler.NorseCraftInventoryScreenHandler;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.RunArgs;

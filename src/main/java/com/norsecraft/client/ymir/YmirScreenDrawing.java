@@ -92,7 +92,6 @@ public class YmirScreenDrawing {
                 0xFFFFFF);
     }
 
-
     public static void coloredRect(MatrixStack matrices, int left, int top, int width, int height, int color) {
         if (width <= 0) width = 1;
         if (height <= 0) height = 1;
@@ -117,7 +116,55 @@ public class YmirScreenDrawing {
         coloredRect(matrices, x + 1, y + height - 1, width - 1, 1, bottomright); //Bottom hilight
     }
 
+    public static void drawStringWithShadow(MatrixStack matrices, String s, HorizontalAlignment align, int x, int y, int width, int color) {
+        switch (align) {
+            case LEFT -> {
+                MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, s, x, y, color);
+            }
+
+            case CENTER -> {
+                int wid = MinecraftClient.getInstance().textRenderer.getWidth(s);
+                int l = (width / 2) - (wid / 2);
+                MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, s, x + l, y, color);
+            }
+
+            case RIGHT -> {
+                int wid = MinecraftClient.getInstance().textRenderer.getWidth(s);
+                int l = width - wid;
+                MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, s, x + l, y, color);
+            }
+        }
+    }
+
+
+    public static void drawStringWithShadow(MatrixStack matrices, OrderedText text, HorizontalAlignment align, int x, int y, int width, int color) {
+        switch (align) {
+            case LEFT -> {
+                MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, text, x, y, color);
+            }
+
+            case CENTER -> {
+                int wid = MinecraftClient.getInstance().textRenderer.getWidth(text);
+                int l = (width / 2) - (wid / 2);
+                MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, text, x + l, y, color);
+            }
+
+            case RIGHT -> {
+                int wid = MinecraftClient.getInstance().textRenderer.getWidth(text);
+                int l = width - wid;
+                MinecraftClient.getInstance().textRenderer.drawWithShadow(matrices, text, x + l, y, color);
+            }
+        }
+    }
+
+
     public static void drawString(MatrixStack matrices, OrderedText s, HorizontalAlignment align, int x, int y, int width, int color) {
+        x = (int) (x * (1F / 0.7F));
+        y = (int) (y * (1F / 0.7F));
+
+        matrices.push();
+        matrices.scale(0.7F, 0.7F, 0.7F);
+
         switch (align) {
             case LEFT -> {
                 MinecraftClient.getInstance().textRenderer.draw(matrices, s, x, y, color);
@@ -135,6 +182,7 @@ public class YmirScreenDrawing {
                 MinecraftClient.getInstance().textRenderer.draw(matrices, s, x + l, y, color);
             }
         }
+        matrices.pop();
     }
 
     public static void drawString(MatrixStack matrices, String s, HorizontalAlignment align, int x, int y, int width, int color) {
@@ -161,6 +209,15 @@ public class YmirScreenDrawing {
         if (MinecraftClient.getInstance().currentScreen instanceof YmirScreenImpl screen) {
             screen.renderTextHover(matrices, textStyle, x, y);
         }
+    }
+
+    public static int colorAtOpacity(int opaque, float opacity) {
+        if (opacity < 0.0f) opacity = 0.0f;
+        if (opacity > 1.0f) opacity = 1.0f;
+
+        int a = (int) (opacity * 255.0f);
+
+        return (opaque & 0xFFFFFF) | (a << 24);
     }
 
     public static int multiplyColor(int color, float amount) {

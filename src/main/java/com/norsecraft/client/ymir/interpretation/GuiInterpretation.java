@@ -1,5 +1,6 @@
 package com.norsecraft.client.ymir.interpretation;
 
+import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.ymir.ValidatedSlot;
 import com.norsecraft.client.ymir.widget.data.HorizontalAlignment;
 import com.norsecraft.client.ymir.widget.data.Vec2i;
@@ -9,9 +10,13 @@ import com.norsecraft.client.ymir.widget.YmirWidget;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.screen.PropertyDelegate;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 public interface GuiInterpretation {
+
+    Identifier COMPONENTS = NorseCraftMod.ncTex("gui/gui_components.png");
+
 
     YmirPanel getRootPanel();
 

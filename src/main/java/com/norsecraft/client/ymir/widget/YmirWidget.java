@@ -19,8 +19,6 @@ public class YmirWidget {
     protected int y = 0;
     protected int width = 18;
     protected int height = 18;
-    protected int additionalWidth = 0;
-    protected int additionalHeight = 0;
 
     @Nullable
     protected YmirPanel parent;
@@ -39,10 +37,6 @@ public class YmirWidget {
         this.height = y;
     }
 
-    public void setAdditionalSize(int x, int y) {
-        this.additionalWidth = x;
-        this.additionalHeight = y;
-    }
 
     public int getX() {
         return x;
@@ -50,14 +44,6 @@ public class YmirWidget {
 
     public int getY() {
         return y;
-    }
-
-    public int getAdditionalHeight() {
-        return additionalHeight;
-    }
-
-    public int getAdditionalWidth() {
-        return additionalWidth;
     }
 
     public int getAbsoluteX() {
@@ -89,6 +75,10 @@ public class YmirWidget {
     @Nullable
     public YmirPanel getParent() {
         return parent;
+    }
+
+    public void setParent(YmirPanel parent) {
+        this.parent = parent;
     }
 
     @Environment(EnvType.CLIENT)

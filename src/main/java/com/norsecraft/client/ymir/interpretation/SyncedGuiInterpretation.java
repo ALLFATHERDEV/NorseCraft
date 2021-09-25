@@ -294,6 +294,13 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         return new YmirPlayerInvPanel(this.playerInventory);
     }
 
+    public YmirPlayerInvPanel createPlayerInventoryPanel(int yOffset) {
+        return new YmirPlayerInvPanel(this.playerInventory, yOffset);
+    }
+
+    public YmirPlayerInvPanel createPlayerInventoryPanel(int xOffset, int yOffset) {
+        return new YmirPlayerInvPanel(this.playerInventory, xOffset, yOffset);
+    }
 
     public static Inventory getBlockInventory(ScreenHandlerContext ctx) {
         return getBlockInventory(ctx, () -> EmptyInventory.INSTANCE);

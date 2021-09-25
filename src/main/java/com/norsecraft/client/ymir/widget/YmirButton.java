@@ -1,6 +1,5 @@
 package com.norsecraft.client.ymir.widget;
 
-import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.ymir.YmirScreenDrawing;
 import com.norsecraft.client.ymir.widget.data.HorizontalAlignment;
 import com.norsecraft.client.ymir.widget.data.InputResult;
@@ -24,6 +23,7 @@ public class YmirButton extends YmirWidget {
     private boolean enabled = true;
     protected HorizontalAlignment alignment = HorizontalAlignment.CENTER;
     private final Texture texture;
+    private Texture hovered;
 
     @Nullable
     private Runnable onClick;
@@ -42,9 +42,16 @@ public class YmirButton extends YmirWidget {
         return true;
     }
 
+    public void setHovered(Texture hovered) {
+        this.hovered = hovered;
+    }
+
     @Override
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
-        YmirScreenDrawing.texturedGuiRect(matrices, x, y, width, height, texture);
+        if (isHovered() && hovered != null)
+            YmirScreenDrawing.texturedGuiRect(matrices, x, y, width, height, hovered);
+        else
+            YmirScreenDrawing.texturedGuiRect(matrices, x, y, width, height, texture);
     }
 
     @Environment(EnvType.CLIENT)
@@ -105,10 +112,10 @@ public class YmirButton extends YmirWidget {
     @Override
     public void addNarrations(NarrationMessageBuilder builder) {
         builder.put(NarrationPart.TITLE, ClickableWidget.getNarrationMessage(getLabel()));
-        if(isEnabled()) {
-            if(isFocused()) {
+        if (isEnabled()) {
+            if (isFocused()) {
                 builder.put(NarrationPart.USAGE, NarrationMessages.BUTTON_USAGE_FOCUSED);
-            } else if(isHovered())
+            } else if (isHovered())
                 builder.put(NarrationPart.USAGE, NarrationMessages.BUTTON_USAGE_HOVERED);
         }
     }
