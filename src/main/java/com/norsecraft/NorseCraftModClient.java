@@ -1,6 +1,6 @@
 package com.norsecraft;
 
-import com.norsecraft.client.gui.DwarfTradeGuiInterpretation;
+import com.norsecraft.client.gui.dwarf.DwarfTradeGuiInterpretation;
 import com.norsecraft.client.gui.NorseCraftInventoryScreen;
 import com.norsecraft.client.render.CustomBlockEntityModelRenderer;
 import com.norsecraft.client.render.entity.BaseEntityRenderer;

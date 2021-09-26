@@ -1,7 +1,7 @@
 package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.client.gui.DwarfTradeGuiInterpretation;
+import com.norsecraft.client.gui.dwarf.DwarfTradeGuiInterpretation;
 import com.norsecraft.common.gui.CrateGuiInterpretation;
 import com.norsecraft.common.screenhandler.NorseCraftInventoryScreenHandler;
 import net.fabricmc.fabric.api.screenhandler.v1.ScreenHandlerRegistry;
@@ -17,7 +17,7 @@ public class NCScreenHandlers {
 
     public static void register() {
         NorseCraftMod.LOGGER.info("Register screen handlers");
-        dwarfTrade = registerExtended("dwarf_trade", ((syncId, inventory, buf) -> new DwarfTradeGuiInterpretation(syncId, inventory, ScreenHandlerContext.EMPTY, buf)));
+        dwarfTrade = registerExtended("dwarf_trade", (DwarfTradeGuiInterpretation::new));
         norseCraftInventory = registerSimple("norsecraft_inv", NorseCraftInventoryScreenHandler::new);
         crate = registerSimple("crate", ((syncId, inventory) -> new CrateGuiInterpretation(syncId, inventory, ScreenHandlerContext.EMPTY)));
     }

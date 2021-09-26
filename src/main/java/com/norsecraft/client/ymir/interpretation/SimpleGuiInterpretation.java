@@ -1,7 +1,7 @@
 package com.norsecraft.client.ymir.interpretation;
 
-import com.norsecraft.NorseCraftMod;
-import com.norsecraft.client.ymir.ValidatedSlot;
+import com.norsecraft.client.ymir.widget.slot.TradeOutputSlot;
+import com.norsecraft.client.ymir.widget.slot.ValidatedSlot;
 import com.norsecraft.client.ymir.widget.YmirGridPanel;
 import com.norsecraft.client.ymir.widget.YmirLabel;
 import com.norsecraft.client.ymir.widget.YmirPanel;
@@ -56,6 +56,11 @@ public class SimpleGuiInterpretation implements GuiInterpretation {
 
     @Override
     public void addSlotPeer(ValidatedSlot slot) {
+
+    }
+
+    @Override
+    public void addOutputSlot(TradeOutputSlot slot) {
 
     }
 

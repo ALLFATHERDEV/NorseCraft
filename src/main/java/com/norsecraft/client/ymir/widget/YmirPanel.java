@@ -17,12 +17,27 @@ import java.util.stream.Stream;
 public class YmirPanel extends YmirWidget {
 
     protected final List<YmirWidget> children = new WidgetList(this, Lists.newArrayList());
+    protected int anchorX = 0;
+    protected int anchorY = 0;
 
     @Environment(EnvType.CLIENT)
     private BackgroundPainter backgroundPainter = null;
 
     public void remove(YmirWidget w) {
         children.remove(w);
+    }
+
+    public void setAnchor(int anchorX, int anchorY) {
+        this.anchorX = anchorX;
+        this.anchorY = anchorY;
+    }
+
+    public int getAnchorX() {
+        return anchorX;
+    }
+
+    public int getAnchorY() {
+        return anchorY;
     }
 
     @Override

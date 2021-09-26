@@ -2,6 +2,7 @@ package com.norsecraft.client.ymir.widget;
 
 import com.google.common.collect.ImmutableList;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.norsecraft.client.ymir.YmirScreenDrawing;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
@@ -10,6 +11,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tag.Tag;
+import net.minecraft.text.LiteralText;
 
 import java.util.Collections;
 import java.util.List;
@@ -42,7 +44,7 @@ public class YmirItem extends YmirWidget {
     @Environment(EnvType.CLIENT)
     @Override
     public void tick() {
-        if(ticks++ >= duration) {
+        if (ticks++ >= duration) {
             ticks = 0;
             current = (current + 1) % items.size();
         }
@@ -57,6 +59,11 @@ public class YmirItem extends YmirWidget {
         renderer.zOffset = 100f;
         renderer.renderInGui(items.get(current), x + getWidth() / 2 - 9, y + getHeight() / 2 - 9);
         renderer.zOffset = 0f;
+    }
+
+    @Override
+    public void addTooltip(TooltipBuilder builder) {
+        builder.add(items.get(current).getName());
     }
 
     public int getDuration() {
@@ -86,7 +93,7 @@ public class YmirItem extends YmirWidget {
 
     private static List<ItemStack> getRenderStacks(Tag<? extends ItemConvertible> tag) {
         ImmutableList.Builder<ItemStack> builder = ImmutableList.builder();
-        for(ItemConvertible item : tag.values())
+        for (ItemConvertible item : tag.values())
             builder.add(new ItemStack(item));
 
         return builder.build();

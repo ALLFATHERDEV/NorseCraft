@@ -3,12 +3,15 @@ package com.norsecraft.client.ymir.interpretation;
 import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.ymir.EmptyInventory;
 import com.norsecraft.client.ymir.PropertyDelegateHolder;
-import com.norsecraft.client.ymir.ValidatedSlot;
 import com.norsecraft.client.ymir.screen.BackgroundPainter;
+import com.norsecraft.client.ymir.test.ImplementedInventory;
 import com.norsecraft.client.ymir.widget.*;
 import com.norsecraft.client.ymir.widget.data.HorizontalAlignment;
 import com.norsecraft.client.ymir.widget.data.Insets;
 import com.norsecraft.client.ymir.widget.data.Vec2i;
+import com.norsecraft.client.ymir.widget.slot.TradeOutputSlot;
+import com.norsecraft.client.ymir.widget.slot.ValidatedSlot;
+import com.norsecraft.common.entity.NorseCraftMerchant;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
@@ -18,6 +21,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.InventoryProvider;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -29,6 +33,7 @@ import net.minecraft.screen.slot.Slot;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.village.MerchantInventory;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -106,6 +111,11 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
     }
 
     @Override
+    public void addOutputSlot(TradeOutputSlot slot) {
+        this.addSlot(slot);
+    }
+
+    @Override
     public void onSlotClick(int slotNumber, int button, SlotActionType actionType, PlayerEntity player) {
         if (actionType == SlotActionType.QUICK_MOVE) {
             if (slotNumber < 0)
@@ -121,11 +131,33 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
             if (slot.hasStack()) {
                 ItemStack toTransfer = slot.getStack();
                 remaining = toTransfer.copy();
+
+                if(blockInventory instanceof MerchantInventory) {
+                    if(slot instanceof TradeOutputSlot) {
+                        if(!this._insertItem(toTransfer, this.playerInventory, true, player))
+                            return;
+
+
+                        slot.onQuickTransfer(toTransfer, remaining);
+                    }
+
+                    if(toTransfer.isEmpty())
+                        slot.setStack(ItemStack.EMPTY);
+                    else
+                        slot.markDirty();
+
+                    if(toTransfer.getCount() == remaining.getCount())
+                        return;
+
+                    slot.onTakeItem(player, toTransfer);
+                    return;
+                }
+
                 if (blockInventory != null) {
                     if (slot.inventory == blockInventory) {
-                        if (!this.insertItem(toTransfer, this.playerInventory, true, player))
+                        if (!this._insertItem(toTransfer, this.playerInventory, true, player))
                             return;
-                    } else if (!this.insertItem(toTransfer, this.blockInventory, false, player))
+                    } else if (!this._insertItem(toTransfer, this.blockInventory, false, player))
                         return;
                 } else {
                     if (!swapHotbar(toTransfer, slotNumber, this.playerInventory, player))
@@ -184,7 +216,7 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         return false;
     }
 
-    private boolean insertItem(ItemStack toInsert, Inventory inventory, boolean walkBackwards, PlayerEntity player) {
+    protected boolean _insertItem(ItemStack toInsert, Inventory inventory, boolean walkBackwards, PlayerEntity player) {
         ArrayList<Slot> inventorySlots = new ArrayList<>();
         for (Slot slot : slots)
             if (slot.inventory == inventory) inventorySlots.add(slot);
@@ -308,6 +340,15 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
 
     public static Inventory getBlockInventory(ScreenHandlerContext ctx, int size) {
         return getBlockInventory(ctx, () -> new SimpleInventory(size));
+    }
+
+    public static Inventory getEntityInventory(Entity entity) {
+        if (entity instanceof ImplementedInventory)
+            return (Inventory) entity;
+        if (entity instanceof NorseCraftMerchant)
+            return ((NorseCraftMerchant<?>) entity).getMerchantInventory();
+        NorseCraftMod.LOGGER.error("Could not find inventory for entity {}", entity);
+        return null;
     }
 
     private static Inventory getBlockInventory(ScreenHandlerContext ctx, Supplier<Inventory> fallback) {

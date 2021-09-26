@@ -1,13 +1,20 @@
 package com.norsecraft.client.ymir;
 
+import com.google.common.collect.Lists;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.norsecraft.client.ymir.screen.YmirScreenImpl;
 import com.norsecraft.client.ymir.widget.data.HorizontalAlignment;
 import com.norsecraft.client.ymir.widget.data.Texture;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawableHelper;
+import net.minecraft.client.gui.tooltip.TooltipComponent;
+import net.minecraft.client.item.TooltipContext;
+import net.minecraft.client.item.TooltipData;
 import net.minecraft.client.render.*;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.OrderedText;
 import net.minecraft.text.Style;
@@ -15,6 +22,12 @@ import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.Matrix4f;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class YmirScreenDrawing {
 
@@ -243,6 +256,143 @@ public class YmirScreenDrawing {
 
     public static Text of(String msg) {
         return new LiteralText(msg);
+    }
+
+    public static void renderTooltip(MatrixStack matrices, ItemStack stack, int x, int y, int width, int height) {
+        renderTooltip(matrices, getTooltipFromItem(stack), stack.getTooltipData(), x, y, width, height);
+    }
+
+    public static void renderTooltip(MatrixStack matrices, List<Text> lines, Optional<TooltipData> data, int x, int y, int width, int height) {
+        List<TooltipComponent> list = (List)lines.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList());
+        data.ifPresent((datax) -> {
+            list.add(1, TooltipComponent.of(datax));
+        });
+        renderTooltipFromComponents(matrices, list, x, y, width, height);
+    }
+
+    public static List<Text> getTooltipFromItem(ItemStack stack) {
+        return stack.getTooltip(MinecraftClient.getInstance().player, MinecraftClient.getInstance().options.advancedItemTooltips ? TooltipContext.Default.ADVANCED : TooltipContext.Default.NORMAL);
+    }
+
+    public static void renderTooltip(MatrixStack matrices, Text text, int x, int y, int width, int height) {
+        renderOrderedTooltip(matrices, Arrays.asList(text.asOrderedText()), x, y, width, height);
+    }
+
+    public static void renderTooltip(MatrixStack matrices, List<Text> lines, int x, int y, int width, int height) {
+        renderOrderedTooltip(matrices, Lists.transform(lines, Text::asOrderedText), x, y, width, height);
+    }
+
+    public static void renderOrderedTooltip(MatrixStack matrices, List<? extends OrderedText> lines, int x, int y, int width, int height) {
+        renderTooltipFromComponents(matrices, (List)lines.stream().map(TooltipComponent::of).collect(Collectors.toList()), x, y, width, height);
+    }
+
+    public static void renderTooltipFromComponents(MatrixStack matrices, List<TooltipComponent> components, int x, int y, int width, int height) {
+        TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
+        ItemRenderer itemRenderer = MinecraftClient.getInstance().getItemRenderer();
+        if (!components.isEmpty()) {
+            int i = 0;
+            int j = components.size() == 1 ? -2 : 0;
+
+            TooltipComponent tooltipComponent;
+            for(Iterator var7 = components.iterator(); var7.hasNext(); j += tooltipComponent.getHeight()) {
+                tooltipComponent = (TooltipComponent)var7.next();
+                int k = tooltipComponent.getWidth(textRenderer);
+                if (k > i) {
+                    i = k;
+                }
+            }
+
+            int l = x + 12;
+            int m = y - 12;
+            if (l + i > width) {
+                l -= 28 + i;
+            }
+
+            if (m + j + 6 > height) {
+                m = height - j - 6;
+            }
+
+            matrices.push();
+            int p = -267386864;
+            int q = 1347420415;
+            int r = 1344798847;
+            float f = itemRenderer.zOffset;
+            itemRenderer.zOffset = 400.0F;
+            Tessellator tessellator = Tessellator.getInstance();
+            BufferBuilder bufferBuilder = tessellator.getBuffer();
+            RenderSystem.setShader(GameRenderer::getPositionColorShader);
+            bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+            Matrix4f matrix4f = matrices.peek().getModel();
+            fillGradient(matrix4f, bufferBuilder, l - 3, m - 4, l + i + 3, m - 3, 400, -267386864, -267386864);
+            fillGradient(matrix4f, bufferBuilder, l - 3, m + j + 3, l + i + 3, m + j + 4, 400, -267386864, -267386864);
+            fillGradient(matrix4f, bufferBuilder, l - 3, m - 3, l + i + 3, m + j + 3, 400, -267386864, -267386864);
+            fillGradient(matrix4f, bufferBuilder, l - 4, m - 3, l - 3, m + j + 3, 400, -267386864, -267386864);
+            fillGradient(matrix4f, bufferBuilder, l + i + 3, m - 3, l + i + 4, m + j + 3, 400, -267386864, -267386864);
+            fillGradient(matrix4f, bufferBuilder, l - 3, m - 3 + 1, l - 3 + 1, m + j + 3 - 1, 400, 1347420415, 1344798847);
+            fillGradient(matrix4f, bufferBuilder, l + i + 2, m - 3 + 1, l + i + 3, m + j + 3 - 1, 400, 1347420415, 1344798847);
+            fillGradient(matrix4f, bufferBuilder, l - 3, m - 3, l + i + 3, m - 3 + 1, 400, 1347420415, 1347420415);
+            fillGradient(matrix4f, bufferBuilder, l - 3, m + j + 2, l + i + 3, m + j + 3, 400, 1344798847, 1344798847);
+            RenderSystem.enableDepthTest();
+            RenderSystem.disableTexture();
+            RenderSystem.enableBlend();
+            RenderSystem.defaultBlendFunc();
+            bufferBuilder.end();
+            BufferRenderer.draw(bufferBuilder);
+            RenderSystem.disableBlend();
+            RenderSystem.enableTexture();
+            VertexConsumerProvider.Immediate immediate = VertexConsumerProvider.immediate(Tessellator.getInstance().getBuffer());
+            matrices.translate(0.0D, 0.0D, 400.0D);
+            int t = m;
+
+            int v;
+            TooltipComponent tooltipComponent3;
+            for(v = 0; v < components.size(); ++v) {
+                tooltipComponent3 = (TooltipComponent)components.get(v);
+                tooltipComponent3.drawText(textRenderer, l, t, matrix4f, immediate);
+                t += tooltipComponent3.getHeight() + (v == 0 ? 2 : 0);
+            }
+
+            immediate.draw();
+            matrices.pop();
+            t = m;
+
+            for(v = 0; v < components.size(); ++v) {
+                tooltipComponent3 = (TooltipComponent)components.get(v);
+                tooltipComponent3.drawItems(textRenderer, l, t, matrices, itemRenderer, 400, MinecraftClient.getInstance().getTextureManager());
+                t += tooltipComponent3.getHeight() + (v == 0 ? 2 : 0);
+            }
+
+            itemRenderer.zOffset = f;
+        }
+    }
+
+    public static void fillGradient(MatrixStack matrices, int startX, int startY, int endX, int endY, int colorStart, int colorEnd, int z) {
+        RenderSystem.disableTexture();
+        RenderSystem.enableBlend();
+        RenderSystem.defaultBlendFunc();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder bufferBuilder = tessellator.getBuffer();
+        bufferBuilder.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_COLOR);
+        fillGradient(matrices.peek().getModel(), bufferBuilder, startX, startY, endX, endY, z, colorStart, colorEnd);
+        tessellator.draw();
+        RenderSystem.disableBlend();
+        RenderSystem.enableTexture();
+    }
+
+    public static void fillGradient(Matrix4f matrix, BufferBuilder bufferBuilder, int startX, int startY, int endX, int endY, int z, int colorStart, int colorEnd) {
+        float f = (float)(colorStart >> 24 & 255) / 255.0F;
+        float g = (float)(colorStart >> 16 & 255) / 255.0F;
+        float h = (float)(colorStart >> 8 & 255) / 255.0F;
+        float i = (float)(colorStart & 255) / 255.0F;
+        float j = (float)(colorEnd >> 24 & 255) / 255.0F;
+        float k = (float)(colorEnd >> 16 & 255) / 255.0F;
+        float l = (float)(colorEnd >> 8 & 255) / 255.0F;
+        float m = (float)(colorEnd & 255) / 255.0F;
+        bufferBuilder.vertex(matrix, (float)endX, (float)startY, (float)z).color(g, h, i, f).next();
+        bufferBuilder.vertex(matrix, (float)startX, (float)startY, (float)z).color(g, h, i, f).next();
+        bufferBuilder.vertex(matrix, (float)startX, (float)endY, (float)z).color(k, l, m, j).next();
+        bufferBuilder.vertex(matrix, (float)endX, (float)endY, (float)z).color(k, l, m, j).next();
     }
 
 }

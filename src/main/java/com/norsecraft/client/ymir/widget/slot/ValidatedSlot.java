@@ -1,4 +1,4 @@
-package com.norsecraft.client.ymir;
+package com.norsecraft.client.ymir.widget.slot;
 
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;

@@ -16,6 +16,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.function.Consumer;
 
 /**
  * multiline  label widget
@@ -29,6 +30,7 @@ public class YmirText extends YmirWidget {
     @Environment(EnvType.CLIENT)
     private List<OrderedText> wrappedLines;
     private boolean wrappingScheduled = false;
+    private Consumer<Text> onClick;
 
     public YmirText(Text text) {
         this(text, YmirLabel.DEFAULT_TEXT_COLOR);
@@ -48,6 +50,10 @@ public class YmirText extends YmirWidget {
     @Override
     public boolean canResize() {
         return true;
+    }
+
+    public void setOnClick(Consumer<Text> onClick) {
+        this.onClick = onClick;
     }
 
     @Environment(EnvType.CLIENT)
@@ -96,6 +102,10 @@ public class YmirText extends YmirWidget {
     @Override
     public InputResult onClick(int x, int y, int button) {
         if (button != 0) return InputResult.IGNORED;
+
+        if(this.onClick != null) {
+            this.onClick.accept(this.text);
+        }
 
         Style hoveredStyle = getTextStyleAt(x, y);
         if (hoveredStyle != null) {

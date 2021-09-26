@@ -2,7 +2,7 @@ package com.norsecraft.client.ymir.widget;
 
 import com.google.common.collect.Lists;
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.client.ymir.ValidatedSlot;
+import com.norsecraft.client.ymir.widget.slot.ValidatedSlot;
 import com.norsecraft.client.ymir.interpretation.GuiInterpretation;
 import com.norsecraft.client.ymir.screen.BackgroundPainter;
 import com.norsecraft.client.ymir.widget.data.InputResult;

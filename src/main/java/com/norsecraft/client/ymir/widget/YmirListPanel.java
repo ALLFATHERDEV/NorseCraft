@@ -25,6 +25,7 @@ public class YmirListPanel<D, W extends YmirWidget> extends YmirClippedPanel {
     protected int margin = 2;
     protected YmirScrollBar scrollBar = new YmirScrollBar(Axis.VERTICAL);
     private int lastScroll = -1;
+    protected int scrollBarXOffset = 0;
 
     public YmirListPanel(List<D> data, Supplier<W> supplier, BiConsumer<D, W> configurator) {
         this.data = data;
@@ -32,6 +33,10 @@ public class YmirListPanel<D, W extends YmirWidget> extends YmirClippedPanel {
         this.configurator = configurator;
         scrollBar.setMaxValue(data.size());
         scrollBar.setParent(this);
+    }
+
+    public void setScrollBarXOffset(int scrollBarXOffset) {
+        this.scrollBarXOffset = scrollBarXOffset;
     }
 
     @Override
@@ -56,7 +61,7 @@ public class YmirListPanel<D, W extends YmirWidget> extends YmirClippedPanel {
     public void layout() {
         this.children.clear();
         this.children.add(scrollBar);
-        scrollBar.setLocation(this.width - scrollBar.getWidth(), 0);
+        scrollBar.setLocation(this.width - scrollBar.getWidth() - this.scrollBarXOffset, 0);
         scrollBar.setSize(8, this.height);
 
         if (!fixedHeight) {
@@ -66,20 +71,17 @@ public class YmirListPanel<D, W extends YmirWidget> extends YmirClippedPanel {
                     unconfigured.add(exemplar);
                     if (!exemplar.canResize()) {
                         cellHeight = exemplar.getHeight();
-                        NorseCraftMod.LOGGER.info("DEBUG_1");
                     }
                 } else {
                     W exemplar = configured.values().iterator().next();
                     if (!exemplar.canResize()) {
                         cellHeight = exemplar.getHeight();
-                        NorseCraftMod.LOGGER.info("DEBUG_2");
                     }
                 }
             } else {
                 W exemplar = unconfigured.get(0);
                 if (!exemplar.canResize()) {
                     cellHeight = exemplar.getHeight();
-                    NorseCraftMod.LOGGER.info("DEBUG_3");
                 }
             }
         }
@@ -138,4 +140,5 @@ public class YmirListPanel<D, W extends YmirWidget> extends YmirClippedPanel {
     public InputResult onMouseScroll(int x, int y, double amount) {
         return this.scrollBar.onMouseScroll(0, 0, amount);
     }
+
 }

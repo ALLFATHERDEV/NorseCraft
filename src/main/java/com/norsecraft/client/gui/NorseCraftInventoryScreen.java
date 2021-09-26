@@ -69,28 +69,31 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             int i = (this.width - this.backgroundWidth) / 2;
             int j = (this.height - this.backgroundHeight) / 2;
 
-            Texture texture1 = Texture.component(34 ,180, 35, 34);
-            Texture texture1Hovered = Texture.component(0, 180, 35, 34);
-            this.addDrawableChild(new Button(i + 97, j + 61, 17, 17, texture1, texture1Hovered, (button) -> {
+            //Levels
+            Texture texture1 = Texture.component(34 ,180, 35, 36);
+            Texture texture1Hovered = Texture.component(0, 180, 35, 36);
+            this.addDrawableChild(new Button(i + 151, j + 61, 18, 18, texture1, texture1Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Level up");
             }));
 
-            Texture texture2 = Texture.component(34, 144, 35, 34);
-            Texture texture2Hovered = Texture.component(0, 144, 35, 34);
-            this.addDrawableChild(new Button(i + 115, j + 61, 17, 17, texture2, texture2Hovered, (button) -> {
+            //Reputations
+            Texture texture2 = Texture.component(34, 144, 35, 36);
+            Texture texture2Hovered = Texture.component(0, 144, 35, 36);
+            this.addDrawableChild(new Button(i + 115, j + 61, 18, 18, texture2, texture2Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Reputation");
             }));
 
-            Texture texture3 = Texture.component(34, 108, 35, 34);
-            Texture texture3Hovered = Texture.component(0, 108, 35, 34);
-            this.addDrawableChild(new Button(i + 133, j + 61, 17, 17, texture3, texture3Hovered, (button) -> {
+            //Factions
+            Texture texture3 = Texture.component(34, 108, 35, 36);
+            Texture texture3Hovered = Texture.component(0, 108, 35, 36);
+            this.addDrawableChild(new Button(i + 97, j + 61, 18, 18, texture3, texture3Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Factions");
             }));
 
-
-            Texture texture4 = Texture.component(34, 72, 34, 34);
-            Texture texture4Hovered = Texture.component(0, 72, 34, 34);
-            this.addDrawableChild(new Button(i + 151, j + 61, 17, 17, texture4, texture4Hovered, (button) -> {
+            //Quests
+            Texture texture4 = Texture.component(34, 72, 35, 36);
+            Texture texture4Hovered = Texture.component(0, 72, 35, 36);
+            this.addDrawableChild(new Button(i + 133, j + 61, 18, 18, texture4, texture4Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Quests");
             }));
         }

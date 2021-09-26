@@ -1,7 +1,8 @@
 package com.norsecraft.client.ymir.interpretation;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.client.ymir.ValidatedSlot;
+import com.norsecraft.client.ymir.widget.slot.TradeOutputSlot;
+import com.norsecraft.client.ymir.widget.slot.ValidatedSlot;
 import com.norsecraft.client.ymir.widget.data.HorizontalAlignment;
 import com.norsecraft.client.ymir.widget.data.Vec2i;
 import com.norsecraft.client.ymir.widget.FocusHandler;
@@ -29,6 +30,8 @@ public interface GuiInterpretation {
     GuiInterpretation setPropertyDelegate(PropertyDelegate delegate);
 
     void addSlotPeer(ValidatedSlot slot);
+
+    void addOutputSlot(TradeOutputSlot slot);
 
     @Environment(EnvType.CLIENT)
     void addPainters();

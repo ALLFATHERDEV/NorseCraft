@@ -50,7 +50,7 @@ public class YmirButton extends YmirWidget {
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
         if (isHovered() && hovered != null)
             YmirScreenDrawing.texturedGuiRect(matrices, x, y, width, height, hovered);
-        else
+        else if(texture != null)
             YmirScreenDrawing.texturedGuiRect(matrices, x, y, width, height, texture);
     }
 
@@ -58,10 +58,11 @@ public class YmirButton extends YmirWidget {
     @Override
     public InputResult onClick(int x, int y, int button) {
         if (enabled && isWithinBounds(x, y)) {
-            MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
 
-            if (onClick != null)
+            if (onClick != null) {
+                MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 onClick.run();
+            }
             return InputResult.PROCESSED;
         }
         return InputResult.IGNORED;

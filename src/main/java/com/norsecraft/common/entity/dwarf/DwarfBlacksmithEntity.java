@@ -1,10 +1,10 @@
 package com.norsecraft.common.entity.dwarf;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.client.gui.DwarfTradeGuiInterpretation;
-import com.norsecraft.client.ymir.test.ImplementedInventory;
+import com.norsecraft.client.gui.dwarf.DwarfTradeGuiInterpretation;
 import com.norsecraft.common.dialog.DialogGroup;
 import com.norsecraft.common.entity.IDialogEntity;
+import com.norsecraft.common.entity.NorseCraftMerchant;
 import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -19,7 +19,6 @@ import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
-import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
@@ -27,17 +26,17 @@ import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
-import net.minecraft.util.collection.DefaultedList;
-import net.minecraft.village.Merchant;
+import net.minecraft.village.MerchantInventory;
 import net.minecraft.village.TradeOffer;
 import net.minecraft.village.TradeOfferList;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
-public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, NamedScreenHandlerFactory, ImplementedInventory, IDialogEntity<DwarfBlacksmithEntity> {
+public class DwarfBlacksmithEntity extends DwarfEntity implements NorseCraftMerchant<DwarfBlacksmithEntity>, NamedScreenHandlerFactory, IDialogEntity<DwarfBlacksmithEntity> {
 
     private static final TradeOfferList OFFERS = new TradeOfferList();
     private PlayerEntity customer;
+    private MerchantInventory merchantInventory = new MerchantInventory(this);
 
     public DwarfBlacksmithEntity(EntityType<? extends PathAwareEntity> type, World world) {
         super(type, world);
@@ -70,7 +69,7 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
 
                 @Override
                 public Text getDisplayName() {
-                    return new LiteralText("Dwarf Trade");
+                    return new LiteralText("");
                 }
 
                 @Nullable
@@ -157,18 +156,24 @@ public class DwarfBlacksmithEntity extends DwarfEntity implements Merchant, Name
         OFFERS.add(new TradeOffer(Items.IRON_INGOT.getDefaultStack(), Items.ACACIA_BOAT.getDefaultStack(), 9999, 0, 0));
         OFFERS.add(new TradeOffer(Items.PAPER.getDefaultStack(), Items.ACACIA_LOG.getDefaultStack(), 9999, 0, 0));
         OFFERS.add(new TradeOffer(Items.IRON_INGOT.getDefaultStack(), Items.OAK_FENCE.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.REDSTONE.getDefaultStack(), Items.REDSTONE_BLOCK.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.LAPIS_LAZULI.getDefaultStack(), Items.LAPIS_BLOCK.getDefaultStack(), 9999, 0, 0));
+        OFFERS.add(new TradeOffer(Items.DARK_OAK_PRESSURE_PLATE.getDefaultStack(), Items.POLISHED_BLACKSTONE_PRESSURE_PLATE.getDefaultStack(), 9999, 0, 0));
     }
 
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new DwarfTradeGuiInterpretation(syncId, inv, ScreenHandlerContext.create(this.world, this.getBlockPos()), this);
+        return new DwarfTradeGuiInterpretation(syncId, inv, this);
     }
 
-    private DefaultedList<ItemStack> items = DefaultedList.ofSize(3, ItemStack.EMPTY);
+    @Override
+    public DwarfBlacksmithEntity getMerchantEntity() {
+        return this;
+    }
 
     @Override
-    public DefaultedList<ItemStack> getItems() {
-        return items;
+    public MerchantInventory getMerchantInventory() {
+        return this.merchantInventory;
     }
 }
