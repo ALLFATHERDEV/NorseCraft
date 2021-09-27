@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "block_variants=1": {
+      "model": "norsecraft:block/rocks/rocks1"
+    },
+    "block_variants=2": {
+      "model": "norsecraft:block/rocks/rocks2"
+    },
+    "block_variants=3": {
+      "model": "norsecraft:block/rocks/rocks3"
+    }
+  }
+}

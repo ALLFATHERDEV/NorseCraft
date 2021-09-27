@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cobble_wall",
+  "textures": {
+    "all": "norsecraft:block/cobble_wall"
+  }
+}

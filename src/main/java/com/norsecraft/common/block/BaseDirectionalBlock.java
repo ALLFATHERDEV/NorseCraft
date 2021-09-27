@@ -12,7 +12,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class BaseDirectionalBlock extends HorizontalFacingBlock {
 
-    private final VoxelShapeGroup group;
+    protected final VoxelShapeGroup group;
 
     public BaseDirectionalBlock(Settings settings, VoxelShapeGroup group) {
         super(settings);

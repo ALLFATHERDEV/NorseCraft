@@ -7,12 +7,20 @@ import net.minecraft.util.registry.Registry;
 
 public class NCItems {
 
+    public static final Item ROCK = new Item(defSettings());
+
     public static void register() {
         NorseCraftMod.LOGGER.info("Register items");
+
+        registerItem("rock", ROCK);
     }
 
     public static <T extends Item> void registerItem(String name, T item) {
         Registry.register(Registry.ITEM, new Identifier(NorseCraftMod.MOD_ID, name), item);
+    }
+
+    private static Item.Settings defSettings() {
+        return new Item.Settings().group(NorseCraftMod.GROUP);
     }
 
 }

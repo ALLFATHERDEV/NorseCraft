@@ -1,8 +1,8 @@
 package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.common.entity.BrownBearEntity;
-import com.norsecraft.common.entity.WildBoarEntity;
+import com.norsecraft.common.entity.animal.BrownBearEntity;
+import com.norsecraft.common.entity.animal.WildBoarEntity;
 import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
 import com.norsecraft.common.entity.dwarf.DwarfEntity;
 import com.norsecraft.common.entity.dwarf.DwarfWarriorEntity;

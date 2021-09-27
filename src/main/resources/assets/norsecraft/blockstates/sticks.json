@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "block_variants=1": {
+      "model": "norsecraft:block/sticks/sticks1"
+    },
+    "block_variants=2": {
+      "model": "norsecraft:block/sticks/sticks2"
+    },
+    "block_variants=3": {
+      "model": "norsecraft:block/sticks/sticks3"
+    },
+    "block_variants=4": {
+      "model": "norsecraft:block/sticks/sticks4"
+    }
+  }
+}

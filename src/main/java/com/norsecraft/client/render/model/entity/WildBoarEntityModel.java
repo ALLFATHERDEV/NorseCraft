@@ -1,7 +1,7 @@
 package com.norsecraft.client.render.model.entity;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.common.entity.WildBoarEntity;
+import com.norsecraft.common.entity.animal.WildBoarEntity;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

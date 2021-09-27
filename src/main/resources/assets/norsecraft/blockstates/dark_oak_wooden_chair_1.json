@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=west": {
+      "model": "norsecraft:block/chairs/dark_oak_wooden_chair1",
+      "y": 90
+    },
+    "facing=north": {
+      "model": "norsecraft:block/chairs/dark_oak_wooden_chair1",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "norsecraft:block/chairs/dark_oak_wooden_chair1",
+      "y": -90
+    },
+    "facing=south": {
+      "model": "norsecraft:block/chairs/dark_oak_wooden_chair1"
+    }
+  }
+}

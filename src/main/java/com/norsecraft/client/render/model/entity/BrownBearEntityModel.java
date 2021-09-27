@@ -1,7 +1,7 @@
 package com.norsecraft.client.render.model.entity;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.common.entity.BrownBearEntity;
+import com.norsecraft.common.entity.animal.BrownBearEntity;
 import net.minecraft.util.Identifier;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 

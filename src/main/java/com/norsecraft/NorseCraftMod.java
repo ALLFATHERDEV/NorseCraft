@@ -3,14 +3,17 @@ package com.norsecraft;
 import com.norsecraft.common.block.dwarfforge.DwarfForgeMultiblock;
 import com.norsecraft.common.block.multiblock.MultiblockManager;
 import com.norsecraft.common.dialog.DialogManager;
-import com.norsecraft.common.entity.BrownBearEntity;
-import com.norsecraft.common.entity.WildBoarEntity;
+import com.norsecraft.common.entity.animal.BrownBearEntity;
+import com.norsecraft.common.entity.animal.WildBoarEntity;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
 import com.norsecraft.common.entity.dwarf.DwarfWarriorEntity;
 import com.norsecraft.common.network.PacketHandler;
 import com.norsecraft.common.registry.*;
+import com.norsecraft.common.world.BiomeFeatureInitializer;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.biome.v1.OverworldBiomes;
+import net.fabricmc.fabric.api.biome.v1.OverworldClimate;
 import net.fabricmc.fabric.api.client.itemgroup.FabricItemGroupBuilder;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.item.ItemGroup;
@@ -41,6 +44,9 @@ public class NorseCraftMod implements ModInitializer {
         NCEntities.register();
         NCScreenHandlers.register();
         NCBlockEntities.register();
+        NCFeatures.register();
+        NCConfiguredFeatures.register();
+        NCBiomes.register();
 
         LOGGER.info("Loading multiblocks");
         multiblockManager.addMultiblock(new DwarfForgeMultiblock());
@@ -50,6 +56,15 @@ public class NorseCraftMod implements ModInitializer {
 
         LOGGER.info("Create packethandler");
         PacketHandler.handleClientToServerPackets();
+        PacketHandler.handleServerToClientPackets();
+
+        LOGGER.info("Initializing biome features...");
+        BiomeFeatureInitializer.initialize();
+
+        LootTableListener.listen();
+
+        OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.TEMPERATE, 3D);
+        OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.COOL, 3D);
     }
 
     private void registerEntityAttributes() {
