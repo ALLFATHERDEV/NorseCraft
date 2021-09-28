@@ -2,6 +2,7 @@ package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
 import com.norsecraft.common.world.feature.NCDecorationFeature;
+import com.norsecraft.common.world.feature.NCRocksFeature;
 import com.norsecraft.common.world.feature.config.NCDecorationFeatureConfig;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;

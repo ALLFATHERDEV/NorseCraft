@@ -10,7 +10,7 @@ import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
 import com.norsecraft.common.entity.dwarf.DwarfWarriorEntity;
 import com.norsecraft.common.network.PacketHandler;
 import com.norsecraft.common.registry.*;
-import com.norsecraft.common.world.BiomeFeatureInitializer;
+import com.norsecraft.common.thirst.ThirstManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.OverworldBiomes;
 import net.fabricmc.fabric.api.biome.v1.OverworldClimate;
@@ -58,13 +58,12 @@ public class NorseCraftMod implements ModInitializer {
         PacketHandler.handleClientToServerPackets();
         PacketHandler.handleServerToClientPackets();
 
-        LOGGER.info("Initializing biome features...");
-        BiomeFeatureInitializer.initialize();
-
         LootTableListener.listen();
 
         OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.TEMPERATE, 3D);
         OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.COOL, 3D);
+
+        ThirstManager.handleWorldTick();
     }
 
     private void registerEntityAttributes() {

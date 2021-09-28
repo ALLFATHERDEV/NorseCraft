@@ -55,7 +55,7 @@ public class DwarfTradeGuiInterpretation extends MerchantGuiInterpretation {
         });
         panel.add(dialogButton, 50, 29, 34, 36);
 
-        YmirButton tradingButton = new YmirButton(Texture.component(70, 35, 34, 36));
+        YmirButton tradingButton = new YmirButton(Texture.component(0, 35, 34, 36));
         tradingButton.setOnClick(() -> {
             NorseCraftMod.LOGGER.info("Nothing");
         });

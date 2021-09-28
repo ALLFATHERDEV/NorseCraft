@@ -2,10 +2,12 @@ package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
 import com.norsecraft.common.world.biome.DwarfBiome;
+import com.norsecraft.mixin.accessor.BuiltinBiomesAccessor;
 import net.minecraft.util.registry.BuiltinRegistries;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.util.registry.RegistryKey;
 import net.minecraft.world.biome.Biome;
+import net.minecraft.world.biome.BuiltinBiomes;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 
 public class NCBiomes {
@@ -19,6 +21,7 @@ public class NCBiomes {
     private static void registerBiome(RegistryKey<Biome> key, Biome biome, String surfaceBuilderName, ConfiguredSurfaceBuilder<?> surfaceBuilder) {
         Registry.register(BuiltinRegistries.CONFIGURED_SURFACE_BUILDER, NorseCraftMod.nc(surfaceBuilderName), surfaceBuilder);
         Registry.register(BuiltinRegistries.BIOME, key.getValue(), biome);
+        BuiltinBiomesAccessor.getRawIdMap().put(BuiltinRegistries.BIOME.getRawId(biome), key);
     }
 
     private static RegistryKey<Biome> registerKey(String name) {

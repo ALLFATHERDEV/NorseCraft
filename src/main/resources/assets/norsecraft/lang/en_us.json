@@ -105,6 +105,8 @@
   "widget.norsecraft.toggle_button.narration.unnamed": "Toggle button: %s",
   "widget.norsecraft.toggle_button.narration.named": "Toggle button: %s (%s)",
   "widget.norsecraft.toggle_button.narration.on": "On",
-  "widget.norsecraft.toggle_button.narration.off": "Off"
+  "widget.norsecraft.toggle_button.narration.off": "Off",
+  "tooltip.norsecraft.chair_wood_type": "Material: %s",
+  "tooltip.norsecraft.chair_type": "Chair Type: %d"
 
 }

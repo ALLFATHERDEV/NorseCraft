@@ -1,6 +1,6 @@
 package com.norsecraft.common.thirst;
 
-import com.norsecraft.NorseCraftMod;
+import net.fabricmc.fabric.api.event.lifecycle.v1.ServerTickEvents;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -59,13 +59,13 @@ public class ThirstManager {
     }
 
     public void tick(PlayerEntity player) {
-        if(player == null)
+        if (player == null)
             return;
         Difficulty difficulty = player.world.getDifficulty();
-        if(difficulty != Difficulty.PEACEFUL) {
-            if(thirstExhaustion >= 4.0F) {
-                thirstExhaustion -= 2.0F;
-                if(hydrationValue > 0.0F) {
+        if (difficulty != Difficulty.PEACEFUL) {
+            if (thirstExhaustion >= 4.0F) {
+                thirstExhaustion -= 0.2F;
+                if (hydrationValue > 0.0F) {
                     hydrationValue = Math.max(hydrationValue - 0.5F, 0.0F);
                 } else {
                     thirstLevel = Math.max(thirstLevel - 1, 0);
@@ -73,25 +73,25 @@ public class ThirstManager {
             }
 
             boolean flag = player.world.getGameRules().getBoolean(GameRules.NATURAL_REGENERATION);
-            if(flag && hydrationValue > 0.0F && player.isAlive() && thirstLevel >= 20) {
+            if (flag && hydrationValue > 0.0F && player.isAlive() && thirstLevel >= 20) {
                 waterTimer++;
-                if(waterTimer >= 10) {
+                if (waterTimer >= 10) {
                     float f = Math.min(hydrationValue, 6.0F);
                     player.heal(f / 12.0F);
                     thirstExhaustion += f;
                     waterTimer = 0;
                 }
-            } else if(flag && thirstLevel > 0 && player.isAlive()) {
+            } else if (flag && thirstLevel > 0 && player.isAlive()) {
                 waterTimer++;
-                if(waterTimer >= 80) {
+                if (waterTimer >= 80) {
                     player.heal(0.5F);
                     thirstExhaustion += 0.6F;
                     waterTimer = 0;
                 }
-            } else if(thirstLevel <= 0) {
+            } else if (thirstLevel <= 0) {
                 waterTimer++;
-                if(waterTimer >= 80) {
-                    if(player.getHealth() > 10.0F || difficulty == Difficulty.HARD || player.getHealth() > 1.0F || difficulty == Difficulty.NORMAL) {
+                if (waterTimer >= 80) {
+                    if (player.getHealth() > 10.0F || difficulty == Difficulty.HARD || player.getHealth() > 1.0F || difficulty == Difficulty.NORMAL) {
                         player.damage(DamageSource.MAGIC, 1.0F);
                     }
                     waterTimer = 0;
@@ -100,6 +100,12 @@ public class ThirstManager {
                 waterTimer = 0;
             }
         }
+    }
+
+    public static void handleWorldTick() {
+        ServerTickEvents.END_WORLD_TICK.register(world -> {
+            world.getPlayers().forEach(THIRST_MANAGER::tick);
+        });
     }
 
 }

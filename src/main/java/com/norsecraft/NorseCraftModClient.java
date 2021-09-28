@@ -2,6 +2,7 @@ package com.norsecraft;
 
 import com.norsecraft.client.gui.NorseCraftInventoryScreen;
 import com.norsecraft.client.gui.dwarf.DwarfTradeGuiInterpretation;
+import com.norsecraft.client.render.CampfireBlockRenderer;
 import com.norsecraft.client.render.CustomBlockEntityModelRenderer;
 import com.norsecraft.client.render.entity.BaseEntityRenderer;
 import com.norsecraft.client.render.entity.DwarfEntityRenderer;
@@ -49,6 +50,7 @@ public class NorseCraftModClient implements ClientModInitializer {
         //==============================BLOCK RENDERER============================
         //========================================================================
         BlockEntityRendererRegistry.register(NCBlockEntities.crateBlockEntity, ctx -> new CustomBlockEntityModelRenderer<>(new CrateBlockModel()));
+        BlockEntityRendererRegistry.register(NCBlockEntities.campfireBlockEntity, ctx -> new CampfireBlockRenderer());
 
         BlockRenderLayerMap.INSTANCE.putBlock(NCBlocks.ROCKS, RenderLayer.getCutout());
 

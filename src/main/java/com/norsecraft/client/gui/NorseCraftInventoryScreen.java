@@ -70,29 +70,29 @@ public class NorseCraftInventoryScreen extends AbstractInventoryScreen<NorseCraf
             int j = (this.height - this.backgroundHeight) / 2;
 
             //Levels
-            Texture texture1 = Texture.component(34 ,180, 35, 36);
-            Texture texture1Hovered = Texture.component(0, 180, 35, 36);
+            Texture texture1 = Texture.component(35 ,180, 34, 36);
+            Texture texture1Hovered = Texture.component(0, 180, 34, 36);
             this.addDrawableChild(new Button(i + 151, j + 61, 18, 18, texture1, texture1Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Level up");
             }));
 
             //Reputations
-            Texture texture2 = Texture.component(34, 144, 35, 36);
-            Texture texture2Hovered = Texture.component(0, 144, 35, 36);
+            Texture texture2 = Texture.component(35, 144, 34, 36);
+            Texture texture2Hovered = Texture.component(0, 144, 34, 36);
             this.addDrawableChild(new Button(i + 115, j + 61, 18, 18, texture2, texture2Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Reputation");
             }));
 
             //Factions
-            Texture texture3 = Texture.component(34, 108, 35, 36);
-            Texture texture3Hovered = Texture.component(0, 108, 35, 36);
+            Texture texture3 = Texture.component(35, 108, 34, 36);
+            Texture texture3Hovered = Texture.component(0, 108, 34, 36);
             this.addDrawableChild(new Button(i + 97, j + 61, 18, 18, texture3, texture3Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Factions");
             }));
 
             //Quests
-            Texture texture4 = Texture.component(34, 72, 35, 36);
-            Texture texture4Hovered = Texture.component(0, 72, 35, 36);
+            Texture texture4 = Texture.component(35, 72, 34, 36);
+            Texture texture4Hovered = Texture.component(0, 72, 34, 36);
             this.addDrawableChild(new Button(i + 133, j + 61, 18, 18, texture4, texture4Hovered, (button) -> {
                 NorseCraftMod.LOGGER.info("Quests");
             }));

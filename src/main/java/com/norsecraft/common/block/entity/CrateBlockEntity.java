@@ -3,6 +3,7 @@ package com.norsecraft.common.block.entity;
 import com.norsecraft.client.ymir.test.ImplementedInventory;
 import com.norsecraft.common.gui.CrateGuiInterpretation;
 import com.norsecraft.common.registry.NCBlockEntities;
+import net.fabricmc.fabric.api.screenhandler.v1.ExtendedScreenHandlerFactory;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -10,9 +11,11 @@ import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.util.collection.DefaultedList;
@@ -26,7 +29,7 @@ import software.bernie.geckolib3.core.event.predicate.AnimationEvent;
 import software.bernie.geckolib3.core.manager.AnimationData;
 import software.bernie.geckolib3.core.manager.AnimationFactory;
 
-public class CrateBlockEntity extends BlockEntity implements NamedScreenHandlerFactory, ImplementedInventory, IAnimatable {
+public class CrateBlockEntity extends BlockEntity implements ExtendedScreenHandlerFactory, ImplementedInventory, IAnimatable {
 
     private static final String OPENING_ANIMATION = "animation.crate_open";
     private static final String CLOSING_ANIMATION = "animation.crate_close";
@@ -51,7 +54,7 @@ public class CrateBlockEntity extends BlockEntity implements NamedScreenHandlerF
     @Nullable
     @Override
     public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
-        return new CrateGuiInterpretation(syncId, inv, ScreenHandlerContext.create(this.world, this.pos));
+        return new CrateGuiInterpretation(syncId, inv, ScreenHandlerContext.create(this.world, this.pos), this);
     }
 
     @Override
@@ -104,4 +107,8 @@ public class CrateBlockEntity extends BlockEntity implements NamedScreenHandlerF
         return factory;
     }
 
+    @Override
+    public void writeScreenOpeningData(ServerPlayerEntity player, PacketByteBuf buf) {
+        buf.writeBlockPos(this.pos);
+    }
 }

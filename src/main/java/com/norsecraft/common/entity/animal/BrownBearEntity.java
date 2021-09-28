@@ -1,11 +1,10 @@
 package com.norsecraft.common.entity.animal;
 
-import com.norsecraft.NorseCraftMod;
+import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.network.NetworkHelper;
 import com.norsecraft.common.network.s2c.SendAttackingEntityS2C;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.goal.*;
@@ -44,7 +43,7 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
 
     public static DefaultAttributeContainer.Builder createBrownBearAttributes() {
         return MobEntity.createMobAttributes().add(EntityAttributes.GENERIC_MAX_HEALTH, 40)
-                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 25)
+                .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 15)
                 .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.55F)
                 .add(EntityAttributes.GENERIC_ATTACK_SPEED, 0.7);
     }
@@ -59,6 +58,7 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
         this.targetSelector.add(0, new FixedFollowTargetGoal<>(this, PlayerEntity.class, false));
         this.targetSelector.add(3, new FixedFollowTargetGoal<>(this, VillagerEntity.class, false));
         this.targetSelector.add(3, new FixedFollowTargetGoal<>(this, AnimalEntity.class, false));
+        this.targetSelector.add(3, new FixedFollowTargetGoal<>(this, AbstractDwarfEntity.class, false));
     }
 
     protected double getSquaredMaxAttackDistance(LivingEntity entity) {
@@ -70,15 +70,15 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
         super.tick();
     }
 
-    private <E extends IAnimatable> PlayState attackAnimation(AnimationEvent<E> event) {
+    private <E extends IAnimatable> PlayState running(AnimationEvent<E> event) {
         LivingEntity onClientAttacker = this.getCurrentAttackerOnClient();
+        if (onClientAttacker == null) {
+            return PlayState.STOP;
+        }
 
-        if (event.isMoving() && onClientAttacker != null) {
+        if (event.isMoving() && !playAttack) {
             double d = this.squaredDistanceTo(onClientAttacker.getX(), onClientAttacker.getY(), onClientAttacker.getZ());
-            if (d <= getSquaredMaxAttackDistance(onClientAttacker)) {
-                event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIMATION_ATTACK));
-                return PlayState.STOP;
-            } else {
+            if (d > getSquaredMaxAttackDistance(onClientAttacker) + 2) {
                 event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIMATION_RUN));
             }
         }
@@ -86,8 +86,15 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
 
     }
 
+    private <E extends IAnimatable> PlayState attackAnimation(AnimationEvent<E> event) {
+        if (playAttack) {
+            event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIMATION_ATTACK));
+        }
+        return PlayState.CONTINUE;
+    }
+
     private <E extends IAnimatable> PlayState predicate(AnimationEvent<E> event) {
-        if (event.isMoving() && this.getCurrentAttackerOnClient() == null) {
+        if (event.isMoving() && this.getCurrentAttackerOnClient() == null && !playAttack) {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIMATION_WALK));
         } else {
             event.getController().setAnimation(new AnimationBuilder().addAnimation(ANIMATION_IDLE, true));
@@ -98,7 +105,14 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
     @Override
     public void registerControllers(AnimationData animationData) {
         animationData.addAnimationController(new AnimationController<>(this, "movement", 0, this::predicate));
+        animationData.addAnimationController(new AnimationController<>(this, "running", 0, this::running));
         animationData.addAnimationController(new AnimationController<>(this, "attack", 0, this::attackAnimation));
+    }
+
+    private boolean playAttack = false;
+
+    public void setPlayAttack(boolean playAttack) {
+        this.playAttack = playAttack;
     }
 
     @Override
@@ -116,10 +130,19 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
         this.clientAttacker = entity;
     }
 
+
     private static class FixedMeleeAttackGoal extends MeleeAttackGoal {
 
         public FixedMeleeAttackGoal(BrownBearEntity mob, double speed, boolean pauseWhenMobIdle) {
             super(mob, speed, pauseWhenMobIdle);
+        }
+
+        @Override
+        public void tick() {
+            super.tick();
+            if(mob.world.isClient) {
+                ((BrownBearEntity) mob).setPlayAttack(true);
+            }
         }
 
         @Override
@@ -128,6 +151,9 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
             if (!mob.world.isClient) {
                 NetworkHelper.broadcastToClient((ServerWorld) this.mob.world, SendAttackingEntityS2C.ID, new SendAttackingEntityS2C(this.mob.getId(),
                         -1, SendAttackingEntityS2C.NONE));
+            }
+            if(mob.world.isClient) {
+                ((BrownBearEntity) mob).setPlayAttack(false);
             }
         }
     }

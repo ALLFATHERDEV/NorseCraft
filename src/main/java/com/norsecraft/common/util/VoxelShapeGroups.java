@@ -2,11 +2,22 @@ package com.norsecraft.common.util;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.function.BooleanBiFunction;
+import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 
 import java.util.stream.Stream;
 
 public class VoxelShapeGroups {
+
+    public static final VoxelShape CAMP_FIRE_STAND = Stream.of(
+            Block.createCuboidShape(14.25, 0, 7.25, 15.75, 12, 8.75),
+            Block.createCuboidShape(0.25, 0, 7.25, 1.75, 12, 8.75),
+            Block.createCuboidShape(1.75, 10, 7.5, 14.25, 11, 8.5),
+            Block.createCuboidShape(7.25, 0, 0.25, 8.75, 12, 1.75),
+            Block.createCuboidShape(7.5, 10, 1.75, 8.5, 11, 14.25),
+            Block.createCuboidShape(7.25, 0, 14.25, 8.75, 12, 15.75),
+            Block.createCuboidShape(4.5, 11.01, 4.5, 11.5, 11.51, 11.5)
+    ).reduce((v1, v2) -> VoxelShapes.combineAndSimplify(v1, v2, BooleanBiFunction.OR)).get();
 
     public static final VoxelShapeGroup LOG_CHAIR_GROUP = new VoxelShapeGroup(Stream.of(Block.createCuboidShape(6, 0, 0, 10, 8, 1),
             Block.createCuboidShape(4, 0, 1, 6, 8, 2),

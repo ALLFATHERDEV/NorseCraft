@@ -46,11 +46,12 @@ public class DwarfDialogGuiInterpretation extends SimpleGuiInterpretation {
         YmirPlainPanel panel = new YmirPlainPanel();
         panel.setBackgroundPainter(new TexturedBackgroundPainter(new Texture(BACKGROUND_TEXTURE, 0, 0, 458, 355, 1024F, 512F)));
 
-        YmirButton dialogButton = new YmirButton(Texture.component(35, 0, 34, 36));
+        YmirButton dialogButton = new YmirButton(Texture.component(0, 0, 34, 36));
         dialogButton.setHovered(Texture.component(0, 0, 34, 36));
         panel.add(dialogButton, 50, 29, 34, 36);
 
-        YmirButton tradingButton = new YmirButton(Texture.component(70, 35, 34, 36));
+        YmirButton tradingButton = new YmirButton(Texture.component(35, 35, 34, 36));
+        tradingButton.setHovered(Texture.component(0, 35, 34, 36));
         tradingButton.setOnClick(() -> {
             DwarfBlacksmithEntity dwarf = dialogEntity.getDialogEntity();
             MinecraftClient.getInstance().setScreen(null);

@@ -1,10 +1,12 @@
 package com.norsecraft.common.world.biome;
 
 import com.norsecraft.common.registry.NCBlocks;
+import com.norsecraft.common.registry.NCConfiguredFeatures;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BiomeEffects;
 import net.minecraft.world.biome.GenerationSettings;
 import net.minecraft.world.biome.SpawnSettings;
+import net.minecraft.world.gen.GenerationStep;
 import net.minecraft.world.gen.feature.DefaultBiomeFeatures;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
@@ -28,6 +30,7 @@ public class DwarfBiome {
 
         GenerationSettings.Builder generationSettings = new GenerationSettings.Builder();
         generationSettings.surfaceBuilder(DWARF_SURFACE_BUILDER);
+        generationSettings.feature(GenerationStep.Feature.UNDERGROUND_ORES, NCConfiguredFeatures.ORE_IRITHIUM);
         DefaultBiomeFeatures.addDefaultUndergroundStructures(generationSettings);
         DefaultBiomeFeatures.addLandCarvers(generationSettings);
         DefaultBiomeFeatures.addDungeons(generationSettings);

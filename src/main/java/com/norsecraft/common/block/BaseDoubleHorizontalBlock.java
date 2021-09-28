@@ -41,13 +41,13 @@ public class BaseDoubleHorizontalBlock extends BaseDirectionalBlock {
                 switch (direction) {
                     default:
                     case NORTH:
-                        return right.west;
+                        return right.east;
                     case WEST:
                         return right.north;
                     case EAST:
                         return right.south;
                     case SOUTH:
-                        return right.east;
+                        return right.west;
                 }
             case LEFT:
                 switch (direction) {
@@ -55,9 +55,9 @@ public class BaseDoubleHorizontalBlock extends BaseDirectionalBlock {
                     case NORTH:
                         return left.west;
                     case WEST:
-                        return left.north;
-                    case EAST:
                         return left.south;
+                    case EAST:
+                        return left.north;
                     case SOUTH:
                         return left.east;
                 }

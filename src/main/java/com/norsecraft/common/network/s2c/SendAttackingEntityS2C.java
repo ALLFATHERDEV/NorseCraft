@@ -36,8 +36,8 @@ public class SendAttackingEntityS2C implements INCPacket {
 
     public SendAttackingEntityS2C(PacketByteBuf buf) {
         this.entityId = buf.readInt();
-        this.targetEntityId = buf.readInt();
         this.status = buf.readInt();
+        this.targetEntityId = buf.readInt();
     }
 
     @Override
