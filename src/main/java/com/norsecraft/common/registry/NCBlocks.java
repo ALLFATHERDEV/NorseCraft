@@ -8,17 +8,13 @@ import com.norsecraft.common.block.dwarfforge.DwarfForgeChimneyBlock;
 import com.norsecraft.common.block.dwarfforge.DwarfForgePillarBlock;
 import com.norsecraft.common.block.dwarfforge.DwarfForgePitBlock;
 import com.norsecraft.common.block.dwarfforge.DwarfForgeWallBlock;
-import com.norsecraft.common.block.variants.BaseVariantsBlockVar3;
-import com.norsecraft.common.block.variants.BaseVariantsBlockVar4;
-import com.norsecraft.common.block.variants.BaseVariantsBlockVar5;
-import com.norsecraft.common.block.variants.BaseVariantsBlockVar6;
+import com.norsecraft.common.block.variants.*;
 import com.norsecraft.common.util.VoxelShapeGroup;
 import com.norsecraft.common.util.VoxelShapeGroups;
 import net.fabricmc.fabric.api.item.v1.FabricItemSettings;
 import net.fabricmc.fabric.api.object.builder.v1.block.FabricBlockSettings;
 import net.minecraft.block.*;
 import net.minecraft.item.BlockItem;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
@@ -35,6 +31,7 @@ public class NCBlocks {
     public static final Block COPPER_ORE = new OreBlock(ORE_PROPS);
     public static final Block BRONZE_ORE = new OreBlock(ORE_PROPS);
     public static final Block IRITHIUM_ORE = new OreBlock(ORE_PROPS);
+    public static final Block SILVER_ORE = new BaseVariantsBlockVar2Ore(ORE_PROPS);
 
     public static final Block WOODEN_DOUBLE_TABLE = new DoubleWoodenTableBlock(FabricBlockSettings.copyOf(Blocks.OAK_PLANKS));
 
@@ -111,6 +108,7 @@ public class NCBlocks {
         registerBlock("copper_ore", COPPER_ORE);
         registerBlock("bronze_ore", BRONZE_ORE);
         registerBlock("irithium_ore", IRITHIUM_ORE);
+        registerBlock("silver_ore", SILVER_ORE);
 
         registerBlock("wooden_double_table", WOODEN_DOUBLE_TABLE);
 

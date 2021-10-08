@@ -5,14 +5,18 @@ import net.minecraft.util.Identifier;
 
 import java.util.Objects;
 
-public record Texture(Identifier image, float u1, float v1, float u2, float v2, float textureWidth, float textureHeight) {
-
+public record Texture(Identifier image, float u1, float v1, float u2, float v2, float textureWidth,
+                      float textureHeight) {
     public Texture {
         Objects.requireNonNull(image, "image");
     }
 
     public Texture(Identifier image) {
         this(image, 0, 0, 1, 1, 1, 1);
+    }
+
+    public Texture(Texture other) {
+        this(other.image, other.u1, other.v1, other.u2, other.v2, other.textureWidth, other.textureHeight);
     }
 
     public Texture withUv(float u1, float v1, float u2, float v2m, int textureWidth, int textureHeight) {

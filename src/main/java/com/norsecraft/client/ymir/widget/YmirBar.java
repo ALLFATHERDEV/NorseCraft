@@ -10,7 +10,6 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableText;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
-import org.apache.http.message.LineFormatter;
 import org.jetbrains.annotations.Nullable;
 
 /**
@@ -57,6 +56,7 @@ public class YmirBar extends YmirWidget {
         this(new Texture(bg), new Texture(bar), field, maxField, dir);
     }
 
+
     public YmirBar withTooltip(String label) {
         this.tooltipLabel = label;
         return this;
@@ -77,7 +77,7 @@ public class YmirBar extends YmirWidget {
         if (bg != null) {
             YmirScreenDrawing.texturedRect(matrices, x, y, getWidth(), getHeight(), bg, 0xFFFFFFFF);
         } else {
-            YmirScreenDrawing.coloredRect(matrices, x, y, getWidth(), getHeight(), YmirScreenDrawing.colorAtOpacity(0x000000, 0.25F));
+           // YmirScreenDrawing.coloredRect(matrices, x, y, 32, 32, YmirScreenDrawing.colorAtOpacity(0x000000, 0.25F));
         }
 
         int maxVal = max >= 0 ? properties.get(max) : maxValue;
@@ -101,7 +101,7 @@ public class YmirBar extends YmirWidget {
                 int top = y + getHeight();
                 top -= barSize;
                 if (bar != null) {
-                    YmirScreenDrawing.texturedRect(matrices, left, top, getWidth(), barSize, bar.image(), bar.u1(), MathHelper.lerp(percent, bar.v2(), bar.v1()), bar.u2(), bar.v2(), 0xFFFFFFFF);
+                    YmirScreenDrawing.texturedGuiRect(matrices, left, top, getWidth(), barSize, bar);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, left, top, getWidth(), barSize, YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }
@@ -109,7 +109,7 @@ public class YmirBar extends YmirWidget {
 
             case RIGHT -> {
                 if (bar != null) {
-                    YmirScreenDrawing.texturedRect(matrices, x, y, barSize, getHeight(), bar.image(), bar.u1(), bar.v1(), MathHelper.lerp(percent, bar.u1(), bar.u2()), bar.v2(), 0xFFFFFFFF);
+                    YmirScreenDrawing.texturedGuiRect(matrices, x, y, barSize, getHeight(), bar);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, x, y, barSize, getHeight(), YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }
@@ -117,7 +117,7 @@ public class YmirBar extends YmirWidget {
 
             case DOWN -> {
                 if (bar != null) {
-                    YmirScreenDrawing.texturedRect(matrices, x, y, getWidth(), barSize, bar.image(), bar.u1(), bar.v1(), bar.u2(), MathHelper.lerp(percent, bar.v1(), bar.v2()), 0xFFFFFFFF);
+                    YmirScreenDrawing.texturedGuiRect(matrices, x, y, getWidth(), barSize, bar);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, x, y, getWidth(), barSize, YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }
@@ -128,7 +128,8 @@ public class YmirBar extends YmirWidget {
                 int top = y;
                 left -= barSize;
                 if (bar != null) {
-                    YmirScreenDrawing.texturedRect(matrices, left, top, barSize, getHeight(), bar.image(), MathHelper.lerp(percent, bar.u2(), bar.u1()), bar.v1(), bar.u2(), bar.v2(), 0xFFFFFFFF);
+                    //bar.u1 = MathHelper.lerp(percent, bar.u2, bar.u1);
+                    YmirScreenDrawing.texturedGuiRect(matrices, left, top, barSize, getHeight(), bar);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, left, top, barSize, getHeight(), YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }

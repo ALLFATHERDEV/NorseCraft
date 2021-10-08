@@ -263,7 +263,7 @@ public class YmirScreenDrawing {
     }
 
     public static void renderTooltip(MatrixStack matrices, List<Text> lines, Optional<TooltipData> data, int x, int y, int width, int height) {
-        List<TooltipComponent> list = (List)lines.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList());
+        List<TooltipComponent> list = (List) lines.stream().map(Text::asOrderedText).map(TooltipComponent::of).collect(Collectors.toList());
         data.ifPresent((datax) -> {
             list.add(1, TooltipComponent.of(datax));
         });
@@ -283,7 +283,7 @@ public class YmirScreenDrawing {
     }
 
     public static void renderOrderedTooltip(MatrixStack matrices, List<? extends OrderedText> lines, int x, int y, int width, int height) {
-        renderTooltipFromComponents(matrices, (List)lines.stream().map(TooltipComponent::of).collect(Collectors.toList()), x, y, width, height);
+        renderTooltipFromComponents(matrices, (List) lines.stream().map(TooltipComponent::of).collect(Collectors.toList()), x, y, width, height);
     }
 
     public static void renderTooltipFromComponents(MatrixStack matrices, List<TooltipComponent> components, int x, int y, int width, int height) {
@@ -294,8 +294,8 @@ public class YmirScreenDrawing {
             int j = components.size() == 1 ? -2 : 0;
 
             TooltipComponent tooltipComponent;
-            for(Iterator var7 = components.iterator(); var7.hasNext(); j += tooltipComponent.getHeight()) {
-                tooltipComponent = (TooltipComponent)var7.next();
+            for (Iterator var7 = components.iterator(); var7.hasNext(); j += tooltipComponent.getHeight()) {
+                tooltipComponent = (TooltipComponent) var7.next();
                 int k = tooltipComponent.getWidth(textRenderer);
                 if (k > i) {
                     i = k;
@@ -346,8 +346,8 @@ public class YmirScreenDrawing {
 
             int v;
             TooltipComponent tooltipComponent3;
-            for(v = 0; v < components.size(); ++v) {
-                tooltipComponent3 = (TooltipComponent)components.get(v);
+            for (v = 0; v < components.size(); ++v) {
+                tooltipComponent3 = (TooltipComponent) components.get(v);
                 tooltipComponent3.drawText(textRenderer, l, t, matrix4f, immediate);
                 t += tooltipComponent3.getHeight() + (v == 0 ? 2 : 0);
             }
@@ -356,8 +356,8 @@ public class YmirScreenDrawing {
             matrices.pop();
             t = m;
 
-            for(v = 0; v < components.size(); ++v) {
-                tooltipComponent3 = (TooltipComponent)components.get(v);
+            for (v = 0; v < components.size(); ++v) {
+                tooltipComponent3 = (TooltipComponent) components.get(v);
                 tooltipComponent3.drawItems(textRenderer, l, t, matrices, itemRenderer, 400, MinecraftClient.getInstance().getTextureManager());
                 t += tooltipComponent3.getHeight() + (v == 0 ? 2 : 0);
             }
@@ -381,18 +381,18 @@ public class YmirScreenDrawing {
     }
 
     public static void fillGradient(Matrix4f matrix, BufferBuilder bufferBuilder, int startX, int startY, int endX, int endY, int z, int colorStart, int colorEnd) {
-        float f = (float)(colorStart >> 24 & 255) / 255.0F;
-        float g = (float)(colorStart >> 16 & 255) / 255.0F;
-        float h = (float)(colorStart >> 8 & 255) / 255.0F;
-        float i = (float)(colorStart & 255) / 255.0F;
-        float j = (float)(colorEnd >> 24 & 255) / 255.0F;
-        float k = (float)(colorEnd >> 16 & 255) / 255.0F;
-        float l = (float)(colorEnd >> 8 & 255) / 255.0F;
-        float m = (float)(colorEnd & 255) / 255.0F;
-        bufferBuilder.vertex(matrix, (float)endX, (float)startY, (float)z).color(g, h, i, f).next();
-        bufferBuilder.vertex(matrix, (float)startX, (float)startY, (float)z).color(g, h, i, f).next();
-        bufferBuilder.vertex(matrix, (float)startX, (float)endY, (float)z).color(k, l, m, j).next();
-        bufferBuilder.vertex(matrix, (float)endX, (float)endY, (float)z).color(k, l, m, j).next();
+        float f = (float) (colorStart >> 24 & 255) / 255.0F;
+        float g = (float) (colorStart >> 16 & 255) / 255.0F;
+        float h = (float) (colorStart >> 8 & 255) / 255.0F;
+        float i = (float) (colorStart & 255) / 255.0F;
+        float j = (float) (colorEnd >> 24 & 255) / 255.0F;
+        float k = (float) (colorEnd >> 16 & 255) / 255.0F;
+        float l = (float) (colorEnd >> 8 & 255) / 255.0F;
+        float m = (float) (colorEnd & 255) / 255.0F;
+        bufferBuilder.vertex(matrix, (float) endX, (float) startY, (float) z).color(g, h, i, f).next();
+        bufferBuilder.vertex(matrix, (float) startX, (float) startY, (float) z).color(g, h, i, f).next();
+        bufferBuilder.vertex(matrix, (float) startX, (float) endY, (float) z).color(k, l, m, j).next();
+        bufferBuilder.vertex(matrix, (float) endX, (float) endY, (float) z).color(k, l, m, j).next();
     }
 
 }

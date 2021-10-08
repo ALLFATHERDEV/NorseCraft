@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "norsecraft:block/dwarf_forge/forge_pit"
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_pit"
     }
   }
 }

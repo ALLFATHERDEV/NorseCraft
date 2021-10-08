@@ -10,6 +10,7 @@ import com.norsecraft.client.render.model.block.CrateBlockModel;
 import com.norsecraft.client.render.model.entity.*;
 import com.norsecraft.client.ymir.screen.YmirInventoryScreen;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
+import com.norsecraft.common.gui.CampfireGuiInterpretation;
 import com.norsecraft.common.gui.CrateGuiInterpretation;
 import com.norsecraft.common.registry.NCBlockEntities;
 import com.norsecraft.common.registry.NCBlocks;
@@ -29,6 +30,8 @@ import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
 public class NorseCraftModClient implements ClientModInitializer {
+
+    public static final boolean DATA_GEN = false;
 
     @Override
     public void onInitializeClient() {
@@ -60,6 +63,8 @@ public class NorseCraftModClient implements ClientModInitializer {
         //========================================================================
         ScreenRegistry.register(NCScreenHandlers.norseCraftInventory, NorseCraftInventoryScreen::new);
 
+        ScreenRegistry.<CampfireGuiInterpretation, YmirInventoryScreen<CampfireGuiInterpretation>>register(NCScreenHandlers.campfireGuiBasic,
+                (desc, inventory, title) -> new YmirInventoryScreen<>(desc, inventory.player, title));
         ScreenRegistry.<DwarfTradeGuiInterpretation, YmirInventoryScreen<DwarfTradeGuiInterpretation>>register(NCScreenHandlers.dwarfTrade,
                 (desc, inventory, title) -> new YmirInventoryScreen<>(desc, inventory.player, title));
         ScreenRegistry.<CrateGuiInterpretation, YmirInventoryScreen<CrateGuiInterpretation>>register(NCScreenHandlers.crate,

@@ -19,6 +19,7 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
+import net.minecraft.recipe.CookingRecipeSerializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,6 +48,8 @@ public class NorseCraftMod implements ModInitializer {
         NCFeatures.register();
         NCConfiguredFeatures.register();
         NCBiomes.register();
+        NCRecipeTypes.register();
+        NCRecipeSerializer.register();
 
         LOGGER.info("Loading multiblocks");
         multiblockManager.addMultiblock(new DwarfForgeMultiblock());
