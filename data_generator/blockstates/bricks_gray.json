@@ -1,0 +1,22 @@
+{
+  "variants": {
+    "block_variants=1": {
+      "model": "norsecraft:block/bricks/gray/bricks_gray_0"
+    },
+    "block_variants=2": {
+      "model": "norsecraft:block/bricks/gray/bricks_gray_1"
+    },
+    "block_variants=3": {
+      "model": "norsecraft:block/bricks/gray/bricks_gray_2"
+    },
+    "block_variants=4": {
+      "model": "norsecraft:block/bricks/gray/bricks_gray_3"
+    },
+    "block_variants=5": {
+      "model": "norsecraft:block/bricks/gray/bricks_gray_4"
+    },
+    "block_variants=6": {
+      "model": "norsecraft:block/bricks/gray/bricks_gray_5"
+    }
+  }
+}

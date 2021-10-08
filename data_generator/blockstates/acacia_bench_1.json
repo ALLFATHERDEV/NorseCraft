@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "side=left,facing=north": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_left",
+      "y": 90
+    },
+    "side=left,facing=east": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_left",
+      "y": 180
+    },
+    "side=left,facing=south": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_left",
+      "y": -90
+    },
+    "side=left,facing=west": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_left"
+    },
+    "side=right,facing=north": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_right",
+      "y": 90
+    },
+    "side=right,facing=east": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_right",
+      "y": 180
+    },
+    "side=right,facing=south": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_right",
+      "y": -90
+    },
+    "side=right,facing=west": {
+      "model": "norsecraft:block/bench/1/acacia_bench_1_right"
+    }
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "side=top,facing=north": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_top",
+      "y": 180
+    },
+    "side=top,facing=east": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_top",
+      "y": -90
+    },
+    "side=top,facing=south": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_top"
+    },
+    "side=top,facing=west": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_top",
+      "y": 90
+    },
+    "side=bottom,facing=north": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_bottom",
+      "y": 180
+    },
+    "side=bottom,facing=east": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_bottom",
+      "y": -90
+    },
+    "side=bottom,facing=south": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_bottom"
+    },
+    "side=bottom,facing=west": {
+      "model": "norsecraft:block/dwarf_forge/dwarf_forge_chimney_wall_bottom",
+      "y": 90
+    }
+  }
+}

@@ -3,6 +3,7 @@ package com.norsecraft.datagen;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
+import com.norsecraft.common.registry.NCBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.util.registry.Registry;
 
@@ -15,13 +16,87 @@ public class ItemModelDataGenerator implements NorseCraftDataGenerator {
 
     @Override
     public void generate() {
+        generateBlockItem(() -> NCBlocks.COPPER_ORE, null);
+        generateBlockItem(() -> NCBlocks.BRONZE_ORE, null);
+        generateBlockItem(() -> NCBlocks.IRITHIUM_ORE, null);
+        generateBlockItem(() -> NCBlocks.SILVER_ORE, null);
+
+        generateBlockItem(() -> NCBlocks.WOODEN_DOUBLE_TABLE, "","_left");
+        generateBlockItem(() -> NCBlocks.CAMPFIRE, null);
+        generateBlockItem(() -> NCBlocks.WOOD_TABLE, null);
+
+        generateBlockItem(() -> NCBlocks.DARK_COBBLESTONE, null);
+        generateBlockItem(() -> NCBlocks.DARK_COBBLESTONE_MOSSY, null);
+        generateBlockItem(() -> NCBlocks.DARK_STONE, null);
+        generateBlockItem(() -> NCBlocks.DARK_STONE_BRICK, null);
+        generateBlockItem(() -> NCBlocks.DARK_STONE_BRICK_MOSSY, null);
+        generateBlockItem(() -> NCBlocks.COLOURED_STONE, "", "_0");
+        generateBlockItem(() -> NCBlocks.BRICKS_BLUEISH, "","_0");
+        generateBlockItem(() -> NCBlocks.BRICKS_GRAY, "","_0");
+        generateBlockItem(() -> NCBlocks.ROCKS, "","_0");
+        generateBlockItem(() -> NCBlocks.COBBLE_WALL, null);
+
+        generateBlockItem(() -> NCBlocks.STONE_PILLAR, null);
+        generateBlockItem(() -> NCBlocks.CRATE, null);
+
+        generateBlockItem(() -> NCBlocks.DWARF_FORGE_PIT, "dwarf_forge");
+        generateBlockItem(() -> NCBlocks.DWARF_FORGE_WALL, "dwarf_forge");
+        generateBlockItem(() -> NCBlocks.DWARF_FORGE_CHIMNEY_WALL, "dwarf_forge");
+        generateBlockItem(() -> NCBlocks.DWARF_FORGE_PILLAR, "dwarf_forge");
+
+        generateBlockItem(() -> NCBlocks.ACACIA_WOODEN_CHAIR_1, "chairs");
+        generateBlockItem(() -> NCBlocks.ACACIA_WOODEN_CHAIR_2, "chairs");
+        generateBlockItem(() -> NCBlocks.ACACIA_WOODEN_CHAIR_3, "chairs");
+        generateBlockItem(() -> NCBlocks.ACACIA_WOODEN_CHAIR_4, "chairs");
+        generateBlockItem(() -> NCBlocks.ACACIA_WOODEN_CHAIR_5, "chairs");
+
+        generateBlockItem(() -> NCBlocks.BIRCH_WOODEN_CHAIR_1, "chairs");
+        generateBlockItem(() -> NCBlocks.BIRCH_WOODEN_CHAIR_2, "chairs");
+        generateBlockItem(() -> NCBlocks.BIRCH_WOODEN_CHAIR_3, "chairs");
+        generateBlockItem(() -> NCBlocks.BIRCH_WOODEN_CHAIR_4, "chairs");
+        generateBlockItem(() -> NCBlocks.BIRCH_WOODEN_CHAIR_5, "chairs");
+
+        generateBlockItem(() -> NCBlocks.DARK_OAK_WOODEN_CHAIR_1, "chairs");
+        generateBlockItem(() -> NCBlocks.DARK_OAK_WOODEN_CHAIR_2, "chairs");
+        generateBlockItem(() -> NCBlocks.DARK_OAK_WOODEN_CHAIR_3, "chairs");
+        generateBlockItem(() -> NCBlocks.DARK_OAK_WOODEN_CHAIR_4, "chairs");
+        generateBlockItem(() -> NCBlocks.DARK_OAK_WOODEN_CHAIR_5, "chairs");
+
+        generateBlockItem(() -> NCBlocks.JUNGLE_WOODEN_CHAIR_1, "chairs");
+        generateBlockItem(() -> NCBlocks.JUNGLE_WOODEN_CHAIR_2, "chairs");
+        generateBlockItem(() -> NCBlocks.JUNGLE_WOODEN_CHAIR_3, "chairs");
+        generateBlockItem(() -> NCBlocks.JUNGLE_WOODEN_CHAIR_4, "chairs");
+        generateBlockItem(() -> NCBlocks.JUNGLE_WOODEN_CHAIR_5, "chairs");
+
+        generateBlockItem(() -> NCBlocks.OAK_WOODEN_CHAIR_1, "chairs");
+        generateBlockItem(() -> NCBlocks.OAK_WOODEN_CHAIR_2, "chairs");
+        generateBlockItem(() -> NCBlocks.OAK_WOODEN_CHAIR_3, "chairs");
+        generateBlockItem(() -> NCBlocks.OAK_WOODEN_CHAIR_4, "chairs");
+        generateBlockItem(() -> NCBlocks.OAK_WOODEN_CHAIR_5, "chairs");
+
+        generateBlockItem(() -> NCBlocks.SPRUCE_WOODEN_CHAIR_1, "chairs");
+        generateBlockItem(() -> NCBlocks.SPRUCE_WOODEN_CHAIR_2, "chairs");
+        generateBlockItem(() -> NCBlocks.SPRUCE_WOODEN_CHAIR_3, "chairs");
+        generateBlockItem(() -> NCBlocks.SPRUCE_WOODEN_CHAIR_4, "chairs");
+        generateBlockItem(() -> NCBlocks.SPRUCE_WOODEN_CHAIR_5, "chairs");
+
+        generateBlockItem(() -> NCBlocks.ACACIA_BENCH_1, "bench/1");
+        generateBlockItem(() -> NCBlocks.BIRCH_BENCH_1, "bench/1");
+        generateBlockItem(() -> NCBlocks.DARK_OAK_BENCH_1, "bench/1");
+        generateBlockItem(() -> NCBlocks.JUNGLE_BENCH_1, "bench/1");
+        generateBlockItem(() -> NCBlocks.OAK_BENCH_1, "bench/1");
+        generateBlockItem(() -> NCBlocks.SPRUCE_BENCH_1, "bench/1");
 
     }
 
     private void generateBlockItem(Supplier<Block> block, String additionalPath) {
+       generateBlockItem(block, additionalPath, null);
+    }
+
+    private void generateBlockItem(Supplier<Block> block, String additionalPath, String additionalName) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
-        String blockName = Registry.BLOCK.getId(block.get()).getPath();
+        String blockName = Registry.BLOCK.getId(block.get()).getPath() + (additionalName != null ? additionalName : "");
         main.addProperty("parent", "norsecraft:block/" + (additionalPath != null ? additionalPath + "/" + blockName : blockName));
 
         this.save(gson.toJson(main), blockName);

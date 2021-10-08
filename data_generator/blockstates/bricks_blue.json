@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "block_variants=1": {
+      "model": "norsecraft:block/bricks/blue/bricks_blue_0"
+    },
+    "block_variants=2": {
+      "model": "norsecraft:block/bricks/blue/bricks_blue_1"
+    },
+    "block_variants=3": {
+      "model": "norsecraft:block/bricks/blue/bricks_blue_2"
+    },
+    "block_variants=4": {
+      "model": "norsecraft:block/bricks/blue/bricks_blue_3"
+    },
+    "block_variants=5": {
+      "model": "norsecraft:block/bricks/blue/bricks_blue_4"
+    }
+  }
+}

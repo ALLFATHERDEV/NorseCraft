@@ -110,7 +110,7 @@ public class NCBlocks {
         registerBlock("irithium_ore", IRITHIUM_ORE);
         registerBlock("silver_ore", SILVER_ORE);
 
-        registerBlock("wooden_double_table", WOODEN_DOUBLE_TABLE);
+        registerBlock("wooden_table_double", WOODEN_DOUBLE_TABLE);
 
         registerBlock("campfire", CAMPFIRE);
         registerBlock("wooden_table", WOOD_TABLE);

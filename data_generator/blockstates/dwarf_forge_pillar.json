@@ -1,0 +1,34 @@
+{
+  "variants": {
+    "side=top,facing=north": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_top"
+    },
+    "side=top,facing=east": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_top",
+      "y": 90
+    },
+    "side=top,facing=south": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_top",
+      "y": 180
+    },
+    "side=top,facing=west": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_top",
+      "y": -90
+    },
+    "side=bottom,facing=north": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_bottom"
+    },
+    "side=bottom,facing=east": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_bottom",
+      "y": 90
+    },
+    "side=bottom,facing=south": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_bottom",
+      "y": 180
+    },
+    "side=bottom,facing=west": {
+      "model": "norsecraft:block/dawrf_forge/dwarf_forge_pillar_bottom",
+      "y": -90
+    }
+  }
+}
