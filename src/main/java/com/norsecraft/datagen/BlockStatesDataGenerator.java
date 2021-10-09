@@ -48,7 +48,7 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         //Direction and Side
         generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_WALL, false, "dwarf_forge", new int[]{0, 90, 180, -90}, new int[]{0, 90, 180, -90});
         generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_CHIMNEY_WALL, false, "dwarf_forge", new int[]{180, -90, 0, 90}, new int[]{180, -90, 0, 90});
-        generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_PILLAR, false, "dawrf_forge", new int[]{0, 90, 180, -90}, new int[]{0, 90, 180, -90});
+        generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_PILLAR, false, "dwarf_forge", new int[]{0, 90, 180, -90}, new int[]{0, 90, 180, -90});
 
         //Chairs
         int[] chairsRotation = new int[]{180, 90, 90, 0};
@@ -130,8 +130,11 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         this.save(gson.toJson(main), blockName);
     }
 
+    private void generateWithSideAndDirectionalProperty(Supplier<Block> block, boolean leftRight, String additionalPath, int[] yRotationMidifierSide1, int[] yRotationModifierSide2) {
+        this.generateWithSideAndDirectionalProperty(block, leftRight, additionalPath, yRotationMidifierSide1, yRotationModifierSide2, false);
+    }
 
-    private void generateWithSideAndDirectionalProperty(Supplier<Block> block, boolean leftRight, String additionalPath, int[] yRotationModifiersSide1, int[] yRotationModifiersSide2) {
+    private void generateWithSideAndDirectionalProperty(Supplier<Block> block, boolean leftRight, String additionalPath, int[] yRotationModifiersSide1, int[] yRotationModifiersSide2, boolean blockHalf) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
         JsonObject variants = new JsonObject();
@@ -142,15 +145,16 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         String modelPathSide2 = getModelPath(additionalPath, blockName + (leftRight ? "_right" : "_bottom"));
 
         //Side1
-        variants.add(String.format("side=%s,facing=north", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[0]));
-        variants.add(String.format("side=%s,facing=east", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[1]));
-        variants.add(String.format("side=%s,facing=south", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[2]));
-        variants.add(String.format("side=%s,facing=west", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[3]));
+        String sidePropName = blockHalf ? "half" : "side";
+        variants.add(String.format("%s=%s,facing=north", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[0]));
+        variants.add(String.format("%s=%s,facing=east", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[1]));
+        variants.add(String.format("%s=%s,facing=south", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[2]));
+        variants.add(String.format("%s=%s,facing=west", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[3]));
         //Side2
-        variants.add(String.format("side=%s,facing=north", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[0]));
-        variants.add(String.format("side=%s,facing=east", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[1]));
-        variants.add(String.format("side=%s,facing=south", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[2]));
-        variants.add(String.format("side=%s,facing=west", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[3]));
+        variants.add(String.format("%s=%s,facing=north", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[0]));
+        variants.add(String.format("%s=%s,facing=east", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[1]));
+        variants.add(String.format("%s=%s,facing=south", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[2]));
+        variants.add(String.format("%s=%s,facing=west", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[3]));
         main.add("variants", variants);
 
         this.save(gson.toJson(main), blockName);

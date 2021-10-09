@@ -31,18 +31,17 @@ public class ItemModelDataGenerator implements NorseCraftDataGenerator {
         generateBlockItem(() -> NCBlocks.DARK_STONE_BRICK, null);
         generateBlockItem(() -> NCBlocks.DARK_STONE_BRICK_MOSSY, null);
         generateBlockItem(() -> NCBlocks.COLOURED_STONE, "", "_0");
-        generateBlockItem(() -> NCBlocks.BRICKS_BLUEISH, "","_0");
-        generateBlockItem(() -> NCBlocks.BRICKS_GRAY, "","_0");
         generateBlockItem(() -> NCBlocks.ROCKS, "","_0");
         generateBlockItem(() -> NCBlocks.COBBLE_WALL, null);
 
         generateBlockItem(() -> NCBlocks.STONE_PILLAR, null);
         generateBlockItem(() -> NCBlocks.CRATE, null);
+        generateBlockItem(() -> NCBlocks.STICKS, "sticks", "_0");
 
         generateBlockItem(() -> NCBlocks.DWARF_FORGE_PIT, "dwarf_forge");
-        generateBlockItem(() -> NCBlocks.DWARF_FORGE_WALL, "dwarf_forge");
-        generateBlockItem(() -> NCBlocks.DWARF_FORGE_CHIMNEY_WALL, "dwarf_forge");
-        generateBlockItem(() -> NCBlocks.DWARF_FORGE_PILLAR, "dwarf_forge");
+        generateBlockItem(() -> NCBlocks.DWARF_FORGE_WALL, "dwarf_forge", "_bottom");
+        generateBlockItem(() -> NCBlocks.DWARF_FORGE_CHIMNEY_WALL, "dwarf_forge", "_bottom");
+        generateBlockItem(() -> NCBlocks.DWARF_FORGE_PILLAR, "dwarf_forge", "_bottom");
 
         generateBlockItem(() -> NCBlocks.ACACIA_WOODEN_CHAIR_1, "chairs");
         generateBlockItem(() -> NCBlocks.ACACIA_WOODEN_CHAIR_2, "chairs");
@@ -80,12 +79,12 @@ public class ItemModelDataGenerator implements NorseCraftDataGenerator {
         generateBlockItem(() -> NCBlocks.SPRUCE_WOODEN_CHAIR_4, "chairs");
         generateBlockItem(() -> NCBlocks.SPRUCE_WOODEN_CHAIR_5, "chairs");
 
-        generateBlockItem(() -> NCBlocks.ACACIA_BENCH_1, "bench/1");
-        generateBlockItem(() -> NCBlocks.BIRCH_BENCH_1, "bench/1");
-        generateBlockItem(() -> NCBlocks.DARK_OAK_BENCH_1, "bench/1");
-        generateBlockItem(() -> NCBlocks.JUNGLE_BENCH_1, "bench/1");
-        generateBlockItem(() -> NCBlocks.OAK_BENCH_1, "bench/1");
-        generateBlockItem(() -> NCBlocks.SPRUCE_BENCH_1, "bench/1");
+        generateBlockItem(() -> NCBlocks.ACACIA_BENCH_1, "bench/1", "_left");
+        generateBlockItem(() -> NCBlocks.BIRCH_BENCH_1, "bench/1", "_left");
+        generateBlockItem(() -> NCBlocks.DARK_OAK_BENCH_1, "bench/1", "_left");
+        generateBlockItem(() -> NCBlocks.JUNGLE_BENCH_1, "bench/1", "_left");
+        generateBlockItem(() -> NCBlocks.OAK_BENCH_1, "bench/1", "_left");
+        generateBlockItem(() -> NCBlocks.SPRUCE_BENCH_1, "bench/1", "_left");
 
     }
 
@@ -96,8 +95,9 @@ public class ItemModelDataGenerator implements NorseCraftDataGenerator {
     private void generateBlockItem(Supplier<Block> block, String additionalPath, String additionalName) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
-        String blockName = Registry.BLOCK.getId(block.get()).getPath() + (additionalName != null ? additionalName : "");
-        main.addProperty("parent", "norsecraft:block/" + (additionalPath != null ? additionalPath + "/" + blockName : blockName));
+        String blockName = Registry.BLOCK.getId(block.get()).getPath();
+        main.addProperty("parent", "norsecraft:block/" + (additionalPath != null ? additionalPath + "/" + blockName + (additionalName != null ? additionalName : "")
+                : blockName + (additionalName != null ? additionalName : "")));
 
         this.save(gson.toJson(main), blockName);
     }
