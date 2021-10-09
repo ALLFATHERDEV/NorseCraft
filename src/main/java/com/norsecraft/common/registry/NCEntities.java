@@ -15,6 +15,9 @@ import net.minecraft.entity.SpawnGroup;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+/**
+ * Register all entities from the mod
+ */
 public class NCEntities {
 
     public static EntityType<WildBoarEntity> wildBoar;

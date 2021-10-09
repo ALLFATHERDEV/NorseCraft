@@ -10,6 +10,9 @@ import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.BuiltinBiomes;
 import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 
+/**
+ * All custom biomes
+ */
 public class NCBiomes {
 
     public static final RegistryKey<Biome> DWARF_BIOME = registerKey("dwarf_biome");

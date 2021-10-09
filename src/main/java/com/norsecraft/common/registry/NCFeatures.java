@@ -7,6 +7,9 @@ import com.norsecraft.common.world.feature.config.NCDecorationFeatureConfig;
 import net.minecraft.util.registry.Registry;
 import net.minecraft.world.gen.feature.Feature;
 
+/**
+ * Register all the features for the mod
+ */
 public class NCFeatures {
 
     public static final Feature<NCDecorationFeatureConfig> NC_DECORATION = new NCDecorationFeature(NCDecorationFeatureConfig.CODEC);

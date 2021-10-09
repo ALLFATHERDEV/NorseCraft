@@ -7,6 +7,9 @@ import net.minecraft.loot.entry.ItemEntry;
 import net.minecraft.loot.provider.number.UniformLootNumberProvider;
 import net.minecraft.util.Identifier;
 
+/**
+ * If you want to change existing default mc loot tables you can do this here
+ */
 public class LootTableListener {
 
     private static final Identifier STONE_ID = Blocks.STONE.getLootTableId();

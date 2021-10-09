@@ -6,6 +6,9 @@ import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+/**
+ * Register all the items from the mod
+ */
 public class NCItems {
 
     public static final Item ROCK = new Item(defSettings());

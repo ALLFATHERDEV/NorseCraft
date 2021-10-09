@@ -17,27 +17,48 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * If you have a merchant entity, use this class for the merchant gui.
+ * This class handles some important merchant methods
+ */
 public abstract class MerchantGuiInterpretation extends SyncedGuiInterpretation {
-
 
     public MerchantGuiInterpretation(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, @Nullable Inventory blockInventory, @Nullable PropertyDelegate delegate, BackgroundPainter painter) {
         super(type, syncId, playerInventory, blockInventory, delegate, painter);
     }
 
+    /**
+     * @return teh trade offer list for the merchant
+     */
     public abstract TradeOfferList getOffers();
 
+    /**
+     * @return the merchant entity
+     */
     public abstract Merchant getMerchant();
 
+    /**
+     * This method will be executed when a trade was executed
+     * @param inventory the merchant inventory
+     */
     @Override
     public void onContentChanged(Inventory inventory) {
         ((MerchantInventory) this.blockInventory).updateOffers();
         super.onContentChanged(inventory);
     }
 
+    /**
+     * Sets the offer index
+     * @param index the new offer index
+     */
     public void setOfferIndex(int index) {
         ((MerchantInventory) this.blockInventory).setOfferIndex(index);
     }
 
+    /**
+     * This method drops all the items from the trading gui if the container gets closed
+     * @param player the player entity
+     */
     @Override
     public void close(PlayerEntity player) {
         MerchantInventory merchantInventory = (MerchantInventory) blockInventory;
@@ -59,6 +80,10 @@ public abstract class MerchantGuiInterpretation extends SyncedGuiInterpretation 
         }
     }
 
+    /**
+     * This method will be executed on the client side, and switches to the right offer index
+     * @param recipeIndex the offer index
+     */
     public void switchTo(int recipeIndex) {
         MerchantInventory merchantInventory = (MerchantInventory) this.blockInventory;
         if (this.getOffers().size() > recipeIndex) {
@@ -88,6 +113,12 @@ public abstract class MerchantGuiInterpretation extends SyncedGuiInterpretation 
         }
     }
 
+    /**
+     * If you click on a trade button, then this method will be called and autofill the trade slots with the items
+     *
+     * @param slotIndex the slot index to autofill
+     * @param stack the items to fill with
+     */
     private void autofill(int slotIndex, ItemStack stack) {
         if (!stack.isEmpty()) {
             MerchantInventory merchantInventory = (MerchantInventory) this.blockInventory;

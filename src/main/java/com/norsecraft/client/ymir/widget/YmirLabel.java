@@ -17,6 +17,9 @@ import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A default label widget
+ */
 public class YmirLabel extends YmirWidget {
 
     protected Text text;

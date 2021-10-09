@@ -12,6 +12,13 @@ import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Supplier;
 
+/**
+ * Similar to the RecyclerView in Android, this widget represents a scrollable list of items.
+ *
+ * <p> D is the type of data represented. The data must reside in some ordered backing {@code List<D>}.
+ *     D's *must* have working equals and hashCode methods to distinguish them from each other!
+ * <p> W is the WWidget class that will represent a single D of data.
+ */
 public class YmirListPanel<D, W extends YmirWidget> extends YmirClippedPanel {
 
     protected List<D> data;

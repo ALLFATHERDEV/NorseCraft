@@ -5,6 +5,9 @@ import net.minecraft.util.Identifier;
 
 import java.util.Objects;
 
+/**
+ * A class that holds all the important data for a texture
+ */
 public record Texture(Identifier image, float u1, float v1, float u2, float v2, float textureWidth,
                       float textureHeight) {
     public Texture {

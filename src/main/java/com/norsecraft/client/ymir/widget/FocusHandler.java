@@ -2,6 +2,9 @@ package com.norsecraft.client.ymir.widget;
 
 import com.norsecraft.client.ymir.interpretation.GuiInterpretation;
 
+/**
+ * This class handles the focus in the gui and cycles it
+ */
 public class FocusHandler {
 
     public static void cycleFocus(GuiInterpretation host, boolean lookForwards) {

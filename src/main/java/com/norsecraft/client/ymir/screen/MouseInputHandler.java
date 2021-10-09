@@ -8,11 +8,28 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.function.Function;
 
+/**
+ * This class handles the mouse input screen for the screen S
+ *
+ * @param <S> the screen to handle the mouse input
+ */
 public final class MouseInputHandler<S extends Screen & YmirScreenImpl> {
 
+    /**
+     * The screen to handle the input
+     */
     private final S screen;
+
+    /**
+     * The hovered property. For more information look  at the {@link ObservableProperty} class
+     */
     private final ObservableProperty<@Nullable YmirWidget> hovered = ObservableProperty.<YmirWidget>of(null).build();
 
+    /**
+     * Default constructor that adds a listener to the hovered property
+     *
+     * @param screen the screen where it should listen to
+     */
     public MouseInputHandler(S screen) {
         this.screen = screen;
         hovered.addListener((property, from, to) -> {
@@ -21,6 +38,13 @@ public final class MouseInputHandler<S extends Screen & YmirScreenImpl> {
         });
     }
 
+    /**
+     * This method will be executed when the player clicked the mouse
+     *
+     * @param containerX  the x position of the gui container
+     * @param containerY  the y position of the gui container
+     * @param mouseButton the mouse button
+     */
     public void onMouseDown(int containerX, int containerY, int mouseButton) {
         if (screen.getLastResponder() == null) {
             YmirWidget lastResponder = screen.getInterpretation().getRootPanel().hit(containerX, containerY);
@@ -31,6 +55,13 @@ public final class MouseInputHandler<S extends Screen & YmirScreenImpl> {
         }
     }
 
+    /**
+     * This method will be executed when the player released the finger from the mouse button
+     *
+     * @param containerX  the x position of the gui container
+     * @param containerY  the y position of the gui container
+     * @param mouseButton the mouse button
+     */
     public void onMouseUp(int containerX, int containerY, int mouseButton) {
         YmirWidget lastResponder = screen.getLastResponder();
         if (lastResponder != null) {
@@ -51,6 +82,15 @@ public final class MouseInputHandler<S extends Screen & YmirScreenImpl> {
         screen.setLastResponder(null);
     }
 
+    /**
+     * If the player performs a drag action, this method will be executed
+     *
+     * @param containerX  the x position of the gui container
+     * @param containerY  the y position of the gui container
+     * @param mouseButton the mouse button
+     * @param deltaX      the delta x from the start to the end
+     * @param deltaY      the delta y from the start to the end
+     */
     public void onMouseDrag(int containerX, int containerY, int mouseButton, double deltaX, double deltaY) {
         YmirWidget lastResponder = screen.getLastResponder();
         if (lastResponder != null) {
@@ -66,11 +106,26 @@ public final class MouseInputHandler<S extends Screen & YmirScreenImpl> {
         }
     }
 
+    /**
+     * If the player use the mouse wheel this method will be called
+     *
+     * @param containerX the x position of the gui container
+     * @param containerY the y position of the gui container
+     * @param amount this parameter has only two values:
+     *               +1.0 for scrolling up
+     *               -1.0 for scrolling down
+     */
     public void onMouseScroll(int containerX, int containerY, double amount) {
         runTree(screen.getInterpretation().getRootPanel().hit(containerX, containerY),
                 widget -> widget.onMouseScroll(containerX - widget.getAbsoluteX(), containerY - widget.getAbsoluteY(), amount));
     }
 
+    /**
+     * If the player moves the mouse this method will be executed
+     *
+     * @param containerX the x position of the gui container
+     * @param containerY the y position of the gui container
+     */
     public void onMouseMove(int containerX, int containerY) {
         YmirWidget w = screen.getInterpretation().getRootPanel().hit(containerX, containerY);
         runTree(w, widget -> widget.onMouseMove(containerX - widget.getAbsoluteX(), containerY - widget.getAbsoluteY()));
@@ -82,6 +137,13 @@ public final class MouseInputHandler<S extends Screen & YmirScreenImpl> {
 
     }
 
+    /**
+     * This method runs through the widget and all his parent widgets and returns the last found widget
+     *
+     * @param bottom the first widget
+     * @param function the function for checking if the tree should continue
+     * @return the last widget from all the parents (If it has more then one parent)
+     */
     @Nullable
     private YmirWidget runTree(YmirWidget bottom, Function<YmirWidget, InputResult> function) {
         YmirWidget current = bottom;

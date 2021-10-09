@@ -7,6 +7,9 @@ import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeSerializer;
 import net.minecraft.util.registry.Registry;
 
+/**
+ * Register the recipe serializer from the mod
+ */
 public class NCRecipeSerializer {
 
     public static RecipeSerializer<CampfireRecipe> campfireSerializer;

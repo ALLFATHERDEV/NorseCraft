@@ -7,6 +7,9 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Stream;
 
+/**
+ * The reputation decay type. How much it should decay after a day or not
+ */
 public enum ReputationDecayType {
 
     MAJOR_NEGATIVE("major_negative", -5, 100, 10, 10),

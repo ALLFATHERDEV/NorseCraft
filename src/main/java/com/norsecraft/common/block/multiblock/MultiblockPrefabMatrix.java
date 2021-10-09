@@ -10,6 +10,10 @@ import net.minecraft.util.math.BlockPos;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * This class holds the structure data for the multiblock.
+ * If you want to add a multiblock, you have to set in the static block the position for every block in the structure
+ */
 public class MultiblockPrefabMatrix {
 
     public static final Identifier ID_DWARF_FORGE = NorseCraftMod.nc("dwarf_forge");
@@ -17,6 +21,7 @@ public class MultiblockPrefabMatrix {
     public static final Map<Identifier, MultiblockPrefabMatrix> MATRIX_MAP = Maps.newHashMap();
 
     static {
+        //Here I build the finished multiblock structure for the dwarf forge.
         MATRIX_MAP.put(ID_DWARF_FORGE,
                 MultiblockPrefabMatrix.startBuildMatrix(ID_DWARF_FORGE)
                         .add(new BlockPos(0, 0, 0), () -> NCBlocks.DWARF_FORGE_PILLAR, true)
@@ -42,10 +47,22 @@ public class MultiblockPrefabMatrix {
         this.entries = Maps.newHashMap();
     }
 
+    /**
+     * Call this method if you want to start the prefab
+     * @param id the multiblock id
+     * @return a new prefab matrix where you can build the prefab
+     */
     public static MultiblockPrefabMatrix startBuildMatrix(Identifier id) {
         return new MultiblockPrefabMatrix(id);
     }
 
+    /**
+     * Adds a entry to the prefab matrix, that represents a block
+     * @param pos the normal block position
+     * @param block the block
+     * @param doubleBlock if the block is a double sized block set it to true otherwise false
+     * @return the current prefab matrix
+     */
     public MultiblockPrefabMatrix add(BlockPos pos, Supplier<Block> block, boolean doubleBlock) {
         if (this.entries.containsKey(pos))
             this.entries.replace(pos, new MatrixEntry(pos, block, doubleBlock));

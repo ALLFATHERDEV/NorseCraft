@@ -7,6 +7,9 @@ import net.fabricmc.api.Environment;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
+/**
+ * This class represents a texture icon
+ */
 public class TextureIcon implements Icon{
 
     private final Texture texture;

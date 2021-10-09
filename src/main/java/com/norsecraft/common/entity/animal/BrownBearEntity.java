@@ -131,6 +131,11 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
     }
 
 
+    /**
+     * This is a fixed version of the {@link MeleeAttackGoal} from mc
+     * In this version I broadcast a packet to every client player with the information of the current attacking entity
+     *
+     */
     private static class FixedMeleeAttackGoal extends MeleeAttackGoal {
 
         public FixedMeleeAttackGoal(BrownBearEntity mob, double speed, boolean pauseWhenMobIdle) {
@@ -148,6 +153,7 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
         @Override
         public void stop() {
             super.stop();
+            //If the world is not the client world, then the world is the server world and i can broadcast a packet to the client with the attacker entity id
             if (!mob.world.isClient) {
                 NetworkHelper.broadcastToClient((ServerWorld) this.mob.world, SendAttackingEntityS2C.ID, new SendAttackingEntityS2C(this.mob.getId(),
                         -1, SendAttackingEntityS2C.NONE));
@@ -158,6 +164,10 @@ public class BrownBearEntity extends HostileEntity implements IAnimatable, Clien
         }
     }
 
+    /**
+     * Same as {@link FixedMeleeAttackGoal} only for the {@link FollowTargetGoal}
+     * @param <T>
+     */
     private static class FixedFollowTargetGoal<T extends LivingEntity> extends FollowTargetGoal<T> {
 
         public FixedFollowTargetGoal(BrownBearEntity mob, Class<T> targetClass, boolean checkVisibility) {

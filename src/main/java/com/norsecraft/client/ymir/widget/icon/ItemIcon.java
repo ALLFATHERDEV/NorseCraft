@@ -9,6 +9,9 @@ import net.minecraft.item.ItemStack;
 
 import java.util.Objects;
 
+/**
+ * This class represent an item icon
+ */
 public class ItemIcon implements Icon{
 
     private final ItemStack stack;

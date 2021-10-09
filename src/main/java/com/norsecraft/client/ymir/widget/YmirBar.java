@@ -22,17 +22,67 @@ import org.jetbrains.annotations.Nullable;
  */
 public class YmirBar extends YmirWidget {
 
+    /**
+     * The background texture. If not null, it will be
+     * drawn behind the bar contents.
+     */
     @Nullable
     protected final Texture bg;
+
+    /**
+     * The bar texture. If not null, it will be
+     * drawn to represent the current field.
+     */
     @Nullable
     protected final Texture bar;
+
+    /**
+     * The ID of the displayed property in the {@link #properties}.
+     */
     protected final int field;
+
+    /**
+     * The ID of the property representing the maximum value of the {@link #field}.
+     *
+     * <p>If {@code max} is negative, the {@link #maxValue} constant will be used instead.
+     */
     protected final int max;
+
+    /**
+     * The constant maximum value of the {@link #field}.
+     *
+     * <p>This constant will only be used if {@link #max} is negative.
+     *
+     * @see #withConstantMaximum(Identifier, Identifier, int, int, Direction)
+     */
     protected int maxValue;
+
+    /**
+     * The properties used for painting this bar.
+     *
+     * <p>The current value is read from the property with ID {@link #field},
+     * and the maximum value is usually read from the property with ID {@link #max}.
+     */
     protected PropertyDelegate properties;
     private boolean manuallySetProperties = false;
+
+    /**
+     * The direction of this bar, representing where the bar will grow
+     * when the field increases.
+     */
     protected final Direction direction;
+
+    /**
+     * The translation key of the tooltip.
+     *
+     * @see #withTooltip(String) formatting instructions
+     */
     protected String tooltipLabel;
+
+    /**
+     * A tooltip text component. This can be used instead of {@link #tooltipLabel},
+     * or together with it. In that case, this component will be drawn after the other label.
+     */
     protected Text tooltipTextComponent;
 
     public YmirBar(@Nullable Texture bg, @Nullable Texture bar, int field, int maxField) {

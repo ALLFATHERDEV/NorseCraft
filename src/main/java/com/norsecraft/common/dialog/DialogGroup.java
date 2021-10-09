@@ -5,11 +5,30 @@ import com.google.common.collect.Lists;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * A dialog group is a list of dialogs that a entity has for the player.
+ * It also handles the right dialog order
+ */
 public class DialogGroup {
 
+    /**
+     * The name of the dialog group
+     */
     private final String name;
+
+    /**
+     * The first dialog that should appear when the player opens the dialog gui
+     */
     private final Dialog initialMessage;
+
+    /**
+     * A list of all others dialogs
+     */
     private final List<Dialog> nextDialogs;
+
+    /**
+     * The current selected dialog
+     */
     private Dialog currentDialog;
 
     public DialogGroup(String name, Dialog initialMessage, Dialog[] nextDialogs) {

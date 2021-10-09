@@ -19,15 +19,47 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * This class handles the multiblock shape and checks if it is a valid shape or not
+ * For a example see {@link com.norsecraft.common.block.dwarfforge.DwarfForgeMultiblock}
+ */
 public class MultiblockShape {
 
+    /**
+     * The size of the multiblock
+     */
     private final BlockPos size;
+
+    /**
+     * A collection of valid blocks for the multiblock
+     * You dont want to use any block :)
+     */
     private final Supplier<Collection<Block>> validBlocks;
+
     private List<ShapeBlockData> shapeBlocKData = Lists.newArrayList();
+
+    /**
+     * The controller pos, where it starts to analyze the shape
+     */
     private BlockPos controllerPos;
+
+    /**
+     * If true it is a valid shape, otherwise false
+     */
     private boolean formed;
+
+    /**
+     * The prefab matrix where it looks into
+     */
     private final MultiblockPrefabMatrix matrix;
 
+    /**
+     * Default constructor
+     *
+     * @param size the multiblock size
+     * @param validBlocks the list of valid blocks
+     * @param matrix the prefab matrix
+     */
     public MultiblockShape(BlockPos size, Supplier<Collection<Block>> validBlocks, MultiblockPrefabMatrix matrix) {
         this.size = size;
         this.validBlocks = validBlocks;
@@ -35,6 +67,15 @@ public class MultiblockShape {
         this.matrix = matrix;
     }
 
+    /**
+     * This method looks if the blocks in the size are in the correct position as the blocks in the prefab matrix.
+     * And if the blocks are the same type as in the prefab matrix.
+     *
+     * @param controllerPos this is the bottom left block of the side where the player interact with to activate the multiblock
+     * @param blockDirection the direction where the block stands
+     * @param world the world object
+     * @return true if it is a valid shape or false if not
+     */
     public boolean isShapeValid(BlockPos controllerPos, Direction blockDirection, World world) {
         if(this.controllerPos == null)
             this.controllerPos = controllerPos;
@@ -108,6 +149,10 @@ public class MultiblockShape {
         return shapeBlocKData;
     }
 
+    /**
+     * Writes all the data into the nbt compound
+     * @return the written nbt compound
+     */
     public NbtCompound write() {
         NbtCompound nbt = new NbtCompound();
         NbtList list = new NbtList();
@@ -126,6 +171,10 @@ public class MultiblockShape {
         return nbt;
     }
 
+    /**
+     * @param nbt the nbt compound
+     * @return the multiblock shape
+     */
     public static MultiblockShape read(NbtCompound nbt) {
         BlockPos size = NbtHelper.toBlockPos(nbt.getCompound("Size"));
         boolean formed = nbt.getBoolean("Formed");
@@ -144,6 +193,9 @@ public class MultiblockShape {
         return shape;
     }
 
+    /**
+     * This is a simple holder for a block state and the block pos
+     */
     public static class ShapeBlockData {
 
         public final BlockState state;

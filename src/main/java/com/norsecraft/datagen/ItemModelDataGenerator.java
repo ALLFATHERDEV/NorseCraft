@@ -14,6 +14,9 @@ import java.util.function.Supplier;
 
 public class ItemModelDataGenerator implements NorseCraftDataGenerator {
 
+    /**
+     * This method generates all the files
+     */
     @Override
     public void generate() {
         generateBlockItem(() -> NCBlocks.COPPER_ORE, null);
@@ -92,6 +95,20 @@ public class ItemModelDataGenerator implements NorseCraftDataGenerator {
        generateBlockItem(block, additionalPath, null);
     }
 
+    /**
+     * This method generate a item model file that looks like this:
+     *
+     * {
+     *     "parent": "norsecraft:block/additionalPath/blockName
+     * }
+     *
+     * That references to a block model as parent for the item
+     *
+     * @param block the block as parent
+     * @param additionalPath the additionalPath for the block model
+     *                       i.e: bricks: additionalPath = bricks/gray
+     * @param additionalName if it is a double sized block you can add a additional name. i.e: _left or _right
+     */
     private void generateBlockItem(Supplier<Block> block, String additionalPath, String additionalName) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
@@ -102,6 +119,12 @@ public class ItemModelDataGenerator implements NorseCraftDataGenerator {
         this.save(gson.toJson(main), blockName);
     }
 
+    /**
+     * Saves the json String into the file
+     *
+     * @param jsonString the raw json string
+     * @param blockName the block name as file name
+     */
     private void save(String jsonString, String blockName) {
         try {
             File folder = new File("../data_generator/models/item/");

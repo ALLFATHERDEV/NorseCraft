@@ -17,6 +17,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * A widget that displays an item or a list of items.
+ */
 public class YmirItem extends YmirWidget {
 
     private List<ItemStack> items;

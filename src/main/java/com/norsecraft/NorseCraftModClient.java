@@ -29,6 +29,9 @@ import net.minecraft.entity.LivingEntity;
 import software.bernie.geckolib3.core.IAnimatable;
 import software.bernie.geckolib3.model.AnimatedGeoModel;
 
+/**
+ * Main mod class for the client
+ */
 public class NorseCraftModClient implements ClientModInitializer {
 
     public static final boolean DATA_GEN = false;

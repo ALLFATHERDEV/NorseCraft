@@ -5,6 +5,7 @@ import com.norsecraft.client.ymir.interpretation.GuiInterpretation;
 import com.norsecraft.client.ymir.interpretation.SyncedGuiInterpretation;
 import com.norsecraft.client.ymir.widget.YmirPanel;
 import com.norsecraft.client.ymir.widget.YmirWidget;
+import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.render.DiffuseLighting;
@@ -17,17 +18,47 @@ import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * This class represents a synced gui screen
+ * It will handle all the things from the GuiInterpretation
+ *
+ * @param <T> The synced interpretation
+ */
 public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends HandledScreen<T> implements YmirScreenImpl {
 
+    /**
+     * The synced gui interpretation
+     */
     protected SyncedGuiInterpretation interpretation;
+
+    /**
+     * The last responder widget. If you clicked on a widget this widget is set as the last responder
+     */
     @Nullable
     protected YmirWidget lastResponder = null;
+
+    /**
+     * The mouse input handler, that handles all the mouse inputs
+     */
     private final MouseInputHandler<YmirInventoryScreen<T>> mouseInputHandler = new MouseInputHandler<>(this);
 
+    /**
+     * Default constructor without a title
+     *
+     * @param interpretation the gui interpretation
+     * @param player         the player instance
+     */
     public YmirInventoryScreen(T interpretation, PlayerEntity player) {
         this(interpretation, player, new LiteralText(""));
     }
 
+    /**
+     * Default constructor with a title
+     *
+     * @param interpretation the gui interpretation
+     * @param player         the player instance
+     * @param title          a title
+     */
     public YmirInventoryScreen(T interpretation, PlayerEntity player, Text title) {
         super(interpretation, player.getInventory(), title);
         this.interpretation = interpretation;
@@ -38,6 +69,10 @@ public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends Hand
         interpretation.getRootPanel().validate(interpretation);
     }
 
+    /**
+     * Default init method form {@link Screen}
+     * This method initialize the root panel and the painters
+     */
     @Override
     protected void init() {
         super.init();
@@ -51,31 +86,54 @@ public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends Hand
         reposition(width, height);
     }
 
+    /**
+     * If the screen gets closed this method will be called
+     */
     @Override
     public void removed() {
         super.removed();
         this.client.keyboard.setRepeatEvents(false);
     }
 
+    /**
+     * @return the gui interpretation
+     */
     @Override
     public GuiInterpretation getInterpretation() {
         return this.interpretation;
     }
 
+    /**
+     * @return the last responder. Can be null
+     */
     @Override
     public @Nullable YmirWidget getLastResponder() {
         return this.lastResponder;
     }
 
+    /**
+     * Set the last responder
+     *
+     * @param lastResponder the last responder. Can be nul
+     */
     @Override
     public void setLastResponder(@Nullable YmirWidget lastResponder) {
         this.lastResponder = lastResponder;
     }
 
+    /**
+     * Clears all the peers
+     */
     private void clearPeers() {
         this.interpretation.slots.clear();
     }
 
+    /**
+     * If the minecraft screen gets resized this method will calculate the left and top position new
+     *
+     * @param screenWidth  the new screen width
+     * @param screenHeight the new screen height
+     */
     protected void reposition(int screenWidth, int screenHeight) {
         YmirPanel basePanel = interpretation.getRootPanel();
         if (basePanel != null) {
@@ -107,10 +165,20 @@ public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends Hand
         }
     }
 
+    /**
+     * We don't want a pause screen, but if you want just overwrite it and return true
+     * A pause screen pauses the game. i.e: You press ESCAPE
+     *
+     * @return true if it should be a pause screen or false if not
+     */
     @Override
     public boolean isPauseScreen() {
         return false;
     }
+
+    //==========================================================================
+    //=                          INPUT HANDLING                                =
+    //==========================================================================
 
     @Override
     public boolean charTyped(char chr, int modifiers) {
@@ -198,11 +266,28 @@ public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends Hand
         renderTextHoverEffect(matrices, textStyle, x, y);
     }
 
+
+    /**
+     * IN the default system you use this method to render all the background things like the background textures or something else.
+     * But in the "Ymir" system we don't need that, because we use our own painting method
+     *
+     * @param matrices the render matrix from mc
+     * @param delta    the delta time
+     * @param mouseX   mouse X
+     * @param mouseY   mouse Y
+     */
     @Override
     protected void drawBackground(MatrixStack matrices, float delta, int mouseX, int mouseY) {
 
     }
 
+    /**
+     * The actual render method for the root panel
+     *
+     * @param matrices the render matrix from mc
+     * @param mouseX   the mouse x
+     * @param mouseY   the mouse y
+     */
     private void paint(MatrixStack matrices, int mouseX, int mouseY) {
         this.renderBackground(matrices);
 
@@ -218,6 +303,14 @@ public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends Hand
         }
     }
 
+    /**
+     * This is the render method from mc, where we call our paint method, and rendering the actual gui with all extras like the tool tips
+     *
+     * @param matrices the render matrix from mc
+     * @param mouseX   mouse x
+     * @param mouseY   mouse y
+     * @param delta    the delta time
+     */
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         paint(matrices, mouseX, mouseY);
@@ -238,6 +331,13 @@ public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends Hand
 
     }
 
+    /**
+     * This method is called after the "render" method and should be handle all text rendering
+     *
+     * @param matrices the render matrix from mc
+     * @param mouseX   the mouse x
+     * @param mouseY   the mouse y
+     */
     @Override
     protected void drawForeground(MatrixStack matrices, int mouseX, int mouseY) {
         if (interpretation != null && interpretation.isTitleVisible()) {
@@ -246,26 +346,29 @@ public class YmirInventoryScreen<T extends SyncedGuiInterpretation> extends Hand
         }
     }
 
+    /**
+     * Handles the screen ticking on the server side
+     */
     @Override
     protected void handledScreenTick() {
         super.handledScreenTick();
-        if(interpretation != null) {
+        if (interpretation != null) {
             YmirPanel root = interpretation.getRootPanel();
-            if(root != null)
+            if (root != null)
                 root.tick();
         }
     }
 
     @Override
     public boolean changeFocus(boolean lookForwards) {
-        if(interpretation != null)
+        if (interpretation != null)
             interpretation.cycleFocus(lookForwards);
         return true;
     }
 
     @Override
     protected void addElementNarrations(NarrationMessageBuilder builder) {
-        if(interpretation != null)
+        if (interpretation != null)
             NarrationHelper.addNarrations(interpretation.getRootPanel(), builder);
     }
 }

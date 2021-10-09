@@ -12,6 +12,10 @@ import net.minecraft.world.gen.surfacebuilder.ConfiguredSurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.SurfaceBuilder;
 import net.minecraft.world.gen.surfacebuilder.TernarySurfaceConfig;
 
+/**
+ * A dwarf biome class,
+ * Ignore it, it will be reworked later
+ */
 public class DwarfBiome {
 
     public static final ConfiguredSurfaceBuilder<TernarySurfaceConfig> DWARF_SURFACE_BUILDER = SurfaceBuilder.DEFAULT

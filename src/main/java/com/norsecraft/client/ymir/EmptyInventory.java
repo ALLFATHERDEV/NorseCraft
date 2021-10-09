@@ -4,6 +4,10 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 
+/**
+ * Represents an empty inventory.
+ * This class is used when a synced inventory is created on the client side before the server synchronization
+ */
 public class EmptyInventory implements Inventory {
 
     public static final EmptyInventory INSTANCE = new EmptyInventory();

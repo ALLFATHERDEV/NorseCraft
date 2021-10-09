@@ -1,5 +1,8 @@
 package com.norsecraft.client.ymir.widget.data;
 
+/**
+ * Enum that holds the both axis
+ */
 public enum Axis {
 
     HORIZONTAL,

@@ -8,13 +8,27 @@ import com.norsecraft.client.ymir.widget.data.VerticalAlignment;
 import java.util.Objects;
 
 /**
- * Boy layout
+ * Similar to the BoxLayout in Swing, this widget represents a list of widgets along an axis.
  */
 public class YmirBox extends YmirPanelWithInsets {
-
+    /**
+     * The spacing between widgets.
+     */
     protected int spacing = 4;
+
+    /**
+     * The axis that the widgets are laid out on.
+     */
     protected Axis axis;
+
+    /**
+     * The horizontal alignment for this box's children.
+     */
     protected HorizontalAlignment horizontalAlignment = HorizontalAlignment.LEFT;
+
+    /**
+     * The vertical alignment for this box's children.
+     */
     protected VerticalAlignment verticalAlignment = VerticalAlignment.TOP;
 
     public YmirBox(Axis axis) {
@@ -24,7 +38,7 @@ public class YmirBox extends YmirPanelWithInsets {
     public void add(YmirWidget widget, int width, int height) {
         widget.setParent(this);
         children.add(widget);
-        if(canResize())
+        if (canResize())
             widget.setSize(width, height);
     }
 
@@ -36,31 +50,31 @@ public class YmirBox extends YmirPanelWithInsets {
     public void layout() {
         int dimension = axis.choose(insets.left(), insets.top());
 
-        if(axis == Axis.HORIZONTAL && horizontalAlignment != HorizontalAlignment.LEFT) {
+        if (axis == Axis.HORIZONTAL && horizontalAlignment != HorizontalAlignment.LEFT) {
             int widgetWidth = spacing * (children.size() - 1);
-            for(YmirWidget child : children)
+            for (YmirWidget child : children)
                 widgetWidth += child.getWidth();
 
-            if(horizontalAlignment == HorizontalAlignment.CENTER)
+            if (horizontalAlignment == HorizontalAlignment.CENTER)
                 dimension = (getWidth() - widgetWidth) / 2;
             else
                 dimension = getWidth() - widgetWidth;
-        } else if(verticalAlignment != VerticalAlignment.TOP) {
+        } else if (verticalAlignment != VerticalAlignment.TOP) {
             int widgetHeight = spacing * (children.size() - 1);
-            for(YmirWidget child : children)
+            for (YmirWidget child : children)
                 widgetHeight += child.getHeight();
 
-            if(verticalAlignment == VerticalAlignment.CENTER)
+            if (verticalAlignment == VerticalAlignment.CENTER)
                 dimension = (getHeight() - widgetHeight) / 2;
             else
                 dimension = getHeight() - widgetHeight;
 
         }
 
-        for(int i = 0; i < children.size(); i++) {
+        for (int i = 0; i < children.size(); i++) {
             YmirWidget child = children.get(i);
 
-            if(axis == Axis.HORIZONTAL) {
+            if (axis == Axis.HORIZONTAL) {
                 int y = switch (verticalAlignment) {
                     case TOP -> insets.top();
                     case CENTER -> insets.top() + (getHeight() - insets.top() - insets.bottom() - child.getHeight()) / 2;
@@ -77,11 +91,11 @@ public class YmirBox extends YmirPanelWithInsets {
                 child.setLocation(x, dimension);
             }
 
-            if(child instanceof YmirPanel) ((YmirPanel) child).layout();
+            if (child instanceof YmirPanel) ((YmirPanel) child).layout();
 
             expandToFit(child, insets);
 
-            if(i != children.size() - 1)
+            if (i != children.size() - 1)
                 dimension += spacing;
 
             dimension += axis.choose(child.getWidth(), child.getHeight());

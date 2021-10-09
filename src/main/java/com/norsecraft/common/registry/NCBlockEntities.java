@@ -11,6 +11,9 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.util.registry.Registry;
 
+/**
+ * Register all block entities from the mod
+ */
 public class NCBlockEntities {
 
     public static BlockEntityType<CrateBlockEntity> crateBlockEntity;

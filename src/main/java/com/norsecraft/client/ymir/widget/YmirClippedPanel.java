@@ -3,6 +3,9 @@ package com.norsecraft.client.ymir.widget;
 import com.norsecraft.client.ymir.screen.Scissors;
 import net.minecraft.client.util.math.MatrixStack;
 
+/**
+ * A panel that is clipped to only render widgets inside its bounds.
+ */
 public class YmirClippedPanel extends YmirPanel {
 
     @Override

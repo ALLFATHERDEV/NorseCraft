@@ -2,6 +2,9 @@ package com.norsecraft.client.ymir.widget;
 
 import com.norsecraft.client.ymir.widget.data.Insets;
 
+/**
+ * A panel that positions children by pixel-perfect positions.
+ */
 public class YmirPlainPanel extends YmirPanelWithInsets {
 
     public void add(YmirWidget w, int x, int y) {

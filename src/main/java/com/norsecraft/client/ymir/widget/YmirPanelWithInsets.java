@@ -4,6 +4,9 @@ import com.norsecraft.client.ymir.widget.data.Insets;
 
 import java.util.Objects;
 
+/**
+ * A panel that has {@linkplain Insets layout insets}.
+ */
 public class YmirPanelWithInsets extends YmirPanel {
 
     protected Insets insets = Insets.NONE;
@@ -18,7 +21,7 @@ public class YmirPanelWithInsets extends YmirPanel {
 
         setSize(getWidth() - old.left() - old.right(), getHeight() - old.top() - old.bottom());
 
-        for(YmirWidget child : children) {
+        for (YmirWidget child : children) {
             child.setLocation(child.getX() - old.left() + insets.left(), child.getY() - old.top() + insets.top());
             expandToFit(child, insets);
         }

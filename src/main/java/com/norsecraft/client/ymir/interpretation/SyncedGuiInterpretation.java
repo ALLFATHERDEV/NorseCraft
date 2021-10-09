@@ -40,22 +40,75 @@ import org.jetbrains.annotations.Nullable;
 import java.util.ArrayList;
 import java.util.function.Supplier;
 
+/**
+ * This class handles most of the actions for synced guis. Like containers or recipe guis
+ * Use this if you want to create a synced gui
+ */
 public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpretation {
 
+    /**
+     * The block inventory reference
+     */
     protected Inventory blockInventory;
+
+    /**
+     * The player inventory reference
+     */
     protected PlayerInventory playerInventory;
+
+    /**
+     * The world reference
+     */
     protected World world;
+
+    /**
+     * If you have data to sync with the gui (like cook time or fuel time) it will be hold in this object
+     */
     protected PropertyDelegate propertyDelegate;
 
+    /**
+     * The root panel, you can change it. If you change it, you have to call the method setRootPanel at the end
+     */
     protected YmirPanel rootPanel = new YmirGridPanel().setInsets(Insets.ROOT_PANEL);
+
+    /**
+     * The title color
+     */
     protected int titleColor = YmirLabel.DEFAULT_TEXT_COLOR;
+
+    /**
+     * If true, it is fullscreen if not then it is not in fullscreen mode
+     */
     protected boolean fullscreen = false;
+
+    /**
+     * If true the title is visible, if not then not
+     */
     protected boolean titleVisible = true;
+
+    /**
+     * The title alignment
+     */
     protected HorizontalAlignment titleAlignment = HorizontalAlignment.LEFT;
 
+    /**
+     * The current focused widget
+     */
     protected YmirWidget focus;
+
+    /**
+     * The titel position
+     */
     private Vec2i titlePos = new Vec2i(8, 6);
 
+    /**
+     * This constructor will be called from the mc client
+     *
+     * @param type            the screen handler type
+     * @param syncId          the window id. This will be provided from mc when mc creates the gui on the client
+     * @param playerInventory the player inventory reference
+     * @param painter         the background painter
+     */
     public SyncedGuiInterpretation(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, BackgroundPainter painter) {
         super(type, syncId);
         this.blockInventory = null;
@@ -65,6 +118,16 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         this.rootPanel.setBackgroundPainter(painter);
     }
 
+    /**
+     * This constructor is more detailed, and is called on the server side from the mode
+     *
+     * @param type            the screen handler type
+     * @param syncId          the window id. This will be provided from mc
+     * @param playerInventory the player inventory reference
+     * @param blockInventory  the block inventory
+     * @param delegate        the data to sync
+     * @param painter         the background painter
+     */
     public SyncedGuiInterpretation(ScreenHandlerType<?> type, int syncId, PlayerInventory playerInventory, @Nullable Inventory blockInventory, @Nullable PropertyDelegate delegate, BackgroundPainter painter) {
         super(type, syncId);
         this.blockInventory = blockInventory;
@@ -115,6 +178,20 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         this.addSlot(slot);
     }
 
+    /**
+     * This method will be executed when a slot get clicked
+     * It is an overwrite from {@link ScreenHandler} with a little modification from me.
+     * Because it uses my own methods for merging the slots during the quick move. (Shift + click)
+     * Otherwise it will be very buggy
+     *
+     * @param slotNumber the slot id
+     * @param button     the mouse button.
+     *                   0 = Left click
+     *                   1 = Right click
+     *                   2 = Mouse Wheel click
+     * @param actionType the slot action type
+     * @param player     the player that clicked on the slot
+     */
     @Override
     public void onSlotClick(int slotNumber, int button, SlotActionType actionType, PlayerEntity player) {
         if (actionType == SlotActionType.QUICK_MOVE) {
@@ -132,21 +209,21 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
                 ItemStack toTransfer = slot.getStack();
                 remaining = toTransfer.copy();
 
-                if(blockInventory instanceof MerchantInventory) {
-                    if(slot instanceof TradeOutputSlot) {
-                        if(!this._insertItem(toTransfer, this.playerInventory, true, player))
+                if (blockInventory instanceof MerchantInventory) {
+                    if (slot instanceof TradeOutputSlot) {
+                        if (!this._insertItem(toTransfer, this.playerInventory, true, player))
                             return;
 
 
                         slot.onQuickTransfer(toTransfer, remaining);
                     }
 
-                    if(toTransfer.isEmpty())
+                    if (toTransfer.isEmpty())
                         slot.setStack(ItemStack.EMPTY);
                     else
                         slot.markDirty();
 
-                    if(toTransfer.getCount() == remaining.getCount())
+                    if (toTransfer.getCount() == remaining.getCount())
                         return;
 
                     slot.onTakeItem(player, toTransfer);
@@ -175,6 +252,7 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
     }
 
     /**
+     * This method inserts an item into a slot in the case when the slot is not empty
      * WILL MODIFY toInsert! Returns true if anything was inserted.
      */
     private boolean insertIntoExisting(ItemStack toInsert, Slot slot, PlayerEntity player) {
@@ -198,6 +276,7 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
     }
 
     /**
+     * This method inserts an item into a slot, when the slot is empty
      * WILL MODIFY toInsert! Returns true if anything was inserted.
      */
     private boolean insertIntoEmpty(ItemStack toInsert, Slot slot) {
@@ -216,6 +295,15 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         return false;
     }
 
+    /**
+     * This method handles the insert from the item into the block inventory or from the block inventory to the player inventory
+     *
+     * @param toInsert      the item stack that you want to insert
+     * @param inventory     the target inventory
+     * @param walkBackwards if true it walks all the slots backwards
+     * @param player        the player instance
+     * @return true if it was everything inserted otherwise false
+     */
     protected boolean _insertItem(ItemStack toInsert, Inventory inventory, boolean walkBackwards, PlayerEntity player) {
         ArrayList<Slot> inventorySlots = new ArrayList<>();
         for (Slot slot : slots)
@@ -260,6 +348,15 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         return inserted;
     }
 
+    /**
+     * This method handles the item logic in the player hotbar
+     *
+     * @param toInsert the item that you want to insert into the target inventory
+     * @param slotNumber the slot number
+     * @param inventory the target inventory
+     * @param player the player instance
+     * @return true if it was successful otherwise false
+     */
     private boolean swapHotbar(ItemStack toInsert, int slotNumber, Inventory inventory, PlayerEntity player) {
         ArrayList<Slot> storageSlots = new ArrayList<>();
         ArrayList<Slot> hotbarSlots = new ArrayList<>();
@@ -322,26 +419,64 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
     }
 
 
+    /**
+     * Create a player inventory panel with the default 36 Slots and the 9 hotbar slots
+     * @return the created player inventory panel
+     */
     public YmirPlayerInvPanel createPlayerInventoryPanel() {
         return new YmirPlayerInvPanel(this.playerInventory);
     }
 
+    /**
+     * Create a player inventory panel, with a y coordinate offset
+     *
+     * @param yOffset the y position offset
+     * @return the created player inventory panel
+     */
     public YmirPlayerInvPanel createPlayerInventoryPanel(int yOffset) {
         return new YmirPlayerInvPanel(this.playerInventory, yOffset);
     }
 
+    /**
+     * Create a player inventory panel, with x and y coordinate offset
+     *
+     * @param xOffset the x position offset
+     * @param yOffset the y position offset
+     * @return the created player inventory panel
+     */
     public YmirPlayerInvPanel createPlayerInventoryPanel(int xOffset, int yOffset) {
         return new YmirPlayerInvPanel(this.playerInventory, xOffset, yOffset);
     }
 
+    /**
+     * This method looks into the block entity data, and takes the block inventory
+     *
+     * @param ctx the screen handler context that holds the block pos and the world
+     * @return the inventory or a {@link EmptyInventory} if no inventory was found
+     */
     public static Inventory getBlockInventory(ScreenHandlerContext ctx) {
         return getBlockInventory(ctx, () -> EmptyInventory.INSTANCE);
     }
 
+    /**
+     * This method looks into the block entity data, and takes the block inventory.
+     * If no inventory was found it will return a {@link SimpleInventory} with the new size
+     *
+     * @param ctx the screen handler context that holds the block pos and the world
+     * @param size the fallback size
+     * @return the inventory or a fallback inventory with the same size
+     */
     public static Inventory getBlockInventory(ScreenHandlerContext ctx, int size) {
         return getBlockInventory(ctx, () -> new SimpleInventory(size));
     }
 
+    /**
+     * This method looks into the entity object for the inventory
+     *
+     * @param entity the entity to look
+     * @return the inventory or null if no inventory was found
+     */
+    @Nullable
     public static Inventory getEntityInventory(Entity entity) {
         if (entity instanceof ImplementedInventory)
             return (Inventory) entity;
@@ -351,6 +486,13 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         return null;
     }
 
+    /**
+     * This method looks for the block inventory
+     *
+     * @param ctx the screen handler context that holds the world and the block pos
+     * @param fallback the fallback inventory if no inventory was found
+     * @return the block inventory or the fallback inventory
+     */
     private static Inventory getBlockInventory(ScreenHandlerContext ctx, Supplier<Inventory> fallback) {
         return ctx.get((world, pos) -> {
             BlockState state = world.getBlockState(pos);
@@ -376,6 +518,11 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         }).orElseGet(fallback);
     }
 
+    /**
+     * This method looks into the block data and takes the {@link PropertyDelegate} for syncing
+     * @param ctx the screen handler context that holds the world and the block pos
+     * @return the property delegate
+     */
     public static PropertyDelegate getBlockPropertyDelegate(ScreenHandlerContext ctx) {
         return ctx.get((world, pos) -> {
             BlockEntity be = world.getBlockEntity(pos);
@@ -387,6 +534,14 @@ public class SyncedGuiInterpretation extends ScreenHandler implements GuiInterpr
         }).orElse(new ArrayPropertyDelegate(0));
     }
 
+    /**
+     * This method looks into the block data and takes the {@link PropertyDelegate} for syncing
+     * If not property delegate was found it will return a empty property delegate with the size
+     *
+     * @param ctx the screen handler context that holds the world and the block pos
+     * @param size the fallback size
+     * @return the property delegate
+     */
     public static PropertyDelegate getBlockPropertyDelegate(ScreenHandlerContext ctx, int size) {
         return ctx.get((world, pos) -> {
             BlockEntity be = world.getBlockEntity(pos);

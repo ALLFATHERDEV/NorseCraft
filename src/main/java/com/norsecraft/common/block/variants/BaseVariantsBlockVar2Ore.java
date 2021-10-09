@@ -14,8 +14,14 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Random;
 
+/**
+ * A base variants block with the amount of 2 for ore blocks
+ */
 public class BaseVariantsBlockVar2Ore extends OreBlock {
 
+    /**
+     * The variants property
+     */
     public static final IntProperty VARIANTS_2 = IntProperty.of("block_variants", 1, 2);
 
     private final VoxelShape shape;

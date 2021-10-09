@@ -6,6 +6,9 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayDeque;
 import java.util.stream.Collectors;
 
+/**
+ * Contains a stack for GL scissors for restricting the drawn area of a widget.
+ */
 public final class Scissors {
 
     private static final ArrayDeque<Frame> STACK = new ArrayDeque<>();
@@ -14,6 +17,15 @@ public final class Scissors {
 
     }
 
+    /**
+     * Pushes a new scissor frame onto the stack and refreshes the scissored area.
+     *
+     * @param x      the frame's X coordinate
+     * @param y      the frame's Y coordinate
+     * @param width  the frame's width in pixels
+     * @param height the frame's height in pixels
+     * @return the pushed frame
+     */
     public static Frame push(int x, int y, int width, int height) {
         Frame frame = new Frame(x, y, width, height);
         STACK.push(frame);
@@ -21,6 +33,11 @@ public final class Scissors {
         return frame;
     }
 
+    /**
+     * Pops the topmost scissor frame and refreshes the scissored area.
+     *
+     * @throws IllegalStateException if there are no scissor frames on the stack
+     */
     public static void pop() {
         if (STACK.isEmpty()) {
             throw new IllegalStateException("No scissors on the stack!");
@@ -63,10 +80,13 @@ public final class Scissors {
     }
 
     public static void checkStackIsEmpty() {
-        if(!STACK.isEmpty())
+        if (!STACK.isEmpty())
             throw new IllegalStateException("Unpopped scissor frames: " + STACK.stream().map(Frame::toString).collect(Collectors.joining(", ")));
     }
 
+    /**
+     * A single scissor frame in the stack.
+     */
     public static final class Frame implements AutoCloseable {
 
         private final int x;
@@ -84,6 +104,15 @@ public final class Scissors {
             this.height = height;
         }
 
+        /**
+         * Pops this frame from the stack.
+         *
+         * @throws IllegalStateException if: <ul>
+         *                               <li>this frame is not on the stack, or</li>
+         *                               <li>this frame is not the topmost element on the stack</li>
+         *                               </ul>
+         * @see Scissors#pop()
+         */
         @Override
         public void close() throws Exception {
             if (STACK.peekLast() != this) {

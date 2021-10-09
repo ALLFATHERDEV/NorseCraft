@@ -9,6 +9,10 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This is a dummy block. Use this block if you want a block that can nothing.
+ * I use it for the Campfire stand
+ */
 public class DummyBlock extends BlockWithEntity {
 
     private VoxelShape shape;

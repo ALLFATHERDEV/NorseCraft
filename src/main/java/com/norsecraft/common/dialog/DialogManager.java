@@ -15,6 +15,9 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * This class loads the dialogs from the folder: resources/assets/norsecraft/dialogs
+ */
 public class DialogManager {
 
     private final int DIALOG_COUNTS = 1;

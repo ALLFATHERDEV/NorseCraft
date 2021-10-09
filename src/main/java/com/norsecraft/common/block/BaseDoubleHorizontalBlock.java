@@ -19,10 +19,24 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A base class for double horizontal blocks, like the bench blocks
+ */
 public class BaseDoubleHorizontalBlock extends BaseDirectionalBlock {
 
+    /**
+     * The SIDE property
+     */
     public static final EnumProperty<Side> SIDE = EnumProperty.of("side", Side.class);
+
+    /**
+     * The {@link VoxelShapeGroup} for the left block
+     */
     private final VoxelShapeGroup left;
+
+    /**
+     * The {@link VoxelShapeGroup} for the right block
+     */
     private final VoxelShapeGroup right;
 
     public BaseDoubleHorizontalBlock(Settings settings, VoxelShapeGroup left, VoxelShapeGroup right) {

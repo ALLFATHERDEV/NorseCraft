@@ -10,8 +10,15 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Base class for directional blocks
+ * Directional blocks are blocks that have different models for different facings like a chair
+ */
 public class BaseDirectionalBlock extends HorizontalFacingBlock {
 
+    /**
+     * The {@link VoxelShapeGroup} for the block
+     */
     protected final VoxelShapeGroup group;
 
     public BaseDirectionalBlock(Settings settings, VoxelShapeGroup group) {

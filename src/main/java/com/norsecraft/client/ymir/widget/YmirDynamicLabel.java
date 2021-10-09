@@ -8,6 +8,13 @@ import net.minecraft.client.util.math.MatrixStack;
 
 import java.util.function.Supplier;
 
+/**
+ * Dynamic labels are labels that pull their text from a {@code Supplier<String>}.
+ * They can be used for automatically getting data from a block entity or another data source.
+ *
+ * <p>Translating strings in dynamic labels should be done using
+ * {@link net.minecraft.client.resource.language.I18n#translate(String, Object...)}.
+ */
 public class YmirDynamicLabel extends YmirWidget {
 
     protected Supplier<String> text;

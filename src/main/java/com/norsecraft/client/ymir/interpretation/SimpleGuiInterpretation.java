@@ -12,19 +12,58 @@ import com.norsecraft.client.ymir.widget.data.Vec2i;
 import net.minecraft.screen.PropertyDelegate;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * This class handles most of the actions of a client sided gui.
+ * You should use this class if you want to create a client sided gui
+ */
 public class SimpleGuiInterpretation implements GuiInterpretation {
 
+    /**
+     * The root panel, you can ignore it if you want to create another root panel
+     */
     protected YmirPanel rootPanel = new YmirGridPanel().setInsets(Insets.ROOT_PANEL);
+
+    /**
+     * The property delegate, will be ignored for client sided guis
+     */
     protected PropertyDelegate propertyDelegate;
+
+    /**
+     * The current focused widget
+     */
     protected YmirWidget focus;
+
+    /**
+     * The title color
+     */
     protected int titleColor = YmirLabel.DEFAULT_TEXT_COLOR;
+
+    /**
+     * If true, it is fullscreen if not then it is not in fullscreen mode
+     */
     protected boolean fullscreen = false;
+
+    /**
+     * If true the title is visible, if not then not
+     */
     protected boolean titleVisible = true;
+
+    /**
+     * The title alignment
+     */
     protected HorizontalAlignment titleAlignment = HorizontalAlignment.LEFT;
+
+    /**
+     * The title position
+     */
     protected Vec2i titlePos = new Vec2i(8, 6);
 
     public SimpleGuiInterpretation() {
     }
+
+    //====================================================================
+    //=     FOR DOCUMENTATION LOOK INTO THE GuiInterpretation CLASS      =
+    //====================================================================
 
     @Override
     public YmirPanel getRootPanel() {

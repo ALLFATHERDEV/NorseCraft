@@ -12,12 +12,22 @@ import net.minecraft.screen.slot.Slot;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+/**
+ * An extended version of a normal slot that can filter items and contains listeners
+ */
 public class ValidatedSlot extends Slot {
 
     private final int slotNumber;
     private boolean insertingAllowed = true;
     private boolean takingAllowed = true;
+    /**
+     * The filter for this slot
+     */
     private Predicate<ItemStack> filter;
+
+    /**
+     * The change listener map
+     */
     protected final Multimap<YmirItemSlot, YmirItemSlot.ChangeListener> listeners = HashMultimap.create();
     private boolean visible = true;
 

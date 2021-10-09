@@ -8,6 +8,9 @@ import net.minecraft.village.Merchant;
 import net.minecraft.village.MerchantInventory;
 import net.minecraft.village.TradeOffer;
 
+/**
+ * A own trade output slot class. Similar to the default one, with one small changes for our system
+ */
 public class TradeOutputSlot extends Slot {
 
     private final MerchantInventory merchantInventory;

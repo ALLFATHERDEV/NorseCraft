@@ -2,8 +2,15 @@ package com.norsecraft.client.ymir.widget;
 
 import com.norsecraft.client.ymir.widget.data.Insets;
 
+/**
+ * A panel that positions children in a grid.
+ */
 public class YmirGridPanel extends YmirPanelWithInsets {
 
+    /**
+     * The grid size in pixels.
+     * Defaults to 18, which is the size of one item slot.
+     */
     protected int grid = 18;
 
     public YmirGridPanel() {
@@ -18,7 +25,7 @@ public class YmirGridPanel extends YmirPanelWithInsets {
         children.add(w);
         w.parent = this;
         w.setLocation(x * grid + insets.left(), y * grid + insets.top());
-        if(w.canResize())
+        if (w.canResize())
             w.setSize(grid, grid);
         expandToFit(w, insets);
     }
@@ -27,7 +34,7 @@ public class YmirGridPanel extends YmirPanelWithInsets {
         children.add(w);
         w.parent = this;
         w.setLocation(x * grid + insets.left(), y * grid + insets.top());
-        if(w.canResize())
+        if (w.canResize())
             w.setSize(width * grid, height * grid);
         expandToFit(w, insets);
     }

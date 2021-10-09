@@ -40,11 +40,17 @@ import software.bernie.geckolib3.core.manager.AnimationFactory;
 import java.util.List;
 import java.util.Random;
 
+/**
+ * A abstract class for the dwarfs that handles some general things
+ */
 public abstract class AbstractDwarfEntity extends PathAwareEntity implements IAnimatable, IReputation {
 
     private static final String WALK_ANIMATION_STR = "animation.norsecraft.dwarf.walk";
     private static final String IDLE_ANIMATION_STR = "animation.norsecraft.dwarf.idle";
 
+    /**
+     * The reputation manager for the dwarfs
+     */
     private final ReputationManager reputationManager = new ReputationManager();
     private final AnimationFactory factory = new AnimationFactory(this);
     private ModelVar modelVar;

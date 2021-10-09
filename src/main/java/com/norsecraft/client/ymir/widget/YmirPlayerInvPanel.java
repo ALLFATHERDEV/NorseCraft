@@ -1,14 +1,15 @@
 package com.norsecraft.client.ymir.widget;
 
-import com.norsecraft.client.ymir.interpretation.GuiInterpretation;
 import com.norsecraft.client.ymir.screen.BackgroundPainter;
 import com.norsecraft.client.ymir.widget.data.NarrationMessages;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.text.LiteralText;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * A player inventory widget that has a visually separate hotbar.
+ */
 public class YmirPlayerInvPanel extends YmirPlainPanel {
 
     private final YmirItemSlot inv;
