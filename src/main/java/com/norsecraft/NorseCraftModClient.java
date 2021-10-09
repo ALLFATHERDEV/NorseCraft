@@ -34,7 +34,10 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
  */
 public class NorseCraftModClient implements ClientModInitializer {
 
-    public static final boolean DATA_GEN = false;
+    public static final boolean DATA_GEN;
+     static {
+        DATA_GEN = Boolean.parseBoolean(System.getenv("NORSECRAFT_DATA_GEN"));
+     }
 
     @Override
     public void onInitializeClient() {
