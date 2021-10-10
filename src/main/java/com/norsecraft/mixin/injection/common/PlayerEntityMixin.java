@@ -18,6 +18,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class PlayerEntityMixin extends LivingEntity implements NorseCraftPlayerEntity {
     public final ThirstManager thirstManager = new ThirstManager();
 
+    public ThirstManager getThirstManager() {
+        return thirstManager;
+    }
+
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }

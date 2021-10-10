@@ -136,6 +136,10 @@ public class ThirstManager {
     public void addDehydration(float dehydration) {
         this.dehydrationLevel = Math.min(dehydration + this.dehydrationLevel, DEHYDRATION_MAX);
     }
+
+    public int getWaterLevel() {
+        return waterLevel;
+    }
     
     /**
      * Write data to nbt for storage.
