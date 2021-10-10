@@ -37,7 +37,7 @@ public abstract class PlayerEntityMixin extends LivingEntity implements NorseCra
     }
 
     @Inject(method = "tick", at = @At("TAIL"))
-    private void customTick() {
+    private void customTick(CallbackInfo info) {
         if (!world.isClient) {
             thirstManager.update((PlayerEntity) (LivingEntity) this);
         }

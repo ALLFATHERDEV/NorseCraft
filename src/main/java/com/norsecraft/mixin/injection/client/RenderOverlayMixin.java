@@ -6,10 +6,11 @@ import com.norsecraft.client.render.TextureSprite;
 import com.norsecraft.common.entity.NorseCraftPlayerEntity;
 import com.norsecraft.common.thirst.ThirstManager;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.DrawableHelper;
 import net.minecraft.client.gui.hud.InGameHud;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.client.util.math.MatrixStack;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.tag.FluidTags;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Final;
@@ -21,9 +22,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(InGameHud.class)
 public class RenderOverlayMixin {
-
-    @Shadow
-	public ClientPlayerEntity player;
     @Shadow
     @Final
     private MinecraftClient client;
@@ -42,7 +40,7 @@ public class RenderOverlayMixin {
         MinecraftClient client = MinecraftClient.getInstance();
         int mainWindowWidth = client.getWindow().getScaledWidth();
         int mainWindowHeight = client.getWindow().getScaledHeight();
-        ThirstManager manager = ((NorseCraftPlayerEntity)player).getThirstManager();
+        ThirstManager manager = ((NorseCraftPlayerEntity)client.player).getThirstManager();
         int thirstLevel = manager.getWaterLevel();
         int x = mainWindowWidth / 2 + 91;
         int j3 = client.player.isSubmergedIn(FluidTags.WATER) ? mainWindowHeight - 59 : mainWindowHeight - 49;
