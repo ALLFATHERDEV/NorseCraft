@@ -35,7 +35,7 @@ public class CampfireGuiInterpretation extends CookingGuiInterpretation {
         Texture barTexture = Texture.component(150, 0, 28, 28);
 
         YmirBar bar = new YmirBar(null, barTexture, 0, 1, YmirBar.Direction.UP);
-        panel.add(bar, 61, 20, 32, 32);
+        panel.add(bar, 62, 25, 32, 32);
         panel.add(YmirItemSlot.of(blockInventory, 0), 61, 43);
         panel.add(YmirItemSlot.of(blockInventory, 1), 61, 7);
         panel.add(YmirItemSlot.of(blockInventory, 2), 121, 25);

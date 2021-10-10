@@ -127,7 +127,7 @@ public class YmirBar extends YmirWidget {
         if (bg != null) {
             YmirScreenDrawing.texturedRect(matrices, x, y, getWidth(), getHeight(), bg, 0xFFFFFFFF);
         } else {
-           // YmirScreenDrawing.coloredRect(matrices, x, y, 32, 32, YmirScreenDrawing.colorAtOpacity(0x000000, 0.25F));
+            // YmirScreenDrawing.coloredRect(matrices, x, y, 32, 32, YmirScreenDrawing.colorAtOpacity(0x000000, 0.25F));
         }
 
         int maxVal = max >= 0 ? properties.get(max) : maxValue;
@@ -142,8 +142,9 @@ public class YmirBar extends YmirWidget {
         percent = ((int) (percent * barMax)) / (float) barMax;
 
         int barSize = (int) (barMax * percent);
-        if(barSize <= 0)
+        if (barSize <= 0)
             return;
+
 
         switch (direction) {
             case UP -> {
@@ -151,7 +152,8 @@ public class YmirBar extends YmirWidget {
                 int top = y + getHeight();
                 top -= barSize;
                 if (bar != null) {
-                    YmirScreenDrawing.texturedGuiRect(matrices, left, top, getWidth(), barSize, bar);
+                    Texture newTexture = Texture.component(bar.u1(), MathHelper.lerp(percent, bar.v2(), bar.v1()), bar.u2(), bar.v2());
+                    YmirScreenDrawing.texturedGuiRect(matrices, left, top, getWidth(), barSize, newTexture);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, left, top, getWidth(), barSize, YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }
@@ -159,7 +161,8 @@ public class YmirBar extends YmirWidget {
 
             case RIGHT -> {
                 if (bar != null) {
-                    YmirScreenDrawing.texturedGuiRect(matrices, x, y, barSize, getHeight(), bar);
+                    Texture newTexture = Texture.component(bar.u1(), bar.v1(), MathHelper.lerp(percent, bar.u1(), bar.u2()), bar.v2());
+                    YmirScreenDrawing.texturedGuiRect(matrices, x, y, barSize, getHeight(), newTexture);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, x, y, barSize, getHeight(), YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }
@@ -167,7 +170,8 @@ public class YmirBar extends YmirWidget {
 
             case DOWN -> {
                 if (bar != null) {
-                    YmirScreenDrawing.texturedGuiRect(matrices, x, y, getWidth(), barSize, bar);
+                    Texture newTexture = Texture.component(bar.u1(), bar.v1(), bar.u2(), MathHelper.lerp(percent, bar.v1(), bar.v2()));
+                    YmirScreenDrawing.texturedGuiRect(matrices, x, y, getWidth(), barSize, newTexture);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, x, y, getWidth(), barSize, YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }
@@ -178,8 +182,8 @@ public class YmirBar extends YmirWidget {
                 int top = y;
                 left -= barSize;
                 if (bar != null) {
-                    //bar.u1 = MathHelper.lerp(percent, bar.u2, bar.u1);
-                    YmirScreenDrawing.texturedGuiRect(matrices, left, top, barSize, getHeight(), bar);
+                    Texture newTexture = Texture.component(MathHelper.lerp(percent, bar.u2(), bar.u1()), bar.v1(), bar.u2(), bar.v2());
+                    YmirScreenDrawing.texturedGuiRect(matrices, left, top, barSize, getHeight(), newTexture);
                 } else {
                     YmirScreenDrawing.coloredRect(matrices, left, top, barSize, getHeight(), YmirScreenDrawing.colorAtOpacity(0xFFFFFF, 0.5f));
                 }
@@ -189,12 +193,12 @@ public class YmirBar extends YmirWidget {
 
     @Override
     public void addTooltip(TooltipBuilder builder) {
-        if(tooltipLabel != null) {
+        if (tooltipLabel != null) {
             int value = (field >= 0) ? properties.get(field) : 0;
             int valMax = (max >= 0) ? properties.get(max) : maxValue;
             builder.add(new TranslatableText(tooltipLabel, value, valMax));
         }
-        if(tooltipTextComponent != null) {
+        if (tooltipTextComponent != null) {
             try {
                 builder.add(tooltipTextComponent);
             } catch (Throwable t) {
@@ -206,7 +210,7 @@ public class YmirBar extends YmirWidget {
     @Override
     public void validate(GuiInterpretation host) {
         super.validate(host);
-        if(properties == null || !manuallySetProperties) properties = host.getPropertyDelegate();
+        if (properties == null || !manuallySetProperties) properties = host.getPropertyDelegate();
     }
 
     @Nullable
