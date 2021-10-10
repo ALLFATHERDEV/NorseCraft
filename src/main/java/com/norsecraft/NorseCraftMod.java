@@ -68,8 +68,6 @@ public class NorseCraftMod implements ModInitializer {
 
         OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.TEMPERATE, 3D);
         OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.COOL, 3D);
-
-        ThirstManager.handleWorldTick();
     }
 
     private void registerEntityAttributes() {

@@ -3,6 +3,8 @@ package com.norsecraft.common.network;
 import com.norsecraft.common.network.c2s.OpenScreenPacketC2S;
 import com.norsecraft.common.network.c2s.SelectMerchantRecipeIndexPacketC2S;
 import com.norsecraft.common.network.s2c.SendAttackingEntityS2C;
+import com.norsecraft.common.network.s2c.ThirstDataS2C;
+
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 
@@ -24,6 +26,7 @@ public class PacketHandler {
      */
     public static void handleServerToClientPackets() {
         ClientPlayNetworking.registerGlobalReceiver(SendAttackingEntityS2C.ID, SendAttackingEntityS2C::handle);
+        ClientPlayNetworking.registerGlobalReceiver(ThirstDataS2C.PACKET_ID, ThirstDataS2C::handle);
     }
 
 }
