@@ -4,6 +4,7 @@ import com.norsecraft.client.ymir.YmirScreenDrawing;
 import com.norsecraft.client.ymir.interpretation.GuiInterpretation;
 import com.norsecraft.client.ymir.widget.YmirPanel;
 import com.norsecraft.client.ymir.widget.YmirWidget;
+import com.norsecraft.common.util.VisualLogger;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.util.math.MatrixStack;
@@ -118,6 +119,7 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
     public void removed() {
         super.removed();
         this.client.keyboard.setRepeatEvents(false);
+        VisualLogger.reset();
     }
 
     /**
@@ -214,6 +216,7 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
             }
         }
 
+        VisualLogger.render(matrices);
     }
 
     /**
