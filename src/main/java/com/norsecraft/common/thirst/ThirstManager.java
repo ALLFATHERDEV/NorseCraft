@@ -1,8 +1,12 @@
 package com.norsecraft.common.thirst;
 
+import com.norsecraft.common.network.NetworkHelper;
+import com.norsecraft.common.network.s2c.ThirstDataS2C;
+
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.GameRules;
 
@@ -64,6 +68,13 @@ public class ThirstManager {
     private static final String DEHYDRATION_LEVEL = "dehydrationLevel";
     private static final String THIRST_TICK_TIMER = "thirstTickTimer";
 
+    /**
+     * Damage Types
+     */
+    public static final int NO_DAMAGE = 0;
+    public static final int DAMAGE = 1;
+    public static final int HEAL = 2;
+
     private int waterLevel = 20;
     private float hydrationLevel = 5.0F;
     private float dehydrationLevel;
@@ -86,6 +97,8 @@ public class ThirstManager {
      */
     public void update(PlayerEntity player) {
         var difficulty = player.world.getDifficulty();
+        int damageType = NO_DAMAGE;
+        float damage = EMPTY;
         // has enough dehydration built up to take action?
         if (dehydrationLevel > DEHYDRATION_TRIGGER) {
             dehydrationLevel -= DEHYDRATION_TRIGGER;
@@ -103,13 +116,17 @@ public class ThirstManager {
             ++thirstTickTimer;
             if (thirstTickTimer >= HYDRATE_HEAL_TICK_TRIGGER) {
                 float hydrationRate = Math.min(hydrationLevel, HYDRATION_HEAL_RATE);
-                player.heal(hydrationRate / HYDRATION_HEAL_RATE);
+                damageType = HEAL;
+                damage = hydrationRate / HYDRATION_HEAL_RATE;
+                player.heal(damage);
                 addDehydration(hydrationRate);
                 thirstTickTimer = 0;
             }
         } else if (canRegenerate && waterLevel >= WATER_HEAL_LEVEL && player.canFoodHeal()) {
             ++thirstTickTimer;
             if (thirstTickTimer >= WATER_HEAL_TICK_TRIGGER) {
+                damageType = HEAL;
+                damage = WATER_HEAL_RATE;
                 player.heal(WATER_HEAL_RATE);
                 addDehydration(HYDRATION_HEAL_RATE);
                 thirstTickTimer = 0;
@@ -119,6 +136,8 @@ public class ThirstManager {
             if (thirstTickTimer >= WATER_HEAL_TICK_TRIGGER) {
                 var health = player.getHealth();
                 if (health > EASY_MIN_HEALTH || difficulty == Difficulty.HARD || (health > NORMAL_MIN_HEALTH && difficulty == Difficulty.NORMAL)) {
+                    damageType = DAMAGE;
+                    damage = WATER_HEAL_RATE;
                     player.damage(DamageSource.STARVE, WATER_HEAL_RATE);
                 }
                 thirstTickTimer = 0;
@@ -127,6 +146,9 @@ public class ThirstManager {
             // not healing/damaging, reset timer
             this.thirstTickTimer = 0;
         }
+
+        // send update to client
+        sendUpdate((ServerPlayerEntity)player, damageType, damage);
     }
 
     /**
@@ -139,6 +161,10 @@ public class ThirstManager {
 
     public int getWaterLevel() {
         return waterLevel;
+    }
+
+    public void setWaterLevel(int water) {
+        waterLevel = water;
     }
     
     /**
@@ -163,5 +189,15 @@ public class ThirstManager {
             hydrationLevel = nbt.getFloat(HYDRATION_LEVEL);
             dehydrationLevel = nbt.getFloat(DEHYDRATION_LEVEL);
         }
+    }
+
+    /**
+     * Sends a packet to the client with information about changes to thirst manager.
+     * @param player the player in question
+     * @param damageType the type of damage taken if any.
+     * @param damage the amount of damage taken if any.
+     */
+    private void sendUpdate(ServerPlayerEntity player, int damageType, float damage) {
+        NetworkHelper.sendToClientPlayer(player, ThirstDataS2C.PACKET_ID, new ThirstDataS2C(waterLevel, damageType, damage));
     }
 }

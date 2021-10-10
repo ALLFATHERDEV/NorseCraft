@@ -1,6 +1,7 @@
 package com.norsecraft.common.network;
 
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 
@@ -24,4 +25,14 @@ public class NetworkHelper {
         world.getPlayers().forEach(spe -> ServerPlayNetworking.send(spe, id, packet.write()));
     }
 
+    /**
+     * send a packet to a player's client.
+     * @param player player to send a packet to.
+     * @param packetID ID of the packet to send.
+     * @param packet packet to send.
+     */
+    public static void sendToClientPlayer(ServerPlayerEntity player, Identifier packetID, INCPacket packet) {
+        Objects.requireNonNull(packet);
+        ServerPlayNetworking.send(player, packetID, packet.write());
+    }
 }
