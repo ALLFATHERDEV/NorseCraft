@@ -59,7 +59,7 @@ public class YmirPanel extends YmirWidget {
     }
 
     /**
-     * Uses this Panel's layout rules to reposition and resize components to fit nicely in the panel.
+     * Resize this panel, so that every widget fits perfect in
      */
     public void layout() {
         for (YmirWidget child : children) {
