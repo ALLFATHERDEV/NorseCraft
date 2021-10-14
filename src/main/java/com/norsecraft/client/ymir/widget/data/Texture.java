@@ -10,6 +10,10 @@ import java.util.Objects;
  */
 public record Texture(Identifier image, float u1, float v1, float u2, float v2, float textureWidth,
                       float textureHeight) {
+
+    public static final float PIXEL_FIX_X = 1F / 1024F;
+    public static final float PIXEL_FIX_Y = 1F / 512F;
+
     public Texture {
         Objects.requireNonNull(image, "image");
     }
