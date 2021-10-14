@@ -121,6 +121,35 @@ public class YmirScreenDrawing {
         RenderSystem.disableBlend();
     }
 
+    public static void texturedRectF(MatrixStack matrices, float x, float y, float width, float height, Identifier texture, float u1, float v1, float u2, float v2, int color, float opacity) {
+        if (width <= 0) width = 1;
+        if (height <= 0) height = 1;
+
+        x = x * 2;
+        y = y * 2;
+        float r = (color >> 16 & 255) / 255.0F;
+        float g = (color >> 8 & 255) / 255.0F;
+        float b = (color & 255) / 255.0F;
+        Tessellator tessellator = Tessellator.getInstance();
+        BufferBuilder buffer = tessellator.getBuffer();
+        matrices.push();
+        matrices.scale(0.5F, 0.5F, 0.5F);
+        Matrix4f model = matrices.peek().getModel();
+        matrices.pop();
+        RenderSystem.enableBlend();
+        RenderSystem.setShaderTexture(0, texture);
+        RenderSystem.setShaderColor(r, g, b, opacity);
+        RenderSystem.setShader(GameRenderer::getPositionTexShader);
+        buffer.begin(VertexFormat.DrawMode.QUADS, VertexFormats.POSITION_TEXTURE);
+        buffer.vertex(model, x, y + height, 0).texture(u1, v2).next();
+        buffer.vertex(model, x + width, y + height, 0).texture(u2, v2).next();
+        buffer.vertex(model, x + width, y, 0).texture(u2, v1).next();
+        buffer.vertex(model, x, y, 0).texture(u1, v1).next();
+        buffer.end();
+        BufferRenderer.draw(buffer);
+        RenderSystem.disableBlend();
+    }
+
     /**
      * This method is explicit for our images that are in the folder "textures/gui"
      *
@@ -158,6 +187,20 @@ public class YmirScreenDrawing {
                 (texture.v1() + texture.v2()) * py,
                 0xFFFFFF);
     }
+/*
+    //Trying first for the y axis
+    public static void texturedFlowingGuiRect(MatrixStack matrices, int x, int y, int width, int height, float percent, Texture texture) {
+        float px = 1 / texture.textureWidth();
+        float py = 1 / texture.textureHeight();
+        texturedRect(matrices,
+                x,
+                y,
+                width,
+                height,
+                texture.image(),
+                texture.u1() * px,
+                (texture.v1() + (1 - percent)) * px);
+    }*/
 
     /**
      * Simple colored rect with normal color
