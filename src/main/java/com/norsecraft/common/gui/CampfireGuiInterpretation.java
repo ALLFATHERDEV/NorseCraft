@@ -4,10 +4,9 @@ import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.ymir.interpretation.CookingGuiInterpretation;
 import com.norsecraft.client.ymir.screen.BackgroundPainter;
 import com.norsecraft.client.ymir.screen.TexturedBackgroundPainter;
-import com.norsecraft.client.ymir.widget.YmirBar;
-import com.norsecraft.client.ymir.widget.YmirButton;
 import com.norsecraft.client.ymir.widget.YmirItemSlot;
 import com.norsecraft.client.ymir.widget.YmirPlainPanel;
+import com.norsecraft.client.ymir.widget.YmirProgressBar;
 import com.norsecraft.client.ymir.widget.data.Texture;
 import com.norsecraft.common.registry.NCRecipeTypes;
 import com.norsecraft.common.registry.NCScreenHandlers;
@@ -32,11 +31,10 @@ public class CampfireGuiInterpretation extends CookingGuiInterpretation {
 
         YmirPlainPanel panel = new YmirPlainPanel();
         panel.setBackgroundPainter(PAINTER);
-        //28
-        Texture barTexture = Texture.component(150, 0, 178, 28);
 
-        YmirBar bar = new YmirBar(null, barTexture, 0, 1, YmirBar.Direction.UP);
-        panel.add(bar, 63, 26, 28, 28);
+        Texture barTexture = Texture.component(130, 0, 144, 14);
+        YmirProgressBar progressBar = new YmirProgressBar(barTexture, 0, 1, YmirProgressBar.Direction.UP);
+        panel.add(progressBar, 63, 42, 13, 13);
         panel.add(YmirItemSlot.of(blockInventory, 0), 61, 43);
         panel.add(YmirItemSlot.of(blockInventory, 1), 61, 7);
         panel.add(YmirItemSlot.of(blockInventory, 2), 121, 25);
