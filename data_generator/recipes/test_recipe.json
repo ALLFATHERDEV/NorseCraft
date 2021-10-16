@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "name": "minecraft:iron_ingot",
+      "data": {
+        "test_float": 1.4168,
+        "other": {
+          "other_dbl": 123145.25,
+          "other_str": "Other str"
+        },
+        "test_string": "This is a test"
+      }
+    },
+    {
+      "name": "minecraft:black_banner"
+    }
+  ],
+  "result": {
+    "item": {
+      "name": "minecraft:diamond"
+    },
+    "count": 1
+  }
+}
