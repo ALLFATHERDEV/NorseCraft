@@ -3,7 +3,7 @@ package com.norsecraft.datagen.recipebuilder;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
-import com.norsecraft.common.recipe.CampfireRecipe;
+import com.norsecraft.common.recipe.campfire.CampfireRecipe;
 import com.norsecraft.common.recipe.NCRecipeItem;
 import com.norsecraft.datagen.RecipeDataGenerator;
 import org.apache.logging.log4j.message.ParameterizedMessage;
@@ -51,16 +51,16 @@ public class CampfireRecipeBuilder {
     public void build() {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
-        main.addProperty("type", CampfireRecipe.TYPE);
+        main.addProperty("type", CampfireRecipe.TYPE.toString());
         JsonObject ingredient = new JsonObject();
         if (this.input == null)
             throw new NullPointerException(ParameterizedMessage.format("Could not create recipe {}. You have to set a input item!", new Object[]{this.recipeName}));
-        this.input.write("data", ingredient);
+        this.input.write(ingredient);
         if (this.output == null) {
             throw new NullPointerException(ParameterizedMessage.format("Could not create recipe {}. You have to set a output item!", new Object[]{this.recipeName}));
         }
         JsonObject result = new JsonObject();
-        this.output.write("data", result);
+        this.output.write(result);
         main.add("ingredient", ingredient);
         main.add("result", result);
         main.addProperty("with-bowl", withBowl);

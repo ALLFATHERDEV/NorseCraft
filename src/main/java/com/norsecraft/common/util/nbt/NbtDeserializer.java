@@ -31,6 +31,8 @@ public class NbtDeserializer {
             logger.warn("Could not deserialize nbt tag, because the json object is null");
             return nbt;
         }
+        if(object.entrySet().isEmpty())
+            return nbt;
         for (Map.Entry<String, JsonElement> entry : object.entrySet()) {
             String key = entry.getKey();
             JsonElement element = entry.getValue();

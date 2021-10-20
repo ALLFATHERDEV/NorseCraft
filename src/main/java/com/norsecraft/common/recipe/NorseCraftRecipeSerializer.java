@@ -13,7 +13,7 @@ import net.minecraft.util.Identifier;
  *
  * @param <T> the recipe type
  */
-public abstract class NCRecipeSerializer<T extends Recipe<? extends Inventory>> implements RecipeSerializer<T> {
+public abstract class NorseCraftRecipeSerializer<T extends Recipe<? extends Inventory>> implements RecipeSerializer<T> {
 
     /**
      * A helper class for deserializing nbt compounds if needed
@@ -61,4 +61,7 @@ public abstract class NCRecipeSerializer<T extends Recipe<? extends Inventory>> 
     public void write(PacketByteBuf buf, T recipe) {
         this.writeToServer(buf, recipe);
     }
+
+
+
 }
