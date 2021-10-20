@@ -25,7 +25,7 @@ public class CampfireStandItem extends Item {
             if (block.getBlock() instanceof CampfireBlock) {
                 BlockEntity blockEntity = world.getBlockEntity(context.getBlockPos());
                 if (blockEntity instanceof CampfireBlockEntity cbe) {
-                    cbe.setActive(true);
+                    //cbe.setActive(true);
                     Objects.requireNonNull(context.getPlayer()).getInventory().removeStack((context.getPlayer().getInventory().indexOf(context.getStack())),
                             1);
                 }

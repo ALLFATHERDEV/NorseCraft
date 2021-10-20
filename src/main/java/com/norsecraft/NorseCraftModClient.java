@@ -2,12 +2,14 @@ package com.norsecraft;
 
 import com.norsecraft.client.gui.NorseCraftInventoryScreen;
 import com.norsecraft.client.gui.dwarf.DwarfTradeGuiInterpretation;
-import com.norsecraft.client.render.CampfireBlockRenderer;
 import com.norsecraft.client.render.CustomBlockEntityModelRenderer;
 import com.norsecraft.client.render.entity.BaseEntityRenderer;
 import com.norsecraft.client.render.entity.DwarfEntityRenderer;
 import com.norsecraft.client.render.model.block.CrateBlockModel;
 import com.norsecraft.client.render.model.entity.*;
+import com.norsecraft.client.render.model.joint.JointModel;
+import com.norsecraft.client.render.model.joint.JointModelRenderer;
+import com.norsecraft.client.render.model.joint.JointStateHandler;
 import com.norsecraft.client.ymir.screen.YmirInventoryScreen;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.gui.CampfireGuiInterpretation;
@@ -21,6 +23,8 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -56,7 +60,7 @@ public class NorseCraftModClient implements ClientModInitializer {
         //==============================BLOCK RENDERER============================
         //========================================================================
         BlockEntityRendererRegistry.register(NCBlockEntities.crateBlockEntity, ctx -> new CustomBlockEntityModelRenderer<>(new CrateBlockModel()));
-        BlockEntityRendererRegistry.register(NCBlockEntities.campfireBlockEntity, ctx -> new CampfireBlockRenderer());
+        this.registerJointModelRenderer(NCBlockEntities.campfireBlockEntity);
 
         BlockRenderLayerMap.INSTANCE.putBlock(NCBlocks.ROCKS, RenderLayer.getCutout());
 
@@ -81,6 +85,17 @@ public class NorseCraftModClient implements ClientModInitializer {
 
     private <T extends LivingEntity & IAnimatable> void registerBaseEntity(EntityType<T> entityType, AnimatedGeoModel<T> model, BaseFactory factory) {
         EntityRendererRegistry.register(entityType, (ctx) -> factory.build(ctx, model));
+    }
+
+    /**
+     * If you have a block with a jointed model you have to register it, with this method
+     * The {@link JointModelRenderer} takes automatic the {@link JointModel} from the block entity
+     *
+     * @param blockEntityType the block entity type
+     * @param <T> type
+     */
+    private <T extends BlockEntity & IAnimatable & JointStateHandler<T>> void registerJointModelRenderer(BlockEntityType<T> blockEntityType) {
+        BlockEntityRendererRegistry.register(blockEntityType, ctx -> new JointModelRenderer<>());
     }
 
     private interface BaseFactory {
