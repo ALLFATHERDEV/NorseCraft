@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "pattern": [
+    "AAA",
+    " B ",
+    "CBC"
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:apple"
+    },
+    "B": {
+      "item": "minecraft:iron_ingot"
+    },
+    "C": {
+      "item": "minecraft:diamond"
+    }
+  },
+  "result": {
+    "item": "minecraft:acacia_boat",
+    "count": 3
+  }
+}

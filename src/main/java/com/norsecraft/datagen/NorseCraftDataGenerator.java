@@ -11,7 +11,8 @@ import java.util.List;
  */
 public interface NorseCraftDataGenerator {
 
-    List<NorseCraftDataGenerator> DATA_GENERATORS = Lists.newArrayList(new BlockStatesDataGenerator(), new ItemModelDataGenerator());
+    List<NorseCraftDataGenerator> DATA_GENERATORS = Lists.newArrayList(new BlockStatesDataGenerator(), new ItemModelDataGenerator(),
+            new RecipeDataGenerator());
 
     void generate();
 
