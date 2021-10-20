@@ -24,7 +24,7 @@ public class CampfireBlockEntity extends AbstractFurnaceBlockEntity implements I
     private boolean active;
 
     public CampfireBlockEntity(BlockPos pos, BlockState state) {
-        super(NCBlockEntities.campfireBlockEntity, pos, state, NCRecipeTypes.campfire);
+        super(NCBlockEntities.campfireBlockEntity, pos, state, null);
     }
 
     public void setActive(boolean active) {
