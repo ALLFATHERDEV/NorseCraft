@@ -9,6 +9,9 @@ import net.minecraft.text.Text;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Helper class for building tooltips
+ */
 @Environment(EnvType.CLIENT)
 public final class TooltipBuilder {
 

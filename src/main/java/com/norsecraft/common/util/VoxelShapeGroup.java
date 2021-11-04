@@ -2,6 +2,11 @@ package com.norsecraft.common.util;
 
 import net.minecraft.util.shape.VoxelShape;
 
+/**
+ * This class holds {@link VoxelShape}s for every facing side. North, east, south and west.
+ * {@link VoxelShape}s are the bounding boxes of the blocks
+ * If Martii sends us blocks, the voxel shapes are in the same folder. He created the {@link VoxelShape}s with Blockbench
+ */
 public class VoxelShapeGroup {
 
     public final VoxelShape north;

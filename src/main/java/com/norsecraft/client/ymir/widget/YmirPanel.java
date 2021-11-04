@@ -14,6 +14,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * Panels are widgets that contain other widgets.
+ */
 public class YmirPanel extends YmirWidget {
 
     protected final List<YmirWidget> children = new WidgetList(this, Lists.newArrayList());
@@ -55,6 +58,9 @@ public class YmirPanel extends YmirWidget {
         return backgroundPainter;
     }
 
+    /**
+     * Resize this panel, so that every widget fits perfect in
+     */
     public void layout() {
         for (YmirWidget child : children) {
             if (child instanceof YmirPanel) ((YmirPanel) child).layout();
@@ -66,12 +72,21 @@ public class YmirPanel extends YmirWidget {
         expandToFit(w, Insets.NONE);
     }
 
+    /**
+     * Expands this panel be at least as large as the widget.
+     *
+     * @param w      the widget
+     * @param insets the layout insets
+     */
     protected void expandToFit(YmirWidget w, Insets insets) {
         int pushRight = w.getX() + w.getWidth() + insets.right();
         int pushDown = w.getY() + w.getHeight() + insets.bottom();
         this.setSize(Math.max(this.getWidth(), pushRight), Math.max(this.getHeight(), pushDown));
     }
 
+    /**
+     * Finds the most specific child node at this location.
+     */
     @Override
     public YmirWidget hit(int x, int y) {
         if (children.isEmpty()) return this;
@@ -87,6 +102,10 @@ public class YmirPanel extends YmirWidget {
         return this;
     }
 
+    /**
+     * Subclasses should call {@code super.validate(c)} to ensure that children are validated.
+     * @param host the host GUI description
+     */
     @Override
     public void validate(GuiInterpretation host) {
         super.validate(host);

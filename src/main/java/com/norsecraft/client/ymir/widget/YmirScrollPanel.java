@@ -6,6 +6,9 @@ import com.norsecraft.client.ymir.widget.data.InputResult;
 import net.fabricmc.fabric.api.util.TriState;
 import net.minecraft.client.util.math.MatrixStack;
 
+/**
+ * Similar to the JScrollPane in Swing, this widget represents a scrollable widget.
+ */
 public class YmirScrollPanel extends YmirClippedPanel {
 
     private static final int SCROLL_BAR_SIZE = 8;
@@ -34,7 +37,7 @@ public class YmirScrollPanel extends YmirClippedPanel {
     }
 
     public YmirScrollPanel setScrollingHorizontally(TriState scrollingHorizontally) {
-        if(scrollingHorizontally != this.scrollingHorizontally) {
+        if (scrollingHorizontally != this.scrollingHorizontally) {
             this.scrollingHorizontally = scrollingHorizontally;
             layout();
         }
@@ -47,7 +50,7 @@ public class YmirScrollPanel extends YmirClippedPanel {
     }
 
     public YmirScrollPanel setScrollingVertically(TriState scrollingVertically) {
-        if(scrollingVertically != this.scrollingVertically) {
+        if (scrollingVertically != this.scrollingVertically) {
             this.scrollingVertically = scrollingVertically;
             layout();
         }
@@ -56,7 +59,7 @@ public class YmirScrollPanel extends YmirClippedPanel {
 
     @Override
     public void paint(MatrixStack matrices, int x, int y, int mouseX, int mouseY) {
-        if(verticalScrollBar.getValue() != lastVerticalScroll || horizontalScrollBar.getValue() != lastHorizontalScroll) {
+        if (verticalScrollBar.getValue() != lastVerticalScroll || horizontalScrollBar.getValue() != lastHorizontalScroll) {
             layout();
             lastHorizontalScroll = horizontalScrollBar.getValue();
             lastVerticalScroll = verticalScrollBar.getValue();
@@ -77,7 +80,7 @@ public class YmirScrollPanel extends YmirClippedPanel {
         horizontalScrollBar.setSize(this.width - offset, SCROLL_BAR_SIZE);
         horizontalScrollBar.setLocation(0, this.height - horizontalScrollBar.getHeight());
 
-        if(widget instanceof YmirPanel) ((YmirPanel) widget).layout();
+        if (widget instanceof YmirPanel) ((YmirPanel) widget).layout();
         children.add(widget);
         int x = horizontal ? -horizontalScrollBar.getValue() : 0;
         int y = vertical ? -verticalScrollBar.getValue() : 0;
@@ -88,16 +91,16 @@ public class YmirScrollPanel extends YmirClippedPanel {
         horizontalScrollBar.setWindow(this.width - (vertical ? SCROLL_BAR_SIZE : 0));
         horizontalScrollBar.setMaxValue(widget.getWidth());
 
-        if(vertical)
+        if (vertical)
             children.add(verticalScrollBar);
-        if(horizontal)
+        if (horizontal)
             children.add(horizontalScrollBar);
 
     }
 
     @Override
     public InputResult onMouseScroll(int x, int y, double amount) {
-        if(hasVerticalScrollbar())
+        if (hasVerticalScrollbar())
             return verticalScrollBar.onMouseScroll(0, 0, amount);
         return InputResult.IGNORED;
     }

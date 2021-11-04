@@ -4,6 +4,7 @@ import com.norsecraft.client.ymir.YmirScreenDrawing;
 import com.norsecraft.client.ymir.interpretation.GuiInterpretation;
 import com.norsecraft.client.ymir.widget.YmirPanel;
 import com.norsecraft.client.ymir.widget.YmirWidget;
+import com.norsecraft.common.util.VisualLogger;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.narration.NarrationMessageBuilder;
 import net.minecraft.client.util.math.MatrixStack;
@@ -13,40 +14,92 @@ import net.minecraft.text.Text;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.opengl.GL11;
 
+/**
+ * This class represent a client sided screen.
+ * It will handle all the things from the GuiInterpretation
+ */
 public class YmirClientScreen extends Screen implements YmirScreenImpl {
 
+    /**
+     * The gui interpretation
+     */
     protected GuiInterpretation interpretation;
+
+    /**
+     * The left position of the screen
+     */
     protected int left = 0;
+
+    /**
+     * The right position of the screen
+     */
     protected int top = 0;
 
+    /**
+     * Title x position
+     */
     protected int titleX;
+
+    /**
+     * Title y position
+     */
     protected int titleY;
 
+    /**
+     * The last responder widget. If you clicked on a widget this widget is set as the last responder
+     */
     @Nullable
     protected YmirWidget lastResponder = null;
 
+    /**
+     * The mouse input handler, that handles all the mouse inputs
+     */
     private final MouseInputHandler<YmirClientScreen> mouseInputHandler = new MouseInputHandler<>(this);
 
+    /**
+     * Constructor without a title
+     *
+     * @param interpretation the interpretation for the screen
+     */
     public YmirClientScreen(GuiInterpretation interpretation) {
         this(new LiteralText(""), interpretation);
     }
 
+    /**
+     * Constructor with title
+     *
+     * @param title          the gui title
+     * @param interpretation the interpretation for the screen
+     */
     public YmirClientScreen(Text title, GuiInterpretation interpretation) {
         super(title);
         this.interpretation = interpretation;
         interpretation.getRootPanel().validate(interpretation);
     }
 
+    /**
+     * We don't want a pause screen, but if you want just overwrite it and return true
+     * A pause screen pauses the game. i.e: You press ESCAPE
+     *
+     * @return true if it should be a pause screen or false if not
+     */
     @Override
     public boolean isPauseScreen() {
         return false;
     }
 
+    /**
+     * @return the gui interpretation
+     */
     @Override
     public GuiInterpretation getInterpretation() {
         return this.interpretation;
     }
 
+    /**
+     * Default init method form {@link Screen}
+     * This method initialize the root panel and the painters
+     */
     @Override
     protected void init() {
         super.init();
@@ -59,22 +112,40 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
         reposition(width, height);
     }
 
+    /**
+     * If the screen gets closed this method will be called
+     */
     @Override
     public void removed() {
         super.removed();
         this.client.keyboard.setRepeatEvents(false);
+        VisualLogger.reset();
     }
 
+    /**
+     * @return the last responder. Can be null
+     */
     @Override
     public @Nullable YmirWidget getLastResponder() {
         return this.lastResponder;
     }
 
+    /**
+     * Set the last responder
+     *
+     * @param lastResponder the last responder. Can be nul
+     */
     @Override
     public void setLastResponder(@Nullable YmirWidget lastResponder) {
         this.lastResponder = lastResponder;
     }
 
+    /**
+     * If the minecraft screen gets resized this method will calculate the left and top position new
+     *
+     * @param screenWidth  the new screen width
+     * @param screenHeight the new screen height
+     */
     protected void reposition(int screenWidth, int screenHeight) {
         if (interpretation != null) {
             YmirPanel root = interpretation.getRootPanel();
@@ -95,6 +166,13 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
         }
     }
 
+    /**
+     * This method paints the root panel and the title
+     *
+     * @param matrices the render matrix from mc
+     * @param mouseX   the mouse x
+     * @param mouseY   the mouse y
+     */
     private void paint(MatrixStack matrices, int mouseX, int mouseY) {
         renderBackground(matrices);
         if (interpretation != null) {
@@ -114,6 +192,15 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
         }
     }
 
+    /**
+     * Render method from {@link Screen}
+     * Here we call our paint method from above, and render the current tooltip from a widget that is hovered. (If the widget has a tooltip)
+     *
+     * @param matrices the render matrix from mc
+     * @param mouseX the mouse x
+     * @param mouseY the mouse y
+     * @param delta the delta time
+     */
     @Override
     public void render(MatrixStack matrices, int mouseX, int mouseY, float delta) {
         paint(matrices, mouseX, mouseY);
@@ -129,8 +216,12 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
             }
         }
 
+        VisualLogger.render(matrices);
     }
 
+    /**
+     * This method will be executed in the tick method from the client
+     */
     @Override
     public void tick() {
         super.tick();
@@ -141,6 +232,10 @@ public class YmirClientScreen extends Screen implements YmirScreenImpl {
             }
         }
     }
+
+    //==========================================================================
+    //=                          INPUT HANDLING                                =
+    //==========================================================================
 
     @Override
     public boolean mouseClicked(double mouseX, double mouseY, int button) {

@@ -18,6 +18,12 @@ import net.minecraft.util.math.Box;
 import java.util.EnumSet;
 import java.util.List;
 
+/**
+ * Goals are the AI tasks for the entities.
+ * This goals is for the warrior dwarfs.
+ *
+ * If a player attacks a dwarf all warrior dwarfs will be attack the player
+ */
 public class DefendDwarfsTargetGoal extends TrackTargetGoal {
 
     private final DwarfWarriorEntity dwarfWarrior;

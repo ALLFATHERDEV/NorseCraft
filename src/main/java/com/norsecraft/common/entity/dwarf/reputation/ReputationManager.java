@@ -17,10 +17,16 @@ import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
 
+/**
+ * The actual reputation manager, that stores and handle the reputation of the entity
+ */
 public class ReputationManager {
 
     private final Map<UUID, Reputations> uniqueReputationsMap = Maps.newHashMap();
 
+    /**
+     * This method will be executed on the server side
+     */
     public void tick() {
         Iterator<Reputations> iterator = this.uniqueReputationsMap.values().iterator();
 
@@ -45,6 +51,13 @@ public class ReputationManager {
         return reputations != null ? reputations.weightedValue(type) : 0;
     }
 
+    /**
+     * Add a reputation decay type
+     *
+     * @param identifier the player uuid
+     * @param type the decay type
+     * @param value the reputation value
+     */
     public void add(UUID identifier, ReputationDecayType type, int value) {
         Reputations reputations = this.getOrCreate(identifier);
         reputations.reputationDecayTypeMap.mergeInt(type, value, (existing, additive) -> this.mergeValuesForAddition(type, existing, additive));

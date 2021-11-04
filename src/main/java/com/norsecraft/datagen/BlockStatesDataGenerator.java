@@ -48,7 +48,7 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         //Direction and Side
         generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_WALL, false, "dwarf_forge", new int[]{0, 90, 180, -90}, new int[]{0, 90, 180, -90});
         generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_CHIMNEY_WALL, false, "dwarf_forge", new int[]{180, -90, 0, 90}, new int[]{180, -90, 0, 90});
-        generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_PILLAR, false, "dawrf_forge", new int[]{0, 90, 180, -90}, new int[]{0, 90, 180, -90});
+        generateWithSideAndDirectionalProperty(() -> NCBlocks.DWARF_FORGE_PILLAR, false, "dwarf_forge", new int[]{0, 90, 180, -90}, new int[]{0, 90, 180, -90});
 
         //Chairs
         int[] chairsRotation = new int[]{180, 90, 90, 0};
@@ -101,6 +101,20 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         this.generateSimpleBlock(block, null);
     }
 
+    /**
+     * Generate a simple block states file. the file will look like this:
+     * <p>
+     * {
+     * "variants": {
+     * "": {
+     * "model": "norsecraft:block/additionalPath/blockName"
+     * }
+     * }
+     * }
+     *
+     * @param block          the block object
+     * @param additionalPath the additional path to the model
+     */
     private void generateSimpleBlock(Supplier<Block> block, String additionalPath) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonObject main = new JsonObject();
@@ -114,6 +128,17 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         this.save(jsonString, blockName);
     }
 
+    /**
+     * Generates a block states file with directional properties states
+     *
+     * @param block              the block object
+     * @param additionalPath     the additional path to the model
+     * @param yRotationModifiers add "y" rotation to the states.
+     *                           Index 0: North
+     *                           Index 1: East
+     *                           Index 2: South
+     *                           Index 3: West
+     */
     private void generateDirectional(Supplier<Block> block, String additionalPath, int[] yRotationModifiers) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
@@ -130,8 +155,23 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         this.save(gson.toJson(main), blockName);
     }
 
+    private void generateWithSideAndDirectionalProperty(Supplier<Block> block, boolean leftRight, String additionalPath, int[] yRotationMidifierSide1, int[] yRotationModifierSide2) {
+        this.generateWithSideAndDirectionalProperty(block, leftRight, additionalPath, yRotationMidifierSide1, yRotationModifierSide2, false);
+    }
 
-    private void generateWithSideAndDirectionalProperty(Supplier<Block> block, boolean leftRight, String additionalPath, int[] yRotationModifiersSide1, int[] yRotationModifiersSide2) {
+    /**
+     * This method is for double sized blocks or tripple sized blocks with y rotation modifiers. Like the bench
+     *
+     * @param block                   the block object
+     * @param leftRight               if true it will use the horizontal names if false the vertical names
+     *                                horizontal names: _left and _right
+     *                                vertical names: _top and _bottom
+     * @param additionalPath          the additional path to the model path
+     * @param yRotationModifiersSide1 the y rotation modifiers for the first side (left or top)
+     * @param yRotationModifiersSide2 the y rotation modifiers for the second side (right or bottom)
+     * @param blockHalf               if you use the property {@link net.minecraft.block.enums.BlockHalf} set this to true, if not set it to false
+     */
+    private void generateWithSideAndDirectionalProperty(Supplier<Block> block, boolean leftRight, String additionalPath, int[] yRotationModifiersSide1, int[] yRotationModifiersSide2, boolean blockHalf) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
         JsonObject variants = new JsonObject();
@@ -142,20 +182,28 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         String modelPathSide2 = getModelPath(additionalPath, blockName + (leftRight ? "_right" : "_bottom"));
 
         //Side1
-        variants.add(String.format("side=%s,facing=north", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[0]));
-        variants.add(String.format("side=%s,facing=east", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[1]));
-        variants.add(String.format("side=%s,facing=south", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[2]));
-        variants.add(String.format("side=%s,facing=west", side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[3]));
+        String sidePropName = blockHalf ? "half" : "side";
+        variants.add(String.format("%s=%s,facing=north", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[0]));
+        variants.add(String.format("%s=%s,facing=east", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[1]));
+        variants.add(String.format("%s=%s,facing=south", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[2]));
+        variants.add(String.format("%s=%s,facing=west", sidePropName, side1), buildModelObject(modelPathSide1, yRotationModifiersSide1[3]));
         //Side2
-        variants.add(String.format("side=%s,facing=north", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[0]));
-        variants.add(String.format("side=%s,facing=east", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[1]));
-        variants.add(String.format("side=%s,facing=south", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[2]));
-        variants.add(String.format("side=%s,facing=west", side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[3]));
+        variants.add(String.format("%s=%s,facing=north", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[0]));
+        variants.add(String.format("%s=%s,facing=east", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[1]));
+        variants.add(String.format("%s=%s,facing=south", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[2]));
+        variants.add(String.format("%s=%s,facing=west", sidePropName, side2), buildModelObject(modelPathSide2, yRotationModifiersSide2[3]));
         main.add("variants", variants);
 
         this.save(gson.toJson(main), blockName);
     }
 
+    /**
+     * If you have a block with more variants (like the coloured stones or bricks) use this method
+     *
+     * @param block          the block object
+     * @param additionalPath the additional path to the model
+     * @param variantsCount  the amount of the different variants
+     */
     private void generateVariantBlock(Supplier<Block> block, String additionalPath, int variantsCount) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
@@ -172,6 +220,11 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         this.save(gson.toJson(main), blockName);
     }
 
+    /**
+     * This is explicit for the pillar block bcs it is strange :-)
+     *
+     * @param block the block object
+     */
     private void generateStonePillarBlock(Supplier<Block> block) {
         Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         JsonObject main = new JsonObject();
@@ -185,11 +238,23 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
         this.save(gson.toJson(main), blockName);
     }
 
+    /**
+     * @param additionalPath the additional path to the model
+     * @param blockName      the block name
+     * @return the exact model path to the model file
+     */
     private String getModelPath(String additionalPath, String blockName) {
         return "norsecraft:block/" + (additionalPath != null ? additionalPath + "/" + blockName : blockName);
     }
 
 
+    /**
+     * This method builds the json object for every property
+     *
+     * @param modelPath the model path
+     * @param y         the y rotation modifier. If 0 then it will be ignored
+     * @return the builded json object
+     */
     private JsonObject buildModelObject(String modelPath, int y) {
         JsonObject object = new JsonObject();
         object.addProperty("model", modelPath);
@@ -199,6 +264,12 @@ public class BlockStatesDataGenerator implements NorseCraftDataGenerator {
     }
 
 
+    /**
+     * Save the raw json string into the file
+     *
+     * @param jsonString the json string
+     * @param blockName  the file name as blockName
+     */
     private void save(String jsonString, String blockName) {
         try {
             File folder = new File("../data_generator/blockstates/");

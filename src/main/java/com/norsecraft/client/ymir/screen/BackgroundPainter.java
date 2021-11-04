@@ -6,14 +6,36 @@ import com.norsecraft.client.ymir.widget.YmirWidget;
 import com.norsecraft.client.ymir.widget.data.Texture;
 import net.minecraft.client.util.math.MatrixStack;
 
+/**
+ * This class represent a background painter.
+ * All the different gui widgets (listed in the widget packet) can have an own background.
+ * If you have a textured background just use the {@link TexturedBackgroundPainter}
+ * If you want a extra special own background for something, you have to write a own background painter
+ *
+ */
 public interface BackgroundPainter {
 
+    /**
+     * This method will be paint the background
+     * @param matrices the render matrix from mc
+     * @param left the x position
+     * @param top the y positin
+     * @param panel the root panel
+     */
     void paintBackground(MatrixStack matrices, int left, int top, YmirWidget panel);
 
+    /**
+     * If you use a texture you have to return the texture here
+     *
+     * @return the used texture
+     */
     default Texture getTexture() {
         return null;
     }
 
+    /**
+     * This is a background painter for default slot
+     */
     BackgroundPainter SLOT = ((matrices, left, top, panel) -> {
         if(!(panel instanceof YmirItemSlot slot)) {
             YmirScreenDrawing.drawBeveledPanel(matrices, left - 1, top - 1, panel.getWidth() + 2, panel.getHeight() + 2, 0xB8000000, 0x4C000000, 0xB8FFFFFF);

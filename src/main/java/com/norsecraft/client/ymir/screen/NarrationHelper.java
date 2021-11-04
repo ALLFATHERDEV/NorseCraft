@@ -11,6 +11,9 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+/**
+ * A simple class that helps with the narrations
+ */
 public final class NarrationHelper {
 
     public static void addNarrations(YmirPanel rootPanel, NarrationMessageBuilder builder) {

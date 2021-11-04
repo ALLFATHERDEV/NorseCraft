@@ -7,6 +7,10 @@ import net.minecraft.util.shape.VoxelShapes;
 
 import java.util.stream.Stream;
 
+/**
+ * This class holds all the voxel shapes for the custom blocks that have they own voxel shapes.
+ * If oyu add a new voxel shape group, just scroll down and paste it there
+ */
 public class VoxelShapeGroups {
 
     public static final VoxelShape CAMP_FIRE_STAND = Stream.of(

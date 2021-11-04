@@ -5,6 +5,9 @@ import com.norsecraft.client.ymir.widget.YmirWidget;
 import com.norsecraft.client.ymir.widget.data.Texture;
 import net.minecraft.client.util.math.MatrixStack;
 
+/**
+ * This is a class for a textured background painter, if you have a texture as background use this class
+ */
 public class TexturedBackgroundPainter implements BackgroundPainter {
 
     private final Texture texture;

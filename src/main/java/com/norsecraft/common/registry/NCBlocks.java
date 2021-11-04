@@ -22,6 +22,9 @@ import net.minecraft.util.registry.Registry;
 
 import java.util.List;
 
+/**
+ * Register all the blocks from the mod
+ */
 public class NCBlocks {
 
     private static final FabricBlockSettings ORE_PROPS = FabricBlockSettings.copyOf(Blocks.DIAMOND_ORE);

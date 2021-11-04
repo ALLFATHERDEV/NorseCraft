@@ -27,6 +27,10 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Optional;
 
+/**
+ * Normal i use the "Ymir" gui system, but this is a copy from the normal player inventory screen handler,
+ * with some changes for our custom player inventory
+ */
 public class NorseCraftInventoryScreenHandler extends AbstractRecipeScreenHandler<CraftingInventory> {
 
     public static final Identifier LOCATION_BLOCKS_TEXTURE = new Identifier("textures/atlas/blocks.png");

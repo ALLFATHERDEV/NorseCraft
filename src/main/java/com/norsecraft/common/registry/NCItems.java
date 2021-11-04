@@ -1,15 +1,17 @@
 package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.common.item.CampfireStandItem;
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.registry.Registry;
 
+/**
+ * Register all the items from the mod
+ */
 public class NCItems {
 
     public static final Item ROCK = new Item(defSettings());
-    public static final Item CAMPFIRE_STAND = new CampfireStandItem(defSettings());
+    public static final Item CAMPFIRE_STAND = new Item(defSettings());
 
     public static void register() {
         NorseCraftMod.LOGGER.info("Register items");

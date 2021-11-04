@@ -25,6 +25,9 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
 
+/**
+ * Main mod class
+ */
 public class NorseCraftMod implements ModInitializer {
 
     public static final Logger LOGGER = LogManager.getLogger(NorseCraftMod.class);
@@ -65,8 +68,6 @@ public class NorseCraftMod implements ModInitializer {
 
         OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.TEMPERATE, 3D);
         OverworldBiomes.addContinentalBiome(NCBiomes.DWARF_BIOME, OverworldClimate.COOL, 3D);
-
-        ThirstManager.handleWorldTick();
     }
 
     private void registerEntityAttributes() {

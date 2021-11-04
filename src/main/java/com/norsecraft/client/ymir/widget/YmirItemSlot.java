@@ -29,6 +29,41 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 
+/**
+ * A widget that displays an item that can be interacted with.
+ *
+ * <p>Item slot widgets can contain multiple visual slots themselves.
+ * For example, a slot widget might be 5x3 with 15 visual slots in total.
+ *
+ * <p>Item slots are handled with so-called peers in the background.
+ * They are instances of {@link ValidatedSlot} that handle the interactions
+ * between the player and the widget.
+ *
+ * <h2>Filters</h2>
+ * Item slots can have filters that check whether a player is allowed to insert an item or not.
+ * The filter can be set with {@link #setFilter(Predicate)}. For example:
+ *
+ * <pre>
+ * {@code
+ * // Only sand in this slot!
+ * slot.setFilter(stack -> stack.getItem() == Items.SAND);
+ * }
+ * </pre>
+ *
+ * <h2>Listeners</h2>
+ * Slot change listeners are instances of {@link YmirItemSlot.ChangeListener} that can handle changes
+ * to item stacks in slots. For example:
+ *
+ * <pre>
+ * {@code
+ * slot.addChangeListener((slot, inventory, index, stack) -> {
+ *     if (stack.isEmpty() || stack.getCount() < stack.getMaxCount()) {
+ *         System.out.println("I'm not full yet!");
+ *     }
+ * });
+ * }
+ * </pre>
+ */
 public class YmirItemSlot extends YmirWidget {
 
     private static final Predicate<ItemStack> DEFAULT_FILTER = stack -> true;

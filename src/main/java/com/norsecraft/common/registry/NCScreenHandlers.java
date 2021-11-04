@@ -10,6 +10,10 @@ import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 
+/**
+ * Register all the screen handlers for the mod.
+ * In the "Ymir" system called: {@link com.norsecraft.client.ymir.interpretation.GuiInterpretation}
+ */
 public class NCScreenHandlers {
 
     public static ScreenHandlerType<DwarfTradeGuiInterpretation> dwarfTrade;

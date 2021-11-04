@@ -11,6 +11,11 @@ import net.minecraft.world.World;
 
 import javax.swing.*;
 
+/**
+ * This is a base blockentity for multiblocks. Every block entity for multiblocks should be extend from the blockentity
+ *
+ * @param <T>
+ */
 public abstract class MultiblockTileEntity<T extends IMultiblock> extends BlockEntity {
 
     protected T multiblock;
@@ -27,6 +32,9 @@ public abstract class MultiblockTileEntity<T extends IMultiblock> extends BlockE
         return this.multiblock != null;
     }
 
+    /**
+     * @return true if the multiblock is formed or false if not
+     */
     public boolean isFormed() {
         return this.hasMultiblock() && this.multiblock.getShape().isFormed();
     }
@@ -37,8 +45,19 @@ public abstract class MultiblockTileEntity<T extends IMultiblock> extends BlockE
         this.multiblock.unset(pos);
     }
 
+    /**
+     * This method is called when the player updates or destroyed a block.
+     * If the player place repair the multiblock this method will reactivate the multiblock
+     *
+     * @param pos the updated pos
+     * @param world the world
+     */
     public abstract void scanForMultiblockAndSet(BlockPos pos, World world);
 
+    /**
+     * @param pos the block pos
+     * @return the neighbors of the block
+     */
     public BlockPos[] getNeighbors(BlockPos pos) {
         BlockPos[] neighbors = new BlockPos[4];
         neighbors[0] = pos.offset(Direction.NORTH);

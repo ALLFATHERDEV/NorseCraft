@@ -1,14 +1,9 @@
 package com.norsecraft.client.ymir.interpretation;
 
 import com.norsecraft.client.ymir.screen.BackgroundPainter;
-import com.norsecraft.client.ymir.widget.YmirPanel;
-import com.norsecraft.client.ymir.widget.YmirPlainPanel;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.PropertyDelegate;
@@ -16,24 +11,43 @@ import net.minecraft.screen.ScreenHandlerContext;
 import net.minecraft.screen.ScreenHandlerType;
 import net.minecraft.world.World;
 
+/**
+ * Abstract class for cooking recipe guis, like the {@link com.norsecraft.common.gui.CampfireGuiInterpretation}
+ */
 public abstract class CookingGuiInterpretation extends SyncedGuiInterpretation implements RecipeGuiInterpretation<Inventory> {
 
+    /**
+     * The world reference
+     */
     protected final World world;
-    private final RecipeType<? extends AbstractCookingRecipe> recipeType;
+
+    /**
+     * The category
+     */
     private final RecipeBookCategory category;
 
-    public CookingGuiInterpretation(ScreenHandlerType<?> type, RecipeType<? extends AbstractCookingRecipe> recipeType,
+    /**
+     * This is the default constructor
+     *
+     * @param type             the registered screen type
+     * @param category         the recipe book category
+     * @param syncId           the window id. Will be provided from mc
+     * @param playerInventory  the player inventory reference
+     * @param ctx              the screen handler context with the block pos and the world
+     * @param propertyDelegate the integer data to sync
+     * @param painter          the background painter
+     */
+    public CookingGuiInterpretation(ScreenHandlerType<?> type,
                                     RecipeBookCategory category, int syncId, PlayerInventory playerInventory, ScreenHandlerContext ctx,
-                                    PropertyDelegate propertyDelegate, BackgroundPainter painter) {
-        super(type, syncId, playerInventory, getBlockInventory(ctx, 3), propertyDelegate, painter);
-        this.recipeType = recipeType;
+                                    PropertyDelegate propertyDelegate, BackgroundPainter painter, int size) {
+        super(type, syncId, playerInventory, getBlockInventory(ctx, size), propertyDelegate, painter);
         this.category = category;
         checkDataCount(propertyDelegate, 4);
         this.world = playerInventory.player.world;
     }
 
     public void populateRecipeFinder(RecipeMatcher finder) {
-        if(this.blockInventory instanceof RecipeInputProvider) {
+        if (this.blockInventory instanceof RecipeInputProvider) {
             ((RecipeInputProvider) this.blockInventory).provideRecipeInputs(finder);
         }
     }
@@ -48,31 +62,6 @@ public abstract class CookingGuiInterpretation extends SyncedGuiInterpretation i
     @Override
     public boolean canUse(PlayerEntity player) {
         return this.blockInventory.canPlayerUse(player);
-    }
-
-    protected boolean isCookable(ItemStack itemStack) {
-        return this.world.getRecipeManager().getFirstMatch(this.recipeType, new SimpleInventory(itemStack), this.world).isPresent();
-    }
-
-    protected boolean isFuel(ItemStack itemStack) {
-        return AbstractFurnaceBlockEntity.canUseAsFuel(itemStack);
-    }
-
-    public int getCookProgress() {
-        int i = this.propertyDelegate.get(2);
-        int j = this.propertyDelegate.get(3);
-        return j != 0 && i != 0 ? i * 24 / j : 0;
-    }
-
-    public int getFuelProgress() {
-        int i = this.propertyDelegate.get(1);
-        if(i == 0)
-            i = 200;
-        return this.propertyDelegate.get(0) * 13 / i;
-    }
-
-    public boolean isBurning() {
-        return this.propertyDelegate.get(0) > 0;
     }
 
     @Override

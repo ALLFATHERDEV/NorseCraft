@@ -13,6 +13,9 @@ import net.minecraft.world.gen.feature.OreFeatureConfig;
 import net.minecraft.world.gen.heightprovider.UniformHeightProvider;
 import net.minecraft.world.gen.stateprovider.SimpleBlockStateProvider;
 
+/**
+ * Register all configured features for the mod
+ */
 public class NCConfiguredFeatures {
 
     //STICKS

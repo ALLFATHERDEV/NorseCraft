@@ -4,15 +4,14 @@ import com.norsecraft.NorseCraftMod;
 import com.norsecraft.client.ymir.interpretation.CookingGuiInterpretation;
 import com.norsecraft.client.ymir.screen.BackgroundPainter;
 import com.norsecraft.client.ymir.screen.TexturedBackgroundPainter;
-import com.norsecraft.client.ymir.widget.YmirBar;
-import com.norsecraft.client.ymir.widget.YmirButton;
 import com.norsecraft.client.ymir.widget.YmirItemSlot;
 import com.norsecraft.client.ymir.widget.YmirPlainPanel;
+import com.norsecraft.client.ymir.widget.YmirProgressBar;
 import com.norsecraft.client.ymir.widget.data.Texture;
-import com.norsecraft.common.registry.NCRecipeTypes;
 import com.norsecraft.common.registry.NCScreenHandlers;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.ArrayPropertyDelegate;
 import net.minecraft.screen.PropertyDelegate;
@@ -28,17 +27,21 @@ public class CampfireGuiInterpretation extends CookingGuiInterpretation {
     }
 
     public CampfireGuiInterpretation(int syncId, PlayerInventory playerInventory, ScreenHandlerContext ctx, PropertyDelegate propertyDelegate) {
-        super(NCScreenHandlers.campfireGuiBasic, NCRecipeTypes.campfire, RecipeBookCategory.FURNACE, syncId, playerInventory, ctx, propertyDelegate, null);
+        super(NCScreenHandlers.campfireGuiBasic, RecipeBookCategory.FURNACE, syncId, playerInventory, ctx, propertyDelegate, null, 4);
 
         YmirPlainPanel panel = new YmirPlainPanel();
         panel.setBackgroundPainter(PAINTER);
-        Texture barTexture = Texture.component(150, 0, 28, 28);
 
-        YmirBar bar = new YmirBar(null, barTexture, 0, 1, YmirBar.Direction.UP);
-        panel.add(bar, 61, 20, 32, 32);
+        Texture barTexture = Texture.component(130, 0, 144, 14);
+        YmirProgressBar progressBar = new YmirProgressBar(barTexture, 0, 1, YmirProgressBar.Direction.UP);
+        panel.add(progressBar, 63, 42, 13, 13);
         panel.add(YmirItemSlot.of(blockInventory, 0), 61, 43);
         panel.add(YmirItemSlot.of(blockInventory, 1), 61, 7);
         panel.add(YmirItemSlot.of(blockInventory, 2), 121, 25);
+        YmirItemSlot bowl = YmirItemSlot.of(blockInventory, 3);
+        bowl.setFilter(itemStack -> itemStack.getItem().equals(Items.BOWL));
+        panel.add(bowl, 40, 7);
+
         panel.add(this.createPlayerInventoryPanel(), 7, 61);
 
 

@@ -1,11 +1,14 @@
 package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.common.recipe.CampfireRecipe;
+import com.norsecraft.common.recipe.campfire.CampfireRecipe;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.recipe.RecipeType;
 import net.minecraft.util.registry.Registry;
 
+/**
+ * Register al the recipe types for the mod
+ */
 public class NCRecipeTypes {
 
     public static RecipeType<CampfireRecipe> campfire;

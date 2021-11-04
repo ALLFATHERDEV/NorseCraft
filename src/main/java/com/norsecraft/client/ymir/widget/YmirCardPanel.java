@@ -6,15 +6,29 @@ import com.norsecraft.client.ymir.interpretation.GuiInterpretation;
 import java.util.List;
 import java.util.NoSuchElementException;
 
+/**
+ * Similar to the CardLayout in AWT, this panel displays one widget at a time from a list of widgets.
+ */
 public class YmirCardPanel extends YmirPanel {
 
     private final List<YmirWidget> cards = Lists.newArrayList();
     private int selectedIndex = 0;
 
+    /**
+     * Adds a card to this panel without resizing it.
+     *
+     * @param card the added card
+     */
     public void add(YmirWidget card) {
         this.add(cards.size(), card);
     }
 
+    /**
+     * Adds a card to this panel without resizing it.
+     *
+     * @param index the index of the card
+     * @param card  the added card
+     */
     public void add(int index, YmirWidget card) {
         cards.add(index, card);
         card.setParent(this);
@@ -22,12 +36,27 @@ public class YmirCardPanel extends YmirPanel {
         expandToFit(card);
     }
 
+    /**
+     * Adds a card to this panel and resizes it.
+     *
+     * @param card   the added card
+     * @param width  the new width
+     * @param height the new height
+     */
     public void add(YmirWidget card, int width, int height) {
         this.add(cards.size(), card, width, height);
     }
 
+    /**
+     * Adds a card to this panel and resizes it.
+     *
+     * @param index  the index of the card
+     * @param card   the added card
+     * @param width  the new width
+     * @param height the new height
+     */
     public void add(int index, YmirWidget card, int width, int height) {
-        if(card.canResize())
+        if (card.canResize())
             card.setSize(width, height);
         this.add(index, card);
     }
@@ -68,24 +97,24 @@ public class YmirCardPanel extends YmirPanel {
     @Override
     public void setSize(int x, int y) {
         super.setSize(x, y);
-        for(YmirWidget card : cards)
+        for (YmirWidget card : cards)
             card.setSize(x, y);
     }
 
     @Override
     public void layout() {
         children.clear();
-        for(YmirWidget child : cards) {
-            if(child instanceof YmirPanel) ((YmirPanel) child).layout();
+        for (YmirWidget child : cards) {
+            if (child instanceof YmirPanel) ((YmirPanel) child).layout();
             expandToFit(child);
 
-            if(child == getSelectedCard())
+            if (child == getSelectedCard())
                 child.onShown();
             else
                 child.onHidden();
         }
 
-        for(YmirWidget child : cards) {
+        for (YmirWidget child : cards) {
             child.setSize(getWidth(), getHeight());
         }
 
@@ -107,7 +136,7 @@ public class YmirCardPanel extends YmirPanel {
 
     @Override
     public void addPainters() {
-        for(YmirWidget card : cards)
+        for (YmirWidget card : cards)
             card.addPainters();
     }
 }

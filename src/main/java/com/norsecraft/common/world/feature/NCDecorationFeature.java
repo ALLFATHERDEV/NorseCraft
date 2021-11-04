@@ -10,6 +10,12 @@ import net.minecraft.world.Heightmap;
 import net.minecraft.world.gen.feature.Feature;
 import net.minecraft.world.gen.feature.util.FeatureContext;
 
+/**
+ * A decoration feature implementation
+ * Fore more information about features look at this website:
+ * https://fabricmc.net/wiki/tutorial:features
+ *
+ */
 public class NCDecorationFeature extends Feature<NCDecorationFeatureConfig> {
 
     public NCDecorationFeature(Codec<NCDecorationFeatureConfig> configCodec) {
