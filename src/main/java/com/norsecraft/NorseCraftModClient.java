@@ -7,10 +7,9 @@ import com.norsecraft.client.render.entity.BaseEntityRenderer;
 import com.norsecraft.client.render.entity.DwarfEntityRenderer;
 import com.norsecraft.client.render.model.block.CrateBlockModel;
 import com.norsecraft.client.render.model.entity.*;
-import com.norsecraft.client.render.model.joint.JointModel;
-import com.norsecraft.client.render.model.joint.JointModelRenderer;
-import com.norsecraft.client.render.model.joint.JointStateHandler;
+import com.norsecraft.client.render.model.flex.*;
 import com.norsecraft.client.ymir.screen.YmirInventoryScreen;
+import com.norsecraft.common.block.entity.CampfireBlockEntity;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.gui.CampfireGuiInterpretation;
 import com.norsecraft.common.gui.CrateGuiInterpretation;
@@ -38,7 +37,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
  */
 public class NorseCraftModClient implements ClientModInitializer {
 
-    public static final boolean DATA_GEN = true;
+    public static final boolean DATA_GEN = false;
 
     @Override
     public void onInitializeClient() {
@@ -60,7 +59,8 @@ public class NorseCraftModClient implements ClientModInitializer {
         //==============================BLOCK RENDERER============================
         //========================================================================
         BlockEntityRendererRegistry.register(NCBlockEntities.crateBlockEntity, ctx -> new CustomBlockEntityModelRenderer<>(new CrateBlockModel()));
-        this.registerJointModelRenderer(NCBlockEntities.campfireBlockEntity);
+        registerFlexModelRenderer(NCBlockEntities.campfireBlockEntity);
+
 
         BlockRenderLayerMap.INSTANCE.putBlock(NCBlocks.ROCKS, RenderLayer.getCutout());
 
@@ -87,16 +87,10 @@ public class NorseCraftModClient implements ClientModInitializer {
         EntityRendererRegistry.register(entityType, (ctx) -> factory.build(ctx, model));
     }
 
-    /**
-     * If you have a block with a jointed model you have to register it, with this method
-     * The {@link JointModelRenderer} takes automatic the {@link JointModel} from the block entity
-     *
-     * @param blockEntityType the block entity type
-     * @param <T> type
-     */
-    private <T extends BlockEntity & IAnimatable & JointStateHandler<T>> void registerJointModelRenderer(BlockEntityType<T> blockEntityType) {
-        BlockEntityRendererRegistry.register(blockEntityType, ctx -> new JointModelRenderer<>());
+    private <T extends BlockEntity & IAnimatable & FlexModelStateProvider> void registerFlexModelRenderer(BlockEntityType<T> blockEntityType) {
+        BlockEntityRendererRegistry.register(blockEntityType, ctx -> new FlexModelRenderer<T>(new FlexModel<>()));
     }
+
 
     private interface BaseFactory {
 

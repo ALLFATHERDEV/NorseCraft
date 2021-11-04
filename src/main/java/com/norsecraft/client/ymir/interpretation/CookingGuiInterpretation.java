@@ -1,12 +1,9 @@
 package com.norsecraft.client.ymir.interpretation;
 
 import com.norsecraft.client.ymir.screen.BackgroundPainter;
-import net.minecraft.block.entity.AbstractFurnaceBlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
-import net.minecraft.inventory.SimpleInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.*;
 import net.minecraft.recipe.book.RecipeBookCategory;
 import net.minecraft.screen.PropertyDelegate;
@@ -25,11 +22,6 @@ public abstract class CookingGuiInterpretation extends SyncedGuiInterpretation i
     protected final World world;
 
     /**
-     * The recipe type for the inventory
-     */
-    private final RecipeType<? extends AbstractCookingRecipe> recipeType;
-
-    /**
      * The category
      */
     private final RecipeBookCategory category;
@@ -38,7 +30,6 @@ public abstract class CookingGuiInterpretation extends SyncedGuiInterpretation i
      * This is the default constructor
      *
      * @param type             the registered screen type
-     * @param recipeType       the registred recipe type
      * @param category         the recipe book category
      * @param syncId           the window id. Will be provided from mc
      * @param playerInventory  the player inventory reference
@@ -46,11 +37,10 @@ public abstract class CookingGuiInterpretation extends SyncedGuiInterpretation i
      * @param propertyDelegate the integer data to sync
      * @param painter          the background painter
      */
-    public CookingGuiInterpretation(ScreenHandlerType<?> type, RecipeType<? extends AbstractCookingRecipe> recipeType,
+    public CookingGuiInterpretation(ScreenHandlerType<?> type,
                                     RecipeBookCategory category, int syncId, PlayerInventory playerInventory, ScreenHandlerContext ctx,
-                                    PropertyDelegate propertyDelegate, BackgroundPainter painter) {
-        super(type, syncId, playerInventory, getBlockInventory(ctx, 3), propertyDelegate, painter);
-        this.recipeType = recipeType;
+                                    PropertyDelegate propertyDelegate, BackgroundPainter painter, int size) {
+        super(type, syncId, playerInventory, getBlockInventory(ctx, size), propertyDelegate, painter);
         this.category = category;
         checkDataCount(propertyDelegate, 4);
         this.world = playerInventory.player.world;

@@ -18,12 +18,18 @@ public class CampfireRecipe implements Recipe<Inventory> {
     private final NCRecipeItem input;
     private final NCRecipeItem output;
     private final boolean withBowl;
+    private final int cookTime;
 
-    public CampfireRecipe(Identifier id, NCRecipeItem input, NCRecipeItem output, boolean withBowl) {
+    public CampfireRecipe(Identifier id, NCRecipeItem input, NCRecipeItem output, boolean withBowl, int cookTime) {
         this.id = id;
         this.input = input;
         this.output = output;
         this.withBowl = withBowl;
+        this.cookTime = cookTime;
+    }
+
+    public int getCookTime() {
+        return cookTime;
     }
 
     public NCRecipeItem getInput() {
@@ -39,7 +45,11 @@ public class CampfireRecipe implements Recipe<Inventory> {
 
     @Override
     public boolean matches(Inventory inventory, World world) {
-        return this.input.test(NCRecipeItem.of(inventory.getStack(0)));
+        boolean b = this.input.test(NCRecipeItem.of(inventory.getStack(0)));
+        if(this.isWithBowl())
+            return b && !inventory.getStack(3).isEmpty();
+
+        return b;
     }
 
     @Override
