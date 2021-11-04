@@ -2,13 +2,14 @@ package com.norsecraft;
 
 import com.norsecraft.client.gui.NorseCraftInventoryScreen;
 import com.norsecraft.client.gui.dwarf.DwarfTradeGuiInterpretation;
-import com.norsecraft.client.render.CampfireBlockRenderer;
 import com.norsecraft.client.render.CustomBlockEntityModelRenderer;
 import com.norsecraft.client.render.entity.BaseEntityRenderer;
 import com.norsecraft.client.render.entity.DwarfEntityRenderer;
 import com.norsecraft.client.render.model.block.CrateBlockModel;
 import com.norsecraft.client.render.model.entity.*;
+import com.norsecraft.client.render.model.flex.*;
 import com.norsecraft.client.ymir.screen.YmirInventoryScreen;
+import com.norsecraft.common.block.entity.CampfireBlockEntity;
 import com.norsecraft.common.entity.dwarf.AbstractDwarfEntity;
 import com.norsecraft.common.gui.CampfireGuiInterpretation;
 import com.norsecraft.common.gui.CrateGuiInterpretation;
@@ -21,6 +22,8 @@ import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.fabricmc.fabric.api.client.rendering.v1.BlockEntityRendererRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.fabricmc.fabric.api.client.screenhandler.v1.ScreenRegistry;
+import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.entity.EntityRenderer;
 import net.minecraft.client.render.entity.EntityRendererFactory;
@@ -34,7 +37,7 @@ import software.bernie.geckolib3.model.AnimatedGeoModel;
  */
 public class NorseCraftModClient implements ClientModInitializer {
 
-    public static final boolean DATA_GEN = true;
+    public static final boolean DATA_GEN = false;
 
     @Override
     public void onInitializeClient() {
@@ -56,7 +59,8 @@ public class NorseCraftModClient implements ClientModInitializer {
         //==============================BLOCK RENDERER============================
         //========================================================================
         BlockEntityRendererRegistry.register(NCBlockEntities.crateBlockEntity, ctx -> new CustomBlockEntityModelRenderer<>(new CrateBlockModel()));
-        BlockEntityRendererRegistry.register(NCBlockEntities.campfireBlockEntity, ctx -> new CampfireBlockRenderer());
+        registerFlexModelRenderer(NCBlockEntities.campfireBlockEntity);
+
 
         BlockRenderLayerMap.INSTANCE.putBlock(NCBlocks.ROCKS, RenderLayer.getCutout());
 
@@ -82,6 +86,11 @@ public class NorseCraftModClient implements ClientModInitializer {
     private <T extends LivingEntity & IAnimatable> void registerBaseEntity(EntityType<T> entityType, AnimatedGeoModel<T> model, BaseFactory factory) {
         EntityRendererRegistry.register(entityType, (ctx) -> factory.build(ctx, model));
     }
+
+    private <T extends BlockEntity & IAnimatable & FlexModelStateProvider> void registerFlexModelRenderer(BlockEntityType<T> blockEntityType) {
+        BlockEntityRendererRegistry.register(blockEntityType, ctx -> new FlexModelRenderer<T>(new FlexModel<>()));
+    }
+
 
     private interface BaseFactory {
 

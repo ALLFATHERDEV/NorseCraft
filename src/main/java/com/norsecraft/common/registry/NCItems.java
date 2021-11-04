@@ -1,8 +1,6 @@
 package com.norsecraft.common.registry;
 
 import com.norsecraft.NorseCraftMod;
-import com.norsecraft.common.item.CampfireStandItem;
-import com.norsecraft.common.item.CoinPurseItem;
 
 import net.minecraft.item.Item;
 import net.minecraft.util.Identifier;
@@ -14,11 +12,7 @@ import net.minecraft.util.registry.Registry;
 public class NCItems {
 
     public static final Item ROCK = new Item(defSettings());
-    public static final Item CAMPFIRE_STAND = new CampfireStandItem(defSettings());
-    public static final Item COPPER_COIN = new Item(defSettings());
-    public static final Item SILVER_COIN = new Item(defSettings());
-    public static final Item GOLD_COIN = new Item(defSettings());
-    public static final Item COIN_PURSE = new CoinPurseItem(defSettings().maxCount(1));
+
 
     public static void register() {
         NorseCraftMod.LOGGER.info("Register items");

@@ -46,7 +46,6 @@ public abstract class NorseCraftRecipeSerializer<T extends Recipe<? extends Inve
      */
     public abstract void writeToServer(PacketByteBuf buf, T recipe);
 
-
     @Override
     public T read(Identifier id, JsonObject json) {
         return this.readFromJson(id, json);
@@ -61,7 +60,6 @@ public abstract class NorseCraftRecipeSerializer<T extends Recipe<? extends Inve
     public void write(PacketByteBuf buf, T recipe) {
         this.writeToServer(buf, recipe);
     }
-
 
 
 }
