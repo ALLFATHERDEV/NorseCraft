@@ -10,7 +10,6 @@ import com.norsecraft.common.entity.dwarf.DwarfBlacksmithEntity;
 import com.norsecraft.common.entity.dwarf.DwarfWarriorEntity;
 import com.norsecraft.common.network.PacketHandler;
 import com.norsecraft.common.registry.*;
-import com.norsecraft.common.thirst.ThirstManager;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.biome.v1.OverworldBiomes;
 import net.fabricmc.fabric.api.biome.v1.OverworldClimate;
@@ -19,7 +18,6 @@ import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRe
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
-import net.minecraft.recipe.CookingRecipeSerializer;
 import net.minecraft.util.Identifier;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
